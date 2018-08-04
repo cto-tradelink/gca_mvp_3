@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import userAccount from '@/components/userAccount'
 import Grant from "@/components/Grant"
 import StartupList from "@/components/Startup/StartupList"
 import Startup from "@/components/Startup/Startup"
@@ -60,27 +59,27 @@ import GrantDetailAgent from "@/components/agent/GrantDetail"
 import AgentAccount from "@/components/manager/AccountList/AgentAccount"
 import AgentAccount2 from "@/components/agent/AccountList/AgentAccount"
 
-import ManageChannel from "@/components/mypage/my_channel/ManageChannel"
+import ManageChannel from "@/components/mypage/MyChannel/ManageChannel"
 
 import AgentStaticsByGrant  from "@/components/Agent/StaticsByGrant"
 import AgentStaticByAll from "@/components/Agent/StaticsByAll"
-import ClipView from "@/components/mypage/my_channel/ClipView"
-import CourseHome from "@/components/mypage/my_channel/CourseHome"
-import PathHome from "@/components/mypage/my_channel/PathHome"
-import CourseView from "@/components/mypage/my_channel/CourseView"
-import PathView from "@/components/mypage/my_channel/PathView"
-import MakeClip from "@/components/mypage/my_channel/MakeClip"
-import MakeCourse  from "@/components/mypage/my_channel/MakeCourse"
-import MakePath  from "@/components/mypage/my_channel/MakePath"
+import ClipView from "@/components/mypage/MyChannel/ClipView"
+import CourseHome from "@/components/mypage/MyChannel/CourseHome"
+import PathHome from "@/components/mypage/MyChannel/PathHome"
+import CourseView from "@/components/mypage/MyChannel/CourseView"
+import PathView from "@/components/mypage/MyChannel/PathView"
+import MakeClip from "@/components/mypage/MyChannel/MakeClip"
+import MakeCourse  from "@/components/mypage/MyChannel/MakeCourse"
+import MakePath  from "@/components/mypage/MyChannel/MakePath"
 import Channel from "@/components/Channel"
 import ChannelClip from "@/components/ChannelClip"
 import ChannelCourse from "@/components/ChannelCourse"
 import ChannelPath from "@/components/ChannelPath"
 
 import Main from "@/components/Main"
-import ManageChanneling from "@/components/mypage/my_channel/ManageChannelIng"
-import ManageChannelint from "@/components/mypage/my_channel/ManageChannelInt"
-import ManageChannelDetail from "@/components/mypage/my_channel/ManageChannelDetail"
+import ManageChanneling from "@/components/mypage/MyChannel/ManageChannelIng"
+import ManageChannelint from "@/components/mypage/MyChannel/ManageChannelInt"
+import ManageChannelDetail from "@/components/mypage/MyChannel/ManageChannelDetail"
 
 import ManagerChannel from "@/components/manager/ManagerChannel"
 
@@ -117,7 +116,7 @@ export default new Router({
   },
   routes: [
    
-    
+
     {
       path: '/',
       component: Main

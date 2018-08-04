@@ -13,7 +13,8 @@
         <div class="card_bottom">
             <div class="text_con_full">
                 <div class="grant_text_full">{{item.short_desc}}</div>
-                <div class="tag"><span class="tag_seg" style="display:inline-block;margin-right:5px;" v-for="t in item.tag.slice(0, 7)">{{t}}</span></div>
+                <div class="tag" v-if=" item.tag.length < 6"><span class="tag_seg" style="display:inline-block;margin-right:5px;" v-for="t in item.tag">{{t}}</span></div>
+                <div class="tag" v-else ><span class="tag_seg" style="display:inline-block;margin-right:5px;" v-for="t in item.tag.slice(0, 7)">{{t}}</span></div>
             </div>
         </div> 
         </a>
@@ -113,11 +114,10 @@ export default {
 }
 
 .card_bottom>.text_con_full>.tag{    
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 14px;    
     color: #243d68;
     position: absolute;
-    bottom: 0px;
+     bottom: -5px;
 }
 .card_bottom>.text_con_full>.grant_text{
     opacity: 0.8;

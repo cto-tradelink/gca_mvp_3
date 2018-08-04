@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import Header from "../../common/Header.vue"
+import Header from "../../Common/Header.vue"
 import ClipSeg from "./Clip.vue"
 import { setTimeout } from 'timers';
 

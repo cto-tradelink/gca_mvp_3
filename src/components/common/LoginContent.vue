@@ -10,7 +10,7 @@
                 <div id="register_hd" style=""><router-link :to="'/login'">가입하기</router-link></div>
                 <div id="login_hd">로그인</div>
             </div>          
-            <div id="alarm_popup_con" class="hidden">
+            <div id="alarm_popup_con" class="hidden" v-if="check_alarm">
                 <ul>
                     <li>
                         <div class="alarm_ttl">
@@ -21,24 +21,7 @@
                             2018 제 6회 도쿄 게임박람회
                         </div>
                     </li>
-                    <li>
-                        <div class="alarm_ttl">
-                            <span class="date">08.08</span>
-                            <span class="ttl">지원한 지원사업에 변동사항이있습니다.</span>
-                        </div>
-                        <div class="info">
-                            스타트업 2030 엑셀러레이팅 네트워킹
-                        </div>
-                    </li>
-                    <li>
-                        <div class="alarm_ttl">
-                            <span class="date">08.08</span>
-                            <span class="ttl">관심기업 정보에 변동사항이있습니다.</span>
-                        </div>
-                        <div class="info">
-                            로켓펀치
-                        </div>
-                    </li>
+                    
                 </ul>
                 <div id="alarm_more_btn"><router-link to="/mypage/alarm">더보기</router-link></div>
             </div>
@@ -116,6 +99,24 @@ function get_sns_auth(token,sns,context){
 
 
 export default {
+    computed:{
+        check_alarm:function(){
+              $.ajax({
+                    url:`${this.baseURI}/get_unread_alarm/`,                   
+                    method:"GET",
+                    success:function(res){
+                        console.log("test")
+                        console.log(res)
+                        if (res.length.alarm_set ==0){
+                            return false;
+                        }
+                        else{
+                            return true
+                        }
+                    }
+                })
+        }
+    },
     methods:{
 
   loginwithfacebook:function(){
@@ -484,7 +485,7 @@ export default {
 
 #profile_popup_con{
     position: absolute;
-    z-index: 999;
+    z-index: 99999;
     top:46px;
     width: 176px;
     background-color: #ffffff;

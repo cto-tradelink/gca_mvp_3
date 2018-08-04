@@ -117,18 +117,18 @@
 </template>
 
 <script>
-import Header from "./common/Header.vue"
-import LeftNavi from "./common/LeftNavi.vue"
-import BaseInfo from "./application/BaseInfo.vue"
-import BusinessInfo from "./application/BusinessInfo.vue"
-import StartupInfo from "./application/StartupInfo.vue"
-import Oversea from "./application/Oversea.vue"
-import StartupIntro from "./application/StartupIntro.vue"
-import AttachedFile from "./application/AttachedFile.vue"
+import Header from "./Common/Header.vue"
+import LeftNavi from "./Common/LeftNavi.vue"
+import BaseInfo from "./Application/BaseInfo.vue"
+import BusinessInfo from "./Application/BusinessInfo.vue"
+import StartupInfo from "./Application/StartupInfo.vue"
+import Oversea from "./Application/Oversea.vue"
+import StartupIntro from "./Application/StartupIntro.vue"
+import AttachedFile from "./Application/AttachedFile.vue"
 import GrantDetailCard from "../GrantDetailCard.vue"
 import GrantDetailInfo from "../GrantDetailInfo.vue"
 import GrantMoreDetailInfo from "../GrantMoreDetailInfo.vue"
-import BottomControlGrant from "./common/BottomControlGrant.vue"
+import BottomControlGrant from "./Common/BottomControlGrant.vue"
 import { setTimeout } from 'timers';
 
 

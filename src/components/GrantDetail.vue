@@ -43,8 +43,7 @@ export default {
  mounted:function(){
      var vue_obj=this
    this.$http.get(`${this.baseURI}/get_grant_detail/?id=`+this.$route.params.id)
-        .then((result) => {
-          
+        .then((result) => {          
             this.grant_info = result.data               
         })
     this.$http.get(`${this.baseURI}/similar_grant/?q=`+this.$route.params.id)
@@ -54,7 +53,7 @@ export default {
         })
         $(document).ready(function(){
             $(document).on("click","#apply_btn", function(){
-                if( $("#d-day").text().indexOf("마감") == -1 ){
+                if( $("#d_day_con").text().indexOf("마감") == -1 ){
                     vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/base_info/")
                 }else{
                     alert("마감된 공고입니다.")

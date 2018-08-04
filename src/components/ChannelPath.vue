@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import Header from "./common/Header.vue"
+import Header from "./Common/Header.vue"
 export default {
     data:function(){
         return{

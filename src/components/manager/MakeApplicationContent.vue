@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import BottomControl from "./common/BottomControl.vue"
+import BottomControl from "./Common/BottomControl.vue"
 
 export default {
     components:{

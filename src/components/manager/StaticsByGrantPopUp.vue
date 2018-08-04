@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import Header from "./common/Header.vue"
-import LeftNavi from "./common/LeftNavi.vue"
+import Header from "./Common/Header.vue"
+import LeftNavi from "./Common/LeftNavi.vue"
 import StaticsGrantContentP from "./StaticsGrantContentP.vue"
 
 export default {

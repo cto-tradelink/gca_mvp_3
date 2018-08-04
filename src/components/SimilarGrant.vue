@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import CardWithoutPoster from "./common/CardWithoutPoster.vue"
-import CardWithPoster from "./common/CardWithPoster.vue"
+import CardWithoutPoster from "./Common/CardWithoutPoster.vue"
+import CardWithPoster from "./Common/CardWithPoster.vue"
 
 export default {
     components:{

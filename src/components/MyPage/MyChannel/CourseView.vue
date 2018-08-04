@@ -1,11 +1,8 @@
 <template>
-   
     <div id="clip_view">
         <Header></Header>
         <Header2></Header2>
-
-     
-        <div id="content">
+        <div id="content" style="margin-top:16px;">
         <div id="view_con">
             <div id="view_left" >
                 <div id="view_hd">
@@ -13,14 +10,14 @@
                     <div id="sub_ttl">
                             <span class="date">{{con.created}}</span>|
                             <span class="name">{{con.user}}</span>|
-                            <span class="duration">{{con.play | seconds2time  }}</span>           
+                            <span class="duration">{{con.play | get_time_format}}</span>           
                     </div>         
                      
                     <div id="heart_con">
                         <img class="heart" v-if="con.int_clip == 'true'" src="/static/img/like_p.png">
                         <img class="heart" v-else src="/static/img/like_d.png">
-                        
-                     {{con.int}} </div>   
+                     
+                        {{con.int}} </div>   
                 </div>
                 <div id="view_main">
                     <div id="clip">
@@ -28,14 +25,15 @@
                         <div id="ytplayer"></div>
                         </div>
                     </div>
-                  
+                   
                 </div>
                      <div id="exp_con">
-                        <div id="filter_p_con"  style="padding-top:24px;">
+                            <div id="filter_p_con" style="padding-top:24px;">
                         <div class="filter_p" v-for="t in con.tag"># {{t}}</div>
-                        
+                     
+                          
                     </div>
-                    <div id="exp" style="padding-top:16px;margin-left:24px;">
+                    <div id="exp" style="padding-top:16px; margin-left:24px;">
                             <div class="sub_ttl">
                                 추천 수강 대상
                             </div>
@@ -51,86 +49,94 @@
                     </div>
             </div>
             <div id="view_right" >
-                <RecoClip :another_clip="con.another_clip" :another_course="con.another_course"></RecoClip>
+                <CourseGroup :con="con"></CourseGroup>
             </div>
         </div>
         </div>
     </div>
-
-    
 </template>
 
 <script>
-import RecoClip from "./RecoClip.vue"
-import Header from "../../common/Header.vue"
-import Header2 from "./common/HeaderClip.vue"
-
-
+import CourseGroup from "./CourseGroup.vue"
+import Header from "../../Common/Header.vue"
+import Header2 from "./Common/HeaderCourse.vue"
 export default {
     components:{
-        Header2, RecoClip,Header
-    },
+        Header,  CourseGroup, Header2
+    }, 
     data:function(){
-        return{
+        return {
             con:{}
         }
     },
-    mounted:function(){
+   mounted:function(){
         var vue_obj = this
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/player_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        function onYouTubePlayerAPIReady(id) {
-            var player = new YT.Player('ytplayer', {
-                height: '500',
-                width: '866',
-                videoId: id,
-                events: {
-                    'onStateChange': onPlayerStateChange
-                }
-            });
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/player_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+ var player;
+  function onYouTubePlayerAPIReady(id) {
+    player = new YT.Player('ytplayer', {
+        height: '500',
+        width: '866',
+        videoId: id,
+        events: {
+            'onStateChange': onPlayerStateChange
         }
-        var write_log
-        function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING ) {
-                write_log = setInterval(watch_clip_history, 6000);// 6초마다 서버에 로그를 저장한다.
-            } else {
-                clearInterval(write_log)
-            }
-            if(event.data == YT.PlayerState.ENDED){
-                clearInterval(write_log)
-            }
+    });
+  }
+ var write_log
+    function onPlayerStateChange(event) {
+        console.log("event change!")
+        if (event.data == YT.PlayerState.PLAYING ) {
+           write_log = setInterval(watch_course_history, 6000);// 6초마다 서버에 로그를 저장한다.
+        }else {
+            clearInterval(write_log)
         }
+        if(event.data == YT.PlayerState.ENDED){
+            clearInterval(write_log)
+        }
+      }
 
-        function watch_clip_history(){
-            $.ajax({
-                url:vue_obj.baseURI + "/vue_watch_clip_history/",
+    function watch_course_history(){
+         $.ajax({
+                url:vue_obj.baseURI + "/vue_watch_course_history/",
                 type:"post",
                 data:{
                     "id":localStorage.getItem("id"),
-                    "val" : vue_obj.$route.params.id,                    
-                },
+                    "val" : vue_obj.$route.params.clip,  
+                    "course" : vue_obj.$route.params.id,
+                    },
                 success:function(res){
                     // 강의 수강 기록
-                    
+                    console.log(res)
+                    if(res.result=="com"){
+                        var img_seg = "<img src='/static/img/fin.png'>"
+                        console.log($("a[href='/course/view/4/8']").parent())
+                        $("a[href='/course/view/4/8']").parent().find(".sub_num2").html(img_seg)
+                    }
                 }
             })
         }
+
 
         $(document).ready(function(){
+
+          
+
             $.ajax({
-                url:vue_obj.baseURI + "/vue_hit_clip_log/",
+                url:vue_obj.baseURI + "/vue_hit_course_log/",
                 type:"post",
                 data:{
                     "id":localStorage.getItem("id"),
-                    "val" : vue_obj.$route.params.id,                    
-                },
+                    "val" : vue_obj.$route.params.clip,   
+                    "course": vue_obj.$route.params.id
+                    },
                 success:function(res){
                     // 강의 수강 기록
                 }
             })
-            
-            $(document).off("click","#heart_con")
+               $(document).off("click","#heart_con")
             $(document).on("click","#heart_con", function(){
                 console.log("here")
                 if($("#heart_con>img").attr("src").indexOf("_p") != -1){
@@ -140,7 +146,7 @@ export default {
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
-                                "val":vue_obj.$route.params.id
+                                "val":vue_obj.$route.params.clip
                             },
                             success:function(res){
                                 alert("성공적으로 삭제 되었습니다.")
@@ -149,37 +155,40 @@ export default {
                             }
                         })
                     }
-                } else {
-                    console.log("add")
-                    $.ajax({
-                        url:vue_obj.baseURI+"/toggle_int_clip/",
-                        type:"post", 
-                        data:{
-                            "id":localStorage.getItem("id"),
-                            "val":vue_obj.$route.params.id
-                        },
-                        success:function(res){
-                            alert("성공적으로 등록 되었습니다.")
-                            $("#heart_con>img").attr("src","/static/img/like_p.png")
-                            vue_obj.con.int =  parseInt(vue_obj.con.int)  + 1
-                        }
-                    })
-                }                
+                    }
+                    else{
+                        console.log("add")
+                        $.ajax({
+                            url:vue_obj.baseURI+"/toggle_int_clip/",
+                            type:"post", 
+                            data:{
+                                "id":localStorage.getItem("id"),
+                                "val":vue_obj.$route.params.clip
+                            },
+                            success:function(res){
+                                alert("성공적으로 등록 되었습니다.")
+                                $("#heart_con>img").attr("src","/static/img/like_p.png")
+                                vue_obj.con.int =  parseInt(vue_obj.con.int)  + 1
+                            }
+                        })
+                    }
+                
             })
-
             $.ajax({
-                url:vue_obj.baseURI+"/vue_get_clip/",
-                type:"POST",
-                data:{"id":vue_obj.$route.params.id, "user":localStorage.getItem("id")},
-                success:function(res){
-                    console.log(res)
+            url:vue_obj.baseURI+"/vue_get_course/",
+            type:"POST",
+            data:{"id":vue_obj.$route.params.id, "clip":vue_obj.$route.params.clip},
+            success:function(res){
+                console.log(res)
                     vue_obj.con = res
-                    // Load the IFrame Player API code asynchronously.
-                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-                    onYouTubePlayerAPIReady(res.youtube)
-                    // Replace the 'ytplayer' element with an <iframe> and
-                    // YouTube player after the API code downloads.
-                }
+              // Load the IFrame Player API code asynchronously.
+
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+onYouTubePlayerAPIReady(res.youtube)
+  // Replace the 'ytplayer' element with an <iframe> and
+  // YouTube player after the API code downloads.
+ 
+             }
             })
         })
     }
@@ -187,6 +196,30 @@ export default {
 </script>
 
 <style scoped>
+#view_right{
+  
+}
+#exp{
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.86;
+    letter-spacing: -0.1px;
+    color: #1a2a53;
+}
+.sub_ttl{
+    opacity: 0.8;
+    font-family: NotoSansCJKkr;
+    font-size: 17px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.65;
+    letter-spacing: -0.3px;
+    color: #1a2f53;
+}
+
 #filter_p_con{
     margin:24px;
 }
@@ -202,10 +235,6 @@ export default {
     letter-spacing: -0.1px;
     color: #1a2a53;
     line-height: 40px;
-}
-
-#ytplayer{
-    margin:24px;
 }
 #clip_view{
     width: 100%;
@@ -223,7 +252,7 @@ export default {
 }
 #view_right{
     float: left;
-    margin-left: 22px;
+    margin-left: 24px;
 }
 #view_hd{
     width: 912px;
@@ -274,7 +303,7 @@ export default {
     background-color: #ffffff;
 }
 #exp_con{
-    width: 912px;
+    width:912px;
     height: auto;
     background-color: #fff;
 }

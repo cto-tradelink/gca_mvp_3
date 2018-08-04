@@ -353,7 +353,7 @@ export default {
         vue_obj.countries = (response.data)  
         })
         },    
-            modi_file:function(e){
+            modi_file:function(e){v
                 if($(e.path[0]).text()=="수정"){
                     $("#file").addClass("hidden")
                     $("#submit_file").removeClass("hidden")

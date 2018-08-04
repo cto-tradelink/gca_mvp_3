@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import Header from "../common/Header.vue"
-import ApplicationTopInfo from "./common/ApplicationTopInfo.vue"
-import ApplicationNavigation from "./common/ApplicationNavigation.vue"
+import Header from "../Common/Header.vue"
+import ApplicationTopInfo from "./Common/ApplicationTopInfo.vue"
+import ApplicationNavigation from "./Common/ApplicationNavigation.vue"
 import BaseInfo from "./BaseInfo.vue"
 import BusinessInfo from "./BusinessInfo.vue"
 import StartupInfo from "./StartupInfo.vue"

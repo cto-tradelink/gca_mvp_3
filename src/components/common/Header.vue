@@ -107,4 +107,7 @@ li:nth-child(1){
     background-color: #fff;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
 }
+.menu_top:hover{
+    border-bottom: 2px solid #ddd
+}
 </style>

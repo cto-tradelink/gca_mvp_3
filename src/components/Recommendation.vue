@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import CardWithPoster from "./common/CardWithPoster.vue"
-import CardWithoutPoster from "./common/CardWithoutPoster.vue"
+import CardWithPoster from "./Common/CardWithPoster.vue"
+import CardWithoutPoster from "./Common/CardWithoutPoster.vue"
 var masonry;
 var order_num=0;
    function compare_by_rec(a,b){
@@ -86,8 +86,27 @@ var order_num=0;
                 if(num == 2){obj.grant.sort(compare_by_comp).reverse()
                
                 }
-                if(num == 3){obj.grant.sort(compare_by_due).reverse()
-               
+                if(num == 3){
+
+                    var temp_arr =  obj.grant.slice(0)
+                    obj.grant= []
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    temp_arr.sort(compare_by_due).reverse()
+                    obj.grant = temp_arr.slice(0)
+          
+
+
+
                 }
                 resolve("data-1")
 

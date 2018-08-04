@@ -6,7 +6,7 @@
            <div class="app_due">{{int.start|get_day_format}}~  {{int.date|get_day_format}} 까지</div>
             <div class="sub">
                 <div class="sub_int"><i class="fas fa-heart"></i>{{int.int}}</div>
-                <div class="sub_comp"><i class="fas fa-fire"></i>{{int.comp}}:1</div>
+                <div class="sub_comp"><i class="fas fa-fire"></i>{{int.comp}}</div>
                 
                 <div class="sub_d_day"><i class="far fa-clock"></i>{{int.start ,int.date | d_day_calc_short_2 }}</div>
                 <div class="sub_agency">경기도 콘텐츠 진흥원</div>                

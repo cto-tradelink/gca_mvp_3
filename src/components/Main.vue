@@ -111,9 +111,9 @@
 </template>
 
 <script>
-import Header from "./common/Header.vue"
-import CardWithPoster from './common/CardWithPoster.vue';
-import CardWithoutPoster from './common/CardWithoutPoster.vue';
+import Header from "./Common/Header.vue"
+import CardWithPoster from './Common/CardWithPoster.vue';
+import CardWithoutPoster from './Common/CardWithoutPoster.vue';
 import StartupCard from "./Startup/StartupCard.vue"
 
 
@@ -121,13 +121,25 @@ import StartupCard from "./Startup/StartupCard.vue"
 
 var masonry;
 export default {
+
+    created:function(){
+        this.is_not_logined()
+    },
     components: {
         'Header': Header,
         CardWithPoster,
         CardWithoutPoster,
         StartupCard,
     },
+    computed:{
+                
+    },
     methods: {
+          is_not_logined:function(){
+             if( localStorage.getItem("login") == "true" ){
+                $("#reg_btn").addClass("hidden")
+             }
+        },
         test() {
             console.log("dhdhdh")
         },
@@ -255,7 +267,7 @@ export default {
     mounted: function() {
         // 메인화면 이니시에이션
 
-
+        this.is_not_logined()
         var vue_obj = this
         $(document).ready(function() {
             vue_obj.utils.check_fav(vue_obj)

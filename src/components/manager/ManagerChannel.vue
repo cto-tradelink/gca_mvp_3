@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import Header from "./common/Header.vue"
-import LeftNavi from "./common/LeftNavi.vue"
-import ChannelManager from "../mypage/my_channel/ManageChannelDetail.vue"
+import Header from "./Common/Header.vue"
+import LeftNavi from "./Common/LeftNavi.vue"
+import ChannelManager from "../MyPage/MyChannel/ManageChannelDetail.vue"
 export default {
     components:{
               Header, LeftNavi, ChannelManager

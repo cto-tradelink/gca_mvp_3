@@ -50,7 +50,7 @@
 <script>
 import FacebookLogin from "./FacebookLogin"
 import axios from 'axios';
-import Header from "../common/Header"
+import Header from "../Common/Header"
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "XCSRF-TOKEN";

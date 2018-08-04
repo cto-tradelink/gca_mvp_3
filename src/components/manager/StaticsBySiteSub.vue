@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import Header from "./common/Header.vue"
-import LeftNavi from "./common/LeftNavi.vue"
+import Header from "./Common/Header.vue"
+import LeftNavi from "./Common/LeftNavi.vue"
 
 export default {
 

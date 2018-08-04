@@ -67,7 +67,7 @@ body{
         border-bottom:1px solid rgba(206, 212, 218, 0.5);
     }
    
-    .filter{
+    /* .filter{
       margin-right: 6px;
 cursor: pointer;
 border-radius: 100px;
@@ -85,7 +85,7 @@ letter-spacing: -0.1px;
 text-align: center;
 color: #1a2a53;
 margin-bottom:12px;
-    }
+    } */
     .bold{
       font-weight: bold;
     }

@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import Header from "./common/Header.vue"
-import LeftNavi from "./common/LeftNavi.vue"
+import Header from "./Common/Header.vue"
+import LeftNavi from "./Common/LeftNavi.vue"
 import MakeBaseGrantInfo from "./MakeBaseGrantInfo.vue"
-import MakeGrantBottomControl from "./common/MakeGrantBottomControl.vue"
+import MakeGrantBottomControl from "./Common/MakeGrantBottomControl.vue"
 export default {
          beforeRouteLeave (to, from, next) {
         if(confirm("페이지를 벗어나시겠습니까?")){

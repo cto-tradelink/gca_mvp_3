@@ -16,9 +16,9 @@
     </div>
 </template>
 <script>
-import Header from "../common/Header.vue"
+import Header from "../Common/Header.vue"
 import ManageApplicant from "./ManageApplicant.vue"
-import LeftNavi from "./common/LeftNavi.vue"
+import LeftNavi from "./Common/LeftNavi.vue"
 import ManageStartupInfo from "./ManageStartupInfo.vue"
 export default {
     components:{

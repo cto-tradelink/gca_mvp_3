@@ -59,8 +59,8 @@
 
 <script>
 import PathGroup from "./PathGroup.vue"
-import Header from "../../common/Header.vue"
-import Header2 from "./common/HeaderPath.vue"
+import Header from "../../Common/Header.vue"
+import Header2 from "./Common/HeaderPath.vue"
 export default {
     components:{
         Header2,  PathGroup,Header

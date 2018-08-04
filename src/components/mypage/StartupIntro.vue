@@ -29,37 +29,37 @@
                     <ul class="inner_ul">
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Homepage.png">홈페이지</span>
-                            <span class="h_content"></span>
+                            <span class="h_content">{{sta.information.homepage}}</span>
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl" style="vertical-align:top;"><img src="/static/img/SNS.png">SNS</span>
                             <div class="h_content" style="display:inline-block">
                                 <ul>
-                                    <li class="sns"><img src="/static/img/facebook_1.png" >페북</li>
-                                    <li class="sns"><img src="/static/img/insta.png" >인스타</li>
-                                    <li class="sns"><img src="/static/img/youtube.png" >페북</li>
+                                    <li class="sns"><img src="/static/img/facebook_1.png" >{{sta.facebook}}</li>
+                                    <li class="sns"><img src="/static/img/insta.png" >{{sta.insta}}</li>
+                                    <li class="sns"><img src="/static/img/youtube.png" >{{sta.youtube}}</li>
                                 </ul>
                             </div>
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/com_start.png">설립일</span>
-                            <span class="h_content"></span>
+                            <span class="h_content">{{sta.found_date}}</span>
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Man.png">대표자명</span>
-                            <span class="h_content"></span>
+                            <span class="h_content">{{sta.repre_name}}</span>
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Mail2.png">대표메일</span>
-                            <span class="h_content"></span>
+                            <span class="h_content">{{sta.information.email}}</span>
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Phone.png">전화번호</span>
-                            <span class="h_content"></span>
+                            <span class="h_content">{{sta.repre_tel}}</span>
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Work.png">사업분야</span>
-                            <span class="h_content"></span>
+                            <span class="h_content">{{sta.category}}</span>
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Tag.png">관련태그</span>
@@ -99,18 +99,18 @@
 
         <div class="info_con">
             <div class="info_ttl">기업정보</div>
-            <div class="info_seg"><img src="/static/img/Homepage.png"><span>홈페이지</span><input v-model="sta.homepage"  class="input_normal"></div>
+            <div class="info_seg"><img src="/static/img/Homepage.png"><span>홈페이지</span><input v-model="sta.information.homepage"  class="input_normal"></div>
             <div class="info_seg"><img src="/static/img/SNS.png"><span>SNS</span>
-                <div class="sns_con"><img src="/static/img/facebook_1.png"> <input v-model="sta.facebook" class="input_normal"> </div>
-                <div class="sns_con"><img src="/static/img/insta.png"> <input v-model="sta.insta"  class="input_normal"> </div>
-                <div class="sns_con"><img src="/static/img/youtube.png"> <input  v-model="sta.youtube"  class="input_normal"> </div>                
+            <div class="sns_con"><img src="/static/img/facebook_1.png"> <input v-model="sta.facebook" class="input_normal"> </div>
+            <div class="sns_con"><img src="/static/img/insta.png"> <input v-model="sta.insta"  class="input_normal"> </div>
+            <div class="sns_con"><img src="/static/img/youtube.png"> <input  v-model="sta.youtube"  class="input_normal"> </div>                
             </div>
             <div class="info_seg"><img src="/static/img/com_start.png"><span>설립일</span>
             <datetime v-model="sta.found_date"  style=" display:inline-block; border:1px silid #000; height:40px;"> </datetime>  </div>
             <div class="info_seg"><img src="/static/img/Man.png"><span>대표자명</span><input placeholder="대표자명을 입력하세요" class="input_normal"></div>
             <div class="info_seg"><img src="/static/img/Mail2.png"><span>대표메일</span><input placeholder="대표 메일을 입력하세요" class="input_normal"></div>
             <div class="info_seg"><img src="/static/img/Phone.png"><span>전화번호</span><input placeholder="000-000-0000" class="input_normal"></div>
-            <div class="info_seg"><img src="/static/img/Work.png"><span>사업분야</span><input class="input_normal" placeholder="사업분야를 입력하세요"></div>
+            <div class="info_seg"><img src="/static/img/Work.png"><span>사업분야</span><input class="input_normal" v-model="sta.category" placeholder="사업분야를 입력하세요"></div>
             <div class="info_seg"><img src="/static/img/Tag.png"><span>관련태그</span><input v-on:keyup="make_hash_string($event)" placeholder="#해시태그 #입력 #해주세요 #띄어쓰기로구분" class="input_normal"></div>
         </div>
         <div class="info_con">
@@ -471,9 +471,6 @@ export default {
                 type:"get",
                 success:function(res){
                     this.sta = res                   
-                    console.log("eheheheh")
-                    console.log(res)
-                    console.log(this.sta)
                 },
              })              
     },

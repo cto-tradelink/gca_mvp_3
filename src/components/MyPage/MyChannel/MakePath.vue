@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import Header from "../../common/Header.vue"
+import Header from "../../Common/Header.vue"
 
 import CourseSeg from "./Course.vue"
 import { setTimeout } from 'timers';

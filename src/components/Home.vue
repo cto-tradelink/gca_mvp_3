@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import Header from "./common/Header.vue"
-import FilterSetting from "./common/FilterSetting.vue"
+import Header from "./Common/Header.vue"
+import FilterSetting from "./Common/FilterSetting.vue"
 import Recommendation from "./Recommendation.vue"
 export default {
  components:{

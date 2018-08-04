@@ -39,11 +39,11 @@
                 
                     <ul id="f_li">
                         <li><span class="filter_ttl">창작</span> <span class="filter"  v-for="t in filter_table_item.create">{{t}}</span></li>
-                        <li><span class="filter_ttl">IT 관련</span> <span class="filter" v-for="t in filter_table_item.it">{{t}}</span></li>
+                        <li><span class="filter_ttl" style="    margin-left: 38px;">IT 관련</span> <span class="filter" v-for="t in filter_table_item.it">{{t}}</span></li>
                         <li><span class="filter_ttl">창업</span> <span class="filter" v-for="t in filter_table_item.startup">{{t}}</span></li>
-                        <li><span class="filter_ttl">제조/융합</span> <span class="filter" v-for="t in filter_table_item.manufacture">{{t}}</span></li>
+                        <li><span class="filter_ttl" style="    margin-left: 38px;">제조/융합</span> <span class="filter" v-for="t in filter_table_item.manufacture">{{t}}</span></li>
                         <li  style="clear:left"><span class="filter_ttl">신규산업</span> <span class="filter" v-for="t in filter_table_item.new">{{t}}</span></li>
-                        <li><span class="filter_ttl">기타</span> <span class="filter" v-for="t in filter_table_item.etc">{{t}}</span></li>
+                        <li><span class="filter_ttl" style="    margin-left: 38px;">기타</span> <span class="filter" v-for="t in filter_table_item.etc">{{t}}</span></li>
                     </ul>
                 </td>
             </tr>
@@ -134,26 +134,24 @@ export default {
             $("#filter_result").css("display","")
             $("#filter_list").css("display","none")
             $("#filter_popup").css("display","none")
-               $("#filter_conf_con").css("border-bottom","1px solid #a0a3bc")
-                 $("#filter_conf_con").css("padding-bottom","17px")
+            $("#filter_conf_con").css("border-bottom","1px solid #a0a3bc")
+            $("#filter_conf_con").css("padding-bottom","17px")
         },
         save_tag:function(){
             $("#filter_setting").css("background-color","rgba(237,243,255,0.5 )")
             $("#filter_result").css("display","")
             $("#filter_list").css("display","none")
             $("#filter_popup").css("display","none")
-              $("#filter_conf_con").css("border-bottom","1px solid #a0a3bc")
-                       $("#filter_conf_con").css("padding-bottom","17px")
-            // 서버에 저장하는 로직 추가 
+            $("#filter_conf_con").css("border-bottom","1px solid #a0a3bc")
+            $("#filter_conf_con").css("padding-bottom","17px")
+           
         },
     },
  
     data:function(){
         return{
             items:[
-                {"name":"창업", "id":"1"},
-                {"name":"스타트업", "id":"2"},
-                {"name":"1년 미만 창업", "id":"3"},
+
             ],
             temporary:[],
             filter_table_item:{
@@ -174,19 +172,43 @@ export default {
     
     mounted:function(){
         var data_target = this
-        
+        data_target.items.push({"name":"만화","id":""}) 
+        $(".col_name").find(".filter:contains('만화')").addClass("filter_on")
+        data_target.items.push({"name":"출판","id":""})
+          $(".col_name").find(".filter:contains('출판')").addClass("filter_on")
+        data_target.items.push({"name":"게임","id":""})
+          $(".col_name").find(".filter:contains('게임')").addClass("filter_on")
+        var vue_obj= this
+        $(window).click(function(e) {
+            console.log(e)
+            console.log($("#filter_popup").css("display"))
+            if( $("#filter_popup").css("display") == "block" ){
+                vue_obj.save_tag()
+            }
+        })
+        $(document).on("click","#filter_add_btn",function(e){
+            e.stopPropagation()
+        })
+        $(document).on("click","#filter_popup",function(e){
+            e.stopPropagation()
+        })
+
+
+        $(document).off("click", ".filter") 
                             $(document).on("click", ".filter" ,function(){
                                 var target_text = $(this).text()
                                 console.log(data_target.items)
                                 if(data_target.items.find(function(obj){return obj.name == target_text}) == undefined){
                                     data_target.items.push({"name":$(this).text(),"id":""})
+                                    $(this).addClass("filter_on")
                                 }      
                                 else{
                                     var t_text = $(this).text().replace("#","").trim()
                                     var del_target = data_target.items.indexOf(data_target.items.find(function(obj){
-                                        if(obj.name===t_text)console.log("여기있다.")
+                                        if(obj.name===t_text)
                                         ;return obj.name === t_text}))
                                     if(del_target > -1)  data_target.items.splice(del_target,1)
+                                    $(this).removeClass("filter_on")
                                     }                                                
                                
                             })
@@ -284,7 +306,7 @@ li{
     font-weight: normal;
     margin-right: 6px;
     background-color: #ffffff;
-    padding:13px 27px;; 
+    padding:10px 27px;; 
     border-radius: 40px;
 }
 
@@ -295,7 +317,8 @@ li{
     font-weight: bold;
 }
 .filter_on{
-    color: #ea8ab3!important;
+    background-color: rgba(27,73,244, 0.7);
+    color: #fff;
 }
 
 .col_name>div>div{
@@ -330,7 +353,7 @@ li{
   background-color: rgba(27,73,244, 0.7);
 
   color: #fff;
-  padding: 6px 13px;;
+  padding: 10px 27px;;
   font-size: 14px;
   margin-top: 17px;
   margin-right: 15px;

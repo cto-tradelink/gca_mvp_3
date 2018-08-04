@@ -6,7 +6,7 @@
             <div id="date_info">{{grant_info.apply_start | get_day_format}}부터 ~ {{grant_info.apply_end | get_day_format}}까지 </div>
             <div id="like_compete">
                 <div id="like_con"><img src="/static/img/like_gr.png"><span>{{grant_info.int}}</span></div>
-                <div id="compe_con"><img src="/static/img/comp_2.png"><span>{{grant_info.comp}}:1</span></div>
+                <div id="compe_con"><img src="/static/img/comp_2.png"><span>{{grant_info.comp}}</span></div>
                 <div id="d_day_con"><img src="/static/img/clock.png" style="float:left"><span>{{ grant_info.apply_end,grant_info.apply_start | d_day_calc }}</span></div>
 
                  

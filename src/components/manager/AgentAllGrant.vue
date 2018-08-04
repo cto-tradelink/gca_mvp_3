@@ -33,8 +33,8 @@
 
 <script>
 
-import Header from "./common/Header.vue"
-import LeftNavi from "../agent/common/LeftNavi.vue"
+import Header from "./Common/Header.vue"
+import LeftNavi from "../Agent/Common/LeftNavi.vue"
 import ApplicationManager from "./ApplicationManagerInManager"
 
 Array.prototype.sort_by = function(key){

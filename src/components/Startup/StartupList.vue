@@ -8,9 +8,9 @@
     </div>
 </template>
 <script>
-import Header from "../common/Header.vue"
+import Header from "../Common/Header.vue"
 import StartupCard from "./StartupCard.vue"
-import FilterSetting from "../common/FilterSetting.vue"
+import FilterSetting from "../Common/FilterSetting.vue"
 import axios from "axios"
 export default {
     components:{

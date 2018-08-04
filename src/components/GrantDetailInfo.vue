@@ -168,7 +168,7 @@ export default {
    
         display: inline-block;
         vertical-align: top;
-        margin-top: 20px;
+        margin-top: 14px;
     }
     .sub_info>div{
         display: inline-block;

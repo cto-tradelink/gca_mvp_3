@@ -56,10 +56,10 @@
     </div>
 </template>
 <script>
-import Header from "./common/Header.vue"
-import LeftNavi from "./common/LeftNavi.vue"
+import Header from "./Common/Header.vue"
+import LeftNavi from "./Common/LeftNavi.vue"
 import GrantCompleteContent from "../PreGrantDetail.vue"
-import BottomControl from "./common/BottomControl.vue"
+import BottomControl from "./Common/BottomControl.vue"
 export default {
 
 methods:{
