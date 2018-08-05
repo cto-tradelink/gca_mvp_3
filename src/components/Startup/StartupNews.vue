@@ -305,7 +305,7 @@ export default {
                     console.log(res)
                     console.log("qwee")
                     console.log(vue_obj)
-                    vue_obj.startup = res 
+                    vue_obj.st = res 
                 },
             })
             },100)

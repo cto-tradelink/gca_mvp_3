@@ -7,7 +7,7 @@
                 <div class="service_text" v-html='s.intro'></div>
                 <div class="hr"></div>
                 <div class="category_text" v-html='s.category'></div>
-                <div class="file_show" v-if="s.file_name"><img src="/static/img/clip.png" style="width: 14px; height: 18px; margin-top:11px; margin-left:6px; ">
+                   <div class="file_show" v-if="s.file_name" v-on:click="down(baseURI+'/'+s.file)"><img src="/static/img/clip.png" style="width: 14px; height: 18px; margin-top:11px; margin-left:6px; ">
                     <span>{{s.file_name}}</span><img style="" src="/static/img/d.png" style="float:right; margin-top:10px;width:24px; height:24px;">
                     <div style="clear:both"></div>
                 </div>
@@ -78,7 +78,9 @@ export default {
 
     }
     ,    methods:{
-
+  down:function(e){
+            window.open(e)
+        },
         modyfy_info:function(){
                 console.log("here21")
                 $("#service_product_pane").addClass("hidden")

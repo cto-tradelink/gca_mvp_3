@@ -10,7 +10,7 @@
                 <div class="sub_comp"><i class="fas fa-fire"></i>{{int.comp}}:1</div>
                 
                 <div class="sub_d_day"><i class="far fa-clock"></i>{{int.start ,int.date | d_day_calc_short_2 }}</div>
-                <div class="sub_agency">경기도 콘텐츠 진흥원</div>                
+                <div class="sub_agency">경기 콘텐츠 진흥원</div>                
             </div>
         </div>
         <div class="btn_con">
