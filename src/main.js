@@ -28,11 +28,7 @@ Vue.prototype.$http.defaults.xsrfHeaderName = 'X-CSRFToken';
 Vue.prototype.utils = utils
 
 
-<<<<<<< HEAD
 //Vue.prototype. = "http://127.0.0.1:890"
-=======
-//Vue.prototype.baseURI = "http://127.0.0.1:890"
->>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
 Vue.prototype.HOST = "http://gconnect.kr"
 
 /* eslint-disable no-new */
