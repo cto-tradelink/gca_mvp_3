@@ -3,11 +3,11 @@
         <div id="service_product_pane" style="position:relative">
             <div class="servive_show_seg" v-for="s in startup.service">
                 <div class="serive_show_ttl" >{{s.name}}</div>
-                <div class="service_img_con"><img :src="baseURI+'/'+s.img" style="max-width:534px;max-height:274px;"></div>
+                <div class="service_img_con"><img :src="+'/'+s.img" style="max-width:534px;max-height:274px;"></div>
                 <div class="service_text" v-html='s.intro'></div>
                 <div class="hr"></div>
                 <div class="category_text" v-html='s.category'></div>
-                <div class="file_show" v-if="s.file_name"><img src="/static/img/clip.png" style="width: 14px; height: 18px; margin-top:11px; margin-left:6px; ">
+                   <div class="file_show" v-if="s.file_name" v-on:click="down(+'/'+s.file)"><img src="/static/img/clip.png" style="width: 14px; height: 18px; margin-top:11px; margin-left:6px; ">
                     <span>{{s.file_name}}</span><img style="" src="/static/img/d.png" style="float:right; margin-top:10px;width:24px; height:24px;">
                     <div style="clear:both"></div>
                 </div>
@@ -78,7 +78,9 @@ export default {
 
     }
     ,    methods:{
-
+  down:function(e){
+            window.open(e)
+        },
         modyfy_info:function(){
                 console.log("here21")
                 $("#service_product_pane").addClass("hidden")
@@ -115,7 +117,7 @@ export default {
                     "service_id":$(e.path[0]).attr("data-id")
                 }
                 $.ajax({
-                    url:this.baseURI + "/vue_remove_service_product/",
+                    url: "/vue_remove_service_product/",
                     type:"post",
                     data:data,
                     success:function(res){
@@ -150,7 +152,7 @@ export default {
            
             formData.append('json_data', JSON.stringify(this.$props.startup));    
             console.log(formData)
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }

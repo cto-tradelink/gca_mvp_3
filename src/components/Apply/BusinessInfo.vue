@@ -16,23 +16,23 @@
             <tr>
                 <td id="f_col" class="col_name" style="height:50px;">
                      <div>
-                        <div></div>
+                       
                         기본장르
                     </div>
                 </td>
                 <td id="base" style="min-height:80px;">
-                  
+                    <span class="filter_re" v-for="f in sel_tag_0">{{f}}</span> 
                 </td>
             </tr>
             <tr>
                 <td class="col_name" style="height:50px;">
                     <div>
-                        <div></div>
+                    
                         특수장르
                     </div>                    
                 </td>
                 <td id="special">
-                    
+                      <span class=" filter_re" v-for="f in sel_tag_1">{{f}}</span> 
                 </td>
             </tr>           
             
@@ -44,15 +44,15 @@
             <div id="wr_con_3">
                 <table>
                     <tr>
-                        <td style="opacity:0.8; font-size:17px; color:#1a2f53">사업(서비스) 카테고리</td>
+                        <td style="     vertical-align: initial;   padding-top: 10px; opacity:0.8; font-size:17px; color:#1a2f53">사업(서비스) 카테고리</td>
                         <td><input type="text" v-model="startup.service_category" class="input_normal" placeholder="입력하세요" style="margin-bottom:16px;"></td>
                     </tr>
                     <tr>
-                        <td style="opacity:0.8; font-size:17px; color:#1a2f53">사업(서비스) 명</td>
+                        <td style=" vertical-align: initial;   padding-top: 10px;opacity:0.8; font-size:17px; color:#1a2f53">사업(서비스) 명</td>
                         <td><input type="text" v-model="startup.service_name"  class="input_normal" style="margin-bottom:16px;"></td>
                     </tr>
                     <tr>
-                        <td style="  opacity:0.8; font-size:17px; color:#1a2f53; vertical-align: top; padding-top: 17px;">사업(서비스) 소개<br>
+                        <td style="  vertical-align: initial;   padding-top: 10px; opacity:0.8; font-size:17px; color:#1a2f53; vertical-align: top; padding-top: 17px;">사업(서비스) 소개<br>
                             <span class="text_num">최대 1000자 내외</span>
                         </td>
                         <td><textarea  v-model="startup.service_intro" placeholder="회사 소개글을 입력하세요." ></textarea></td>
@@ -61,33 +61,37 @@
             </div>
 
         </div>
-       <div id="filter_popup" style="width:936px;position:fixed; top:200px; left:50%; margin-left:-468px;background-color:#fff">    
+            <div id="back_layer">           
+        </div>
+
+       <div id="filter_popup" class="hidden" style="z-index:9999;width:936px;position:fixed; top:200px; left:50%; margin-left:-468px;background-color:#fff">    
         <div id="filter_panel">
             <div id="filter_panel_hd" style="width:100%; height:40px;line-height:40px; background-color: #e7edfc;">
-                <span style="display:inline-block;line-height:40px;margin-left:16px;font-size:12px;">필터선택</span></div>
+                <span style="display:inline-block;line-height:40px;margin-left:16px;font-size:12px;">필터선택</span>
+                <span id="x_btn" style="float:right; margin-right:10px;cursor:pointer">X</span></div>
         <table style="border-collapse:collapse; width:890px">
             <tr>
-                <td id="f_col" class="col_name" style="height:121px;">
+                <td id="f_col" class="col_name sel_0" style="height:121px; padding-left: 58px;  padding-top: 18px;">
                      <div>
                         <div></div>
                         기본장르
                     </div><br>                
-                    <span class="filter" v-for="t in filter_table_item.base">{{t}}</span>
+                    <span class="filter filter_up" v-for="t in filter_table_item.base">{{t}}</span>
                 </td>
             </tr>
             <tr>
-                <td class="col_name" style="height:135px;">
+                <td class="col_name" style="height:135px;padding-left: 58px; padding-top: 18px;">
                     <div>
                         <div></div>
                         영역
                     </div>                                 
                     <ul id="f_li">
-                        <li><span class="filter_ttl">창작</span> <span class="filter"  v-for="t in filter_table_item.create">{{t}}</span></li>
-                        <li><span class="filter_ttl">IT 관련</span> <span class="filter" v-for="t in filter_table_item.it">{{t}}</span></li>
-                        <li><span class="filter_ttl">창업</span> <span class="filter" v-for="t in filter_table_item.startup">{{t}}</span></li>
-                        <li><span class="filter_ttl">제조/융합</span> <span class="filter" v-for="t in filter_table_item.manufacture">{{t}}</span></li>
-                        <li  style="clear:left"><span class="filter_ttl">신규산업</span> <span class="filter" v-for="t in filter_table_item.new">{{t}}</span></li>
-                        <li><span class="filter_ttl">기타</span> <span class="filter" v-for="t in filter_table_item.etc">{{t}}</span></li>
+                        <li><span class="filter_ttl">창작</span> <span class="filter filter_do"  v-for="t in filter_table_item.create">{{t}}</span></li>
+                        <li><span class="filter_ttl">IT 관련</span> <span class="filter filter_do" v-for="t in filter_table_item.it">{{t}}</span></li>
+                        <li><span class="filter_ttl">창업</span> <span class="filter filter_do" v-for="t in filter_table_item.startup">{{t}}</span></li>
+                        <li><span class="filter_ttl">제조/융합</span> <span class="filter filter_do" v-for="t in filter_table_item.manufacture">{{t}}</span></li>
+                        <li  style="clear:left"><span class="filter_ttl">신규산업</span> <span class="filter filter_do" v-for="t in filter_table_item.new">{{t}}</span></li>
+                        <li><span class="filter_ttl">기타</span> <span class="filter filter_do" v-for="t in filter_table_item.etc">{{t}}</span></li>
                     </ul>
                 </td>
             </tr>
@@ -108,6 +112,8 @@ export default {
   },
     data:function(){
         return{
+              sel_tag_1:[],
+              sel_tag_0:[],
               filter_table_item:{
                 "base":["만화","출판","게임","애니메이션","방송","공연","광고","캐릭터","지식정보","콘텐츠 솔루션"],
                 "create":["일러스트","전문디자인","디자인","콘텐츠기획"],
@@ -137,21 +143,57 @@ export default {
                 
             })
 
+            $(document).on("click","#add_genre", function(){
+                $("#filter_popup").removeClass("hidden")
+                 $("#back_layer").removeClass("hidden")
+                $("#back_layer").css("position","fixed")                
+                $("#back_layer").css("width",$(window).width())
+                $("#back_layer").css("height",$(window).height())
+                $("#back_layer").css("top","0")
+                $("#back_layer").css("left","0")
+            })
 
-              vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+            $(document).on("click","#x_btn", function(){
+                $("#filter_popup").addClass("hidden")
+                 $("#back_layer").addClass("hidden")
+           
+            })
+
+
+              vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result)
                    vue_obj.$props.startup = result.data
                 for(var k =0 ; k < vue_obj.$props.startup.tag.length; k++ ){
                     $(".filter:contains("+vue_obj.$props.startup.tag[k]+")").addClass("on")
+                    if($(".filter:contains("+vue_obj.$props.startup.tag[k]+")").parent().hasClass("sel_0")){
+                          vue_obj.sel_tag_0.push(vue_obj.$props.startup.tag[k])
+                    }else{
+                          vue_obj.sel_tag_1.push(vue_obj.$props.startup.tag[k])
+                    }
                 }
             })
-                $(document).off("click",".filter")
-                $(document).on("click",".filter",function(){                               
+                $(document).off("click",".filter_up")
+                $(document).on("click",".filter_up",function(){                               
+                    
                     if($(this).hasClass("on")){                     
                         $(this).removeClass("on")
+                        vue_obj.sel_tag_0.splice( vue_obj.sel_tag_0.indexOf($(this).text().trim()),1)
                     }else{
                         $(this).addClass("on")
+                        vue_obj.sel_tag_0.push($(this).text().trim())
+                    }                    
+                })
+
+                $(document).off("click",".filter_do")
+                $(document).on("click",".filter_do",function(){                               
+                    
+                    if($(this).hasClass("on")){                     
+                        $(this).removeClass("on")
+                        vue_obj.sel_tag_1.splice( vue_obj.sel_tag_1.indexOf($(this).text().trim()),1)
+                    }else{
+                        $(this).addClass("on")
+                        vue_obj.sel_tag_1.push($(this).text().trim())
                     }                    
                 })
 
@@ -162,7 +204,7 @@ export default {
                     }// 태그 리스트 회사 정보에 저장
                     var formData = new FormData();
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -179,14 +221,14 @@ export default {
                  if(result == true){
                       var formData = new FormData();
                         formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_startup_with_application_2/`,formData)
+                        vue_obj.$http.post(`/vue_update_startup_with_application_2/`,formData)
                         .then((result) => {            
                             console.log(result)
                         })
                 }                
                 var formData = new FormData();
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -199,7 +241,7 @@ export default {
                       if(result == true){
                      var formData = new FormData();
                         formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_startup_with_application_2/`, formData)
+                        vue_obj.$http.post(`/vue_update_startup_with_application_2/`, formData)
                         .then((result) => {
                             console.log(result)
                         })
@@ -209,7 +251,7 @@ export default {
 
                      var formData = new FormData();
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -236,14 +278,23 @@ export default {
     
 }
 .filter{
-    height: 24px;
-    opacity: 0.9;
+      margin-right: 6px;
+    cursor: pointer;
+    border-radius: 100px;
+    padding-left: 26px;
+    padding-right: 26px;
+    padding-top:11px;
+    padding-bottom:11px;
+    display: inline-block;
+    background-color: #f5f8ff;
+    height: 18px;
+    line-height: 18px;
+    opacity: 0.7;
     font-size: 14px;
-    font-weight: normal;
-    margin-right: 6px;
-    background-color: #ffffff;
-    padding:13px 27px;; 
-    border-radius: 40px;
+    letter-spacing: -0.1px;
+    text-align: center;
+    color: #1a2a53;
+    margin-bottom:12px;
 }
 .filter{
     display: inline-block;
@@ -375,7 +426,7 @@ tr>td:nth-child(1){
     width: 106px;
     font-size: 14px;
   color: #7697ab;
-  line-height: 35px;
+  line-height: 62px;
 }
 .filter_ul{
     display: inline-block;
@@ -397,10 +448,31 @@ tr>td:nth-child(1){
   cursor: pointer;
 }
 .filter:hover, .filter.on{
-      font-size: 14px;
+  font-size: 14px;
   font-weight: bold;
-  color: #1b66f4!important;
+  background-color: #1b66f4!important;
+  color:#fff;
   opacity: 1!important;
+}
+.filter_re{
+        margin-top: 11px;
+      margin-right: 6px;
+    cursor: pointer;
+    border-radius: 100px;
+    padding-left: 26px;
+    padding-right: 26px;
+    padding-top:11px;
+    padding-bottom:11px;
+    display: inline-block;
+    background-color: #f5f8ff;
+    height: 18px;
+    line-height: 18px;
+    opacity: 0.7;
+    font-size: 14px;
+    letter-spacing: -0.1px;
+    text-align: center;
+    color: #1a2a53;
+    margin-bottom:12px;
 }
 
 .seg_title{

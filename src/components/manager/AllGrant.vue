@@ -30,7 +30,7 @@
                 <li v-on:click="sort('apply_num')"  class="ap sort_li">지원기업수 순</li>
             </ul>
         </div>
-        <ApplicationManager v-for="s in show_set" :s="s" :btn="btn"></ApplicationManager>
+        <ApplicationManager v-for="s in show_set" :s="s" :btn="btn" :pro="pro"></ApplicationManager>
     </div>
     </div>
 </template>
@@ -64,6 +64,7 @@ export default {
                    this.show_set = this.data.writing_set.slice()
                    this.origin_set = this.data.writing_set.slice()
                    this.btn = "계속 쓰기"
+                   this.pro ="wait"
                 }
                 catch(e){
                     console.log(e)            
@@ -72,8 +73,9 @@ export default {
             if(num==1){
                 try{
                    this.show_set = this.data.waiting_set.slice()
-                       this.origin_set =  this.data.waiting_set.slice()
+                   this.origin_set =  this.data.waiting_set.slice()
                    this.btn = "승인 대기중"
+                   this.pro ="submitted"
                 }
                 catch(e){
                     console.log(e)   
@@ -82,8 +84,9 @@ export default {
             if(num==2){
                 try{
                    this.show_set = this.data.ing_set.slice()
-                      this.origin_set =   this.data.ing_set.slice()
+                   this.origin_set =   this.data.ing_set.slice()
                    this.btn = "공고중"
+                    this.pro ="open"
                 }
                 catch(e){
                     console.log(e)   
@@ -92,8 +95,9 @@ export default {
             if(num==3){
                 try{
                    this.show_set = this.data.due_set.slice()
-                      this.origin_set = this.data.due_set.slice()
+                   this.origin_set = this.data.due_set.slice()
                    this.btn = "모집종료"
+                  this.pro ="open"
                 }
                 catch(e){
                     console.log(e)   
@@ -102,8 +106,9 @@ export default {
             if(num==4){
                 try{
                    this.show_set = this.data.comp_set.slice()
-                    this.origin_set = this.data.comp_set.slice()
+                   this.origin_set = this.data.comp_set.slice()
                    this.btn = "공고종료"
+                 this.pro ="open"
                 }
                 catch(e){
                     console.log(e)   
@@ -181,7 +186,7 @@ export default {
             })
             $("#gca_content").css("background-color","#f4f7fa")
             var data={}
-            vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_grant_info/`, data)
+            vue_obj.$http.get(`/vue_get_grant_info/`, data)
                 .then((result) => {          
                   console.log(result)  
                  vue_obj.data = result.data

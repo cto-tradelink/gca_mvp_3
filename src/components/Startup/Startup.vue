@@ -41,7 +41,7 @@ export default {
         $(document).ready(function(){
                    $("li.menu_top").removeClass("menu_on")
               $("li.menu_top:eq(1)").addClass("menu_on")
-        vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_startup_detail/?id=`+vue_obj.$route.params.id)
+        vue_obj.$http.get(`/vue_get_startup_detail/?id=`+vue_obj.$route.params.id)
         .then((result) => {            
             vue_obj.startup = result.data        
             })    

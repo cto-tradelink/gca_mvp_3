@@ -76,7 +76,7 @@ function save(obj){
                 grant_info["id"]=obj.$route.params.id
                 grant_info["file_list"]= file_arr
                 formData.append('json_data', JSON.stringify(grant_info));    
-                obj.$http.post(`${obj.baseURI}/vue_set_grant_5/`, formData)
+                obj.$http.post(`/vue_set_grant_5/`, formData)
 }
 
 
@@ -149,7 +149,7 @@ export default {
         $(document).ready(function(){
 
                 $.ajax({
-                    url:vue_obj.baseURI+"/vue_get_grant_information?id="+vue_obj.$route.params.id,
+                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
                     success:function(res){
                         vue_obj.grant_info = res
                         for (var k=0; k < vue_obj.grant_info.meta_file_info.length; k++){
@@ -187,7 +187,7 @@ export default {
                 grant_info["id"]=vue_obj.$route.params.id
                 grant_info["file_list"]= file_arr
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_5/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_5/`, formData)
                 .then((result) => {            
                         vue_obj.$router.push("/manager/make/grant/"+ vue_obj.$route.params.id +"/etc")
                 })
@@ -205,7 +205,7 @@ export default {
                 grant_info["id"]=vue_obj.$route.params.id
                 grant_info["file_list"]= file_arr
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_5/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_5/`, formData)
                 .then((result) => {            
                        alert("저장되었습니다.")
                 })

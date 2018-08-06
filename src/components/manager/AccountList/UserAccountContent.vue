@@ -281,7 +281,7 @@ export default {
     },
     mounted:function(){
                 var data={}
-                this.$http.get(`${this.baseURI}/vue_get_startup_account/`, data)
+                this.$http.get(`/vue_get_startup_account/`, data)
                 .then((result) => {            
                     this.data = result.data
                     this.startup = result.data.startup.slice(0,10)

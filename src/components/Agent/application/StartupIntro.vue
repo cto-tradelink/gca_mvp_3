@@ -48,7 +48,7 @@ export default {
                 $(document).on("click","#apply_next", function () {
                     var formData = new FormData();
                     formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                    vue_obj.$http.post(`/vue_update_application/`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -58,7 +58,7 @@ export default {
                 $(document).on("click","#apply_prev", function () {
                     var formData = new FormData();
                     formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                    vue_obj.$http.post(`/vue_update_application/`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

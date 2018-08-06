@@ -46,7 +46,7 @@ export default {
         var vue_obj = this
         var seg = $(".wr_con_1.seg").detach()
         $(document).ready(function(){
-            vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+            vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
                 .then((result) => {            
                     console.log(result);
                     vue_obj.$props.startup = result.data
@@ -65,7 +65,7 @@ export default {
                 formData.append("file_8", file8.files[0]);
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {'Content-Type': 'multipart/form-data' }
                 })
                     vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/application")
@@ -82,7 +82,7 @@ export default {
                     formData.append("file_8", file8.files[0]);
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -94,7 +94,7 @@ export default {
                 var formData = new FormData();
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

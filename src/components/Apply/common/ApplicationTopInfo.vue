@@ -22,7 +22,7 @@ export default {
         }
     },
     mounted:function(){
-            this.$http.get(`${this.baseURI}/vue_get_grant_ttl/?&gr=`+this.$route.params.id)
+            this.$http.get(`/vue_get_grant_ttl/?&gr=`+this.$route.params.id)
             .then((result) => {            
                    console.log(result)
                    console.log(result.data)

@@ -283,7 +283,7 @@ $(document).ready(function(){
     $("#static_content").css("margin-left","0px")
     
 
-    vue_obj.$http.get(`${vue_obj.baseURI}/get_static_info/?id=`+86)
+    vue_obj.$http.get(`/get_static_info/?id=`+86)
         .then((result) => {
                 
                 vue_obj.base_info = result.data
@@ -397,7 +397,7 @@ $(document).ready(function(){
     })
 
 
- vue_obj.$http.get(`${vue_obj.baseURI}/get_grant_static_detail/?id=`+86+"&sb_id="+vue_obj.$route.params.id)
+ vue_obj.$http.get(`/get_grant_static_detail/?id=`+86+"&sb_id="+vue_obj.$route.params.id)
         .then((result) => {
             console.log(result)
              $("#grant_ttl").text(result.data.title);
@@ -434,7 +434,7 @@ $(document).ready(function(){
     $(document).off("change","#select_zone>.basic")
     $(document).on("change","#select_zone>.basic",function(){
         
-    vue_obj.$http.get(`${vue_obj.baseURI}/get_grant_static_detail/?id=`+86+"&sb_id="+$(this).find(":selected").attr("data-id"))
+    vue_obj.$http.get(`/get_grant_static_detail/?id=`+86+"&sb_id="+$(this).find(":selected").attr("data-id"))
         .then((result) => {
             var temp_data_0 = vue_obj.base_info.current_grant_list
             var temp_data_1 = vue_obj.base_info.current_grant
@@ -465,7 +465,7 @@ $(document).ready(function(){
 
     $(document).on("click","#top_banner>div:eq(1)",function(){
         
-    vue_obj.$http.get(`${vue_obj.baseURI}/get_all_static_info/?id=`+86)
+    vue_obj.$http.get(`/get_all_static_info/?id=`+86)
         .then((result) => {
             console.log(result)
             $("#top_banner>div").removeClass("on")
@@ -495,7 +495,7 @@ $(document).ready(function(){
 
      $(document).on("click","#top_banner>div:eq(0)",function(){
         
-    vue_obj.$http.get(`${vue_obj.baseURI}/get_static_info/?id=`+86)
+    vue_obj.$http.get(`/get_static_info/?id=`+86)
         .then((result) => {
             console.log(result)
                    $("#top_banner>div").removeClass("on")

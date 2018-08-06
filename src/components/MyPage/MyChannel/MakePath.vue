@@ -111,7 +111,7 @@ export default {
             }
         })
       $.ajax({
-            url:vue_obj.baseURI+"/vue_get_lec_tag/",
+            url:"/vue_get_lec_tag/",
             type:"GET",
             success:function(res){
                 console.log(res)
@@ -128,7 +128,7 @@ export default {
                  $("#up_link").removeClass("hidden")
 
              $.ajax({
-                    url:vue_obj.baseURI+"/vue_get_course_uploaded/",
+                    url:"/vue_get_course_uploaded/",
                     type:"post",
                     data:{"id":localStorage.getItem("id")},
                     success: function(res){
@@ -245,7 +245,7 @@ export default {
             formData.append('json_data', JSON.stringify(vue_obj.clip[0]));    
             console.log(formData)
            
-            vue_obj.$http.post(`${vue_obj.baseURI}/vue_upload_path/`, formData, {
+            vue_obj.$http.post(`/vue_upload_path/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
@@ -294,7 +294,7 @@ export default {
             formData.append('json_data', JSON.stringify(vue_obj.clip[0]));    
             console.log(formData)
            
-            vue_obj.$http.post(`${vue_obj.baseURI}/vue_upload_path/`, formData, {
+            vue_obj.$http.post(`/vue_upload_path/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }

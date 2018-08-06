@@ -23,7 +23,7 @@ export default {
     }
     ,
     mounted:function(){
-        this.$http.get(`${this.baseURI}/vue_get_dashboard/`)
+        this.$http.get(`/vue_get_dashboard/`)
         .then((result) => {            
             console.log(result)
             this.dashboard_list = result.data               

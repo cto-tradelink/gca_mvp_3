@@ -20,7 +20,7 @@
         <div class="title">코스</div>
         <div class="clip_con_ch">
              <div class="clip_seg_main"  :data-url="c.entry_point" v-for="c in course_on">                
-                <img class="thumb" :src="baseURI+'/'+c.img">
+                <img class="thumb" :src="+'/'+c.img">
                 <div class="text_con">
                     <div class="seg_ttl">{{c.title}}</div>
                     <div class="seg_sub_ttl">{{c.sub}}</div>
@@ -65,7 +65,7 @@ export default {
         $(document).ready(function(){
             vue_obj.course_on = vue_obj.course.slice()
             $.ajax({
-                url:vue_obj.baseURI+"/vue_get_course_all/",
+                url:"/vue_get_course_all/",
                 success:function(res){
                     console.log(res)
                     for(var k = 0; k< res.length; k++){

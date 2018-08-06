@@ -137,7 +137,7 @@ export default {
             $(document).on("click","#apply_next", function(){
                 meta_val=[]
                 var formData = new FormData();
-                const baseURI = "http://127.0.0.1:8000"
+                const  = "http://127.0.0.1:8000"
                 var grant_info ={}
                 grant_info["id"]=vue_obj.$route.params.id
                 var supply_tag = [] 
@@ -147,7 +147,7 @@ export default {
                 grant_info["supply_tag"] = supply_tag
                 grant_info["support_detail"] = vue_obj.data
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${baseURI}/vue_set_grant_2/`, formData)
+                vue_obj.$http.post(`${}/vue_set_grant_2/`, formData)
                 .then((result) => {            
                 })    
             })

@@ -14,13 +14,21 @@ Vue.use(VueAwesomeSwiper, /* { default global options } */)
 Vue.config.productionTip = false
 Vue.config.silent = true
 
-Vue.prototype.$http=axios
+// Vue.prototype.$http=axios.create({
+//   baseURL:"http://13.209.21.165"
+// })
+
+Vue.prototype.$http=axios.create({
+  baseURL:(process.env.NODE_ENV === "production") ? "http://13.209.21.165" : "http://13.209.21.165"
+})
+
+
 Vue.prototype.$http.defaults.xsrfCookieName = 'csrftoken';
 Vue.prototype.$http.defaults.xsrfHeaderName = 'X-CSRFToken';
 Vue.prototype.utils = utils
 
-Vue.prototype.baseURI = "http://13.209.21.165"
-//Vue.prototype.baseURI = "http://127.0.0.1:890"
+
+//Vue.prototype. = "http://127.0.0.1:890"
 Vue.prototype.HOST = "http://gconnect.kr"
 
 /* eslint-disable no-new */

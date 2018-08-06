@@ -96,7 +96,7 @@
     </div>
  <div class="gr_seg">
         <div class="gr_seg_ttl">해당사업의 과거 지원현황</div>
-        <svg id="past_apply" width="1016" height="200"></svg>
+        <div id="past_apply" width="1016" height="200">-데이터 없음</div>
         
     </div>
     </div>    
@@ -113,50 +113,59 @@ export default {
     },
     mounted:
         function(){
-
+var vue_obj=this
 
 function log(sel , message){
     console.log(sel)
   
     console.log(message)
 }
-
+ var data_0 ;
+    var x;
+    var y;
+    var parseTime
+    var valueline;
+$.ajax({
+    url:"/get_sb_hit_log/?id="+this.$route.params.id,
+    success:function(res){
+        console.log(res)
             // Define margins, dimensions, and some line colors
-var margin = {top: 40, right: 120, bottom: 50, left: 40};
-var width = 1016 - margin.left - margin.right;
-var height = 200 - margin.top - margin.bottom;
-var data_0 ;
+        var margin = {top: 40, right: 120, bottom: 50, left: 40};
+        var width = 1016 - margin.left - margin.right;
+        var height = 200 - margin.top - margin.bottom;
+       
 // Define the scales and tell D3 how to draw the line
-var parseTime = d3.timeParse("%d-%b-%y");
+        parseTime = d3.timeParse("%Y-%m-%d");
+        // set the ranges
+         x = d3.scaleTime().range([0, width]);
+         y = d3.scaleLinear().range([height, 0]);
 
-// set the ranges
-var x = d3.scaleTime().range([0, width]);
-var y = d3.scaleLinear().range([height, 0]);
+        // define the line
+        valueline = d3.line()
+            .x(function(d) { return x(d.date); })
+            .y(function(d) { return y(d.close); });
 
-// define the line
-var valueline = d3.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.close); });
+        // append the svg obgect to the body of the page
+        // appends a 'group' element to 'svg'
+        // moves the 'group' element to the top left margin
+        var svg = d3.select("#realtime_apply")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
 
-// append the svg obgect to the body of the page
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
-var svg = d3.select("#realtime_apply")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+        // Get the data
+        var tipBox_1;
+        var tooltipLine_1;
 
-// Get the data
-var tipBox_1;
-var tooltipLine_1;
-d3.csv("/static/test.json", function(error, data) {
+
+d3.json("/get_sb_hit_log/?id="+vue_obj.$route.params.id, function(error, data) {
   if (error) throw error;
-
   // format the data
   data.forEach(function(d) {
       d.date = parseTime(d.date);
+     
       d.close = +d.close;
   });
   data_0=data
@@ -168,8 +177,7 @@ d3.csv("/static/test.json", function(error, data) {
   svg.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x)
-              .tickFormat(d3.timeFormat("%Y-%m-%d")))
+      .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")).ticks(data.length))
       .selectAll("text")	
         .style("text-anchor", "end")
         .attr("font-size","12px")
@@ -199,6 +207,11 @@ d3.csv("/static/test.json", function(error, data) {
     .on('mouseout', removeTooltip_1);
 
 });
+    }
+})
+
+
+
 var tooltip_1 = d3.select('#tooltip_1');
 function removeTooltip_1(){}
 function drawTooltip_1() {

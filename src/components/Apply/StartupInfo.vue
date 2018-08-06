@@ -280,7 +280,7 @@ export default {
            $("#country").countrySelect();
 
 
-        vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_grant_optional_data/?gr=`+vue_obj.$route.params.id)
+        vue_obj.$http.get(`/vue_get_grant_optional_data/?gr=`+vue_obj.$route.params.id)
             .then((result)=>{
                 console.log(result)
                 var target_arr = result.split(",")
@@ -293,7 +293,7 @@ export default {
          $(".niceCountryInputSelector").each(function(i,e){
                 new NiceCountryInput(e).init();
             });
-        vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+        vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result);
                    vue_obj.$props.startup = result.data
@@ -326,7 +326,7 @@ export default {
                        
 
                         formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_startup_with_application_3/`, formData)
+                        vue_obj.$http.post(`/vue_update_startup_with_application_3/`, formData)
                         .then((result) => {
                             console.log(result)
                         })
@@ -335,7 +335,7 @@ export default {
               
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -363,14 +363,14 @@ export default {
                 if(result == true){
                   
                         formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_startup_with_application_3/`, formData)
+                        vue_obj.$http.post(`/vue_update_startup_with_application_3/`, formData)
                         .then((result) => {
                             console.log(result)
                         })
                 }
          
                      
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -392,7 +392,7 @@ export default {
                         formData.append("file_4", file4.files[0]);
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

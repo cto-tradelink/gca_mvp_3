@@ -140,7 +140,7 @@ methods:{
             }
         })
         $.ajax({
-            url:vue_obj.baseURI+"/vue_get_lec_tag/",
+            url:"/vue_get_lec_tag/",
             type:"GET",
             success:function(res){
                 console.log(res)
@@ -177,7 +177,7 @@ methods:{
                  $("#up_link").removeClass("hidden")
                  console.log("here")
                 $.ajax({
-                    url:vue_obj.baseURI+"/vue_get_clip_uploaded/",
+                    url:"/vue_get_clip_uploaded/",
                     type:"post",
                     data:{"id":localStorage.getItem("id")},
                     success: function(res){
@@ -259,7 +259,7 @@ methods:{
             formData.append('json_data', JSON.stringify(vue_obj.clip[0]));    
             console.log(formData)
            
-            vue_obj.$http.post(`${vue_obj.baseURI}/vue_upload_course/`, formData, {
+            vue_obj.$http.post(`/vue_upload_course/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
@@ -311,7 +311,7 @@ methods:{
             formData.append('json_data', JSON.stringify(vue_obj.clip[0]));    
             console.log(formData)
            
-            vue_obj.$http.post(`${vue_obj.baseURI}/vue_upload_course/`, formData, {
+            vue_obj.$http.post(`/vue_upload_course/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }

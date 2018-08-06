@@ -1,11 +1,11 @@
 <template>
     <div id="home_main">
-        <Header></Header>
+        <app-header></app-header>
         <div id="intro_register" style="width:100%; height:347px;background-image:url('/static/img/group-6.jpg')" >
             <div id="intro_reg_con" style="width:1224px;height: 347px; margin:0px auto;">
                 <div class="big" style="">컨텐츠 스타트업에게 필요한<br >지원사업, 기업정보, 교육을 한 곳에 모았다.</div>
                 <div class="small">지원사업에 간단하게 지원하고 쉽게 관리해보세요.</div>
-                <div id="reg_btn">가입하기</div>
+                <div id="reg_btn" :click="go_login" v-if="is_not_logined">가입하기</div>
             </div>
             
         </div>
@@ -15,22 +15,21 @@
                 <div id="grant_ttl" style="color:#fff; margin-bottom:18px">G-CONNECT가 추천하는 지원사업</div>
                 <div id="more_grant" style="color:#fff"><router-link to="/grant">더보기<img  style="float:right; margin-left:5px;"  src="/static/img/pluse_w.png"></router-link></div>
                 <div id="grant_list" style="padding-top:30px">
-                    <div   class="gr_list" v-for="d in grant_list" style="float:left;">
-                        <CardWithPoster v-if="d.img != undefined"  v-bind:item="d"></CardWithPoster>
-                        <CardWithoutPoster  v-if="d.img == undefined" v-bind:item="d"></CardWithoutPoster>
+                    <div class="gr_list" :key="index" v-if="grantList.length > 0" v-for="(d, index) in grantList"   style="float:left;">
+                        <CardWithPoster v-if="d.img" v-bind:item="d"></CardWithPoster>
+                        <CardWithoutPoster  v-else v-bind:item="d"></CardWithoutPoster>
                     </div>                    
                 </div>
                    <div style="line-height:24px;color:#fff"><img style="float:left; margin-right:8px; margin-right:5px;" src="/static/img/pluse.png">
                    <span style="float:left; display:inline-block"> 필터 등록을 통해 나에게 맞는 지원사업을 추천받아 보세요.</span></div>
-                   <div id="add_filter_btn" class="add_filter_btn">필터등록하러가기 <img style="margin-left:16px;" src="/static/img/arrow_R.png"></div>
-               
+                   <div id="add_filter_btn" :click="go_filter_add" class="add_filter_btn">필터등록하러가기 <img style="margin-left:16px;" src="/static/img/arrow_R.png"></div>
             </div>    
         </div>
         <div id="startup" style="height:430px;">
             <div id="startup_ttl">스타트업</div>
             <div id="more_startup"><router-link to="/startup_list">더보기<img  style="float:right; margin-left:5px;margin-top:5px;"  src="/static/img/pluse4.png"></router-link></div>
             <div id="startup_list">
-                <StartupCard style="border: solid 1px #e7edfc;width:358px;" :startup="startup" v-for="startup in startup_list"></StartupCard>
+                <StartupCard style="border: solid 1px #e7edfc;width:358px;" :startup="startup" :key="index" v-for="(startup,index) in startupList"></StartupCard>
             </div>
              <div style="line-height:24px;color:#fff"><img style="float:left; margin-right:8px; margin-right:5px;" src="/static/img/pluse.png">
                    <span style="float:left; display:inline-block; color:#1b49f4"> 매번 제출해야하는 회사 기본정보, 회사 소개 매번 지원 할 때마다 쓰는거 귀찮지않나요?</span></div>
@@ -111,49 +110,78 @@
 </template>
 
 <script>
-import Header from "./Common/Header.vue"
-import CardWithPoster from './Common/CardWithPoster.vue';
-import CardWithoutPoster from './Common/CardWithoutPoster.vue';
-import StartupCard from "./Startup/StartupCard.vue"
+import AppHeader from "@/components/Common/Header.vue"
+import CardWithPoster from "@/components/Common/CardWithPoster.vue"
+import CardWithoutPoster from "@/components/Common/CardWithoutPoster.vue"
+import StartupCard from "@/components/Startup/StartupCard.vue"
+import { throws } from 'assert';
 
-
-
-
-var masonry;
+var masonry
 export default {
-
-    created:function(){
-        this.is_not_logined()
+    created(){
+        this.getGrantList()
+        this.getStartupList()
     },
     components: {
-        'Header': Header,
+        AppHeader,
         CardWithPoster,
         CardWithoutPoster,
         StartupCard,
-    },
-    computed:{
-                
-    },
+    },   
     methods: {
-          is_not_logined:function(){
-             if( localStorage.getItem("login") == "true" ){
-                $("#reg_btn").addClass("hidden")
-             }
+        go_filter_add:function(){
+            if (localStorage.getItem("user") == "u") {
+                    this.$router.push("/mypage/startup?filter=on")
+                } else {
+                    if (localStorage.getItem("user") == "m" || localStorage.getItem("user") == "ma") {
+                        alert("매니저나 기관관리자는 필터 등록을 할 수 없습니다.")
+                    } else {
+                        alert("로그인을 진행해주세요.")
+                    }
+                }
         },
+        go_login:function(){
+            this.$router.push("/login")
+        },
+        getStartupList:function(){
+            this.$http.get(`/vue_get_startup_list_sample/`)
+            .then(res=>{                
+                this.startupList= res.data
+            })
+        },
+        getPathList:function(){
+            this.$http.post(`/vue_sample_path_path/`, {   "id": localStorage.getItem("id") }).then((res)=>{
+                this.pathList = res.data.slice()
+            })
+        },
+        getCourseList:function(){
+            this.$http.post(`/vue_sample_course_path/`, {   "id": localStorage.getItem("id") }).then((res)=>{
+                this.courseList = res.data.slice()
+            })
+        },
+        getClipList:function(){
+            this.$http.post(`/vue_sample_list_clip/`, {   "id": localStorage.getItem("id") }).then((res)=>{
+                this.clipList = res.data.slice()
+            })
+        },
+        getGrantList:function(){
+            this.$http.get(`/get_home_info/`)
+            .then(res=>{
+                console.log(res.data)
+                this.grantList = res.data.sb_set.slice(0,3)
+            })
+        },       
         test() {
-            console.log("dhdhdh")
         },
         go_data_url(url) {
-            console.log("this")
-            this.utils.go(url, this)
+            this.$router.push(url)
         }
     },
-
     data: function() {
-
-        return {
-            startup_list: [],
-            grant_list: [],
+       return {
+            startupList:[],
+            grantList:[],
+            clipList:[],
             clip_list: [],
             course_lis: [],
             path_list: [],
@@ -262,104 +290,21 @@ export default {
                 },
             ]
         }
-
     },
     mounted: function() {
-        // 메인화면 이니시에이션
-
-        this.is_not_logined()
+        // 메인화면 이니시에이션      
         var vue_obj = this
-        $(document).ready(function() {
-            vue_obj.utils.check_fav(vue_obj)
-            $(document).on('click', "#reg_btn", function() {
-                vue_obj.$router.push("/login")
-            })
-            $(document).on("click", "#add_filter_btn", function() {
-                //비 로그인 유저 는 로그인 알람
-                if (localStorage.getItem("user") == "u") {
-                    vue_obj.$router.push("/mypage/startup?filter=on")
-                } else {
-                    if (localStorage.getItem("user") == "m" || localStorage.getItem("user") == "ma") {
-                        alert("매니저나 기관관리자는 필터 등록을 할 수 없습니다.")
-                    } else {
-                        alert("로그인을 진행해주세요.")
-                    }
-                }
-            })
-            vue_obj.clip_on = vue_obj.clip.slice()
-            vue_obj.course_on = vue_obj.course.slice()
-            vue_obj.path_on = vue_obj.path.slice()
-            $.ajax({
-                url: vue_obj.baseURI + "/get_home_info/",
-                type: "post",
-                data: {
-                    "id": localStorage.getItem("id")
-                },
-                success: function(res) {
-                    vue_obj.grant_list = res.sb_set.slice(0, 3)
-                    masonry = new Macy({
-                        container: '#grant_list',
-                        trueOrder: true,
-                        columns: 3,
-                        breakAt: {
-                            3000: {
-                                margin: {
-                                    x: 24,
-                                    y: 24,
-                                },
-                                columns: 3
-                            },
-                        }
-                    });
-                }
-            })
-
-            $.ajax({
-                url: vue_obj.baseURI + "/vue_get_startup_list_sample/",
-                type: "post",
-                data: {
-                    "id": localStorage.getItem("id")
-                },
-                success: function(res) {
-                    vue_obj.startup_list = res.slice()
-                }
-            })
-
-            $.ajax({
-                url: vue_obj.baseURI + "/vue_sample_list_clip/",
-                type: "post",
-                data: {
-                    "id": localStorage.getItem("id")
-                },
-                success: function(res) {
-                    console.log(res)
-                    vue_obj.clip_list = res.slice()
-                }
-            })
-            $.ajax({
-                url: vue_obj.baseURI + "/vue_sample_course_path/",
-                type: "post",
-                data: {
-                    "id": localStorage.getItem("id")
-                },
-                success: function(res) {
-                    console.log(res)
-                    vue_obj.course_list = res.slice()
-                }
-            })
-            $.ajax({
-                url: vue_obj.baseURI + "/vue_sample_path_path/",
-                type: "post",
-                data: {
-                    "id": localStorage.getItem("id")
-                },
-                success: function(res) {
-                    console.log(res)
-                    vue_obj.path_list = res.slice()
-                }
-            })
-        })
-    }
+        vue_obj.utils.check_fav(vue_obj)
+        vue_obj.clip_on = vue_obj.clip.slice()
+        vue_obj.course_on = vue_obj.course.slice()
+        vue_obj.path_on = vue_obj.path.slice()          
+          
+    },
+    computed:{
+        is_not_logined:function(){            
+            return ( localStorage.getItem("login") == "true" )? false :true
+        },
+    },
 }
 </script>
 <style scoped>

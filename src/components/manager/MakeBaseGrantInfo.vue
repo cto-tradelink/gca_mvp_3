@@ -177,7 +177,7 @@ grant_info:{},
             if (vue_obj.$route.params.id != "new"){
                 //아이디가 있다면 어디까지 썻는지에 대한 데이터가 있을것..  
                 $.ajax({
-                    url:vue_obj.baseURI+"/vue_get_grant_information?id="+vue_obj.$route.params.id,
+                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
                     success:function(res){
                         vue_obj.grant_info = res
                     }
@@ -211,7 +211,7 @@ grant_info:{},
                 grant_info["step"] = "1"
                 
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_1/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_1/`, formData)
                 .then((result) => {  
                     console.log(result)          
                     var id= result.data.result;
@@ -244,7 +244,7 @@ grant_info:{},
                 grant_info["step"] = "1"
                 
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_1/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_1/`, formData)
                 .then((result) => {  
                     console.log(result)          
                     var id= result.data.result;
@@ -366,6 +366,7 @@ ul{
 
   #make_application_page{
         overflow-x: hidden;
+        background-color: #f4f7fa;
     }
     #application_header_bottom{
         width: 100%;

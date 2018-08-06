@@ -45,10 +45,9 @@ export default {
         }
   },
  mounted:function(){
-        var vue_obj = this
-        var seg = $(".wr_con_1.seg").detach()
+        var vue_obj = this 
         $(document).ready(function(){
-          vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+          vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result);
                    vue_obj.$props.startup = result.data
@@ -62,7 +61,7 @@ export default {
                 $(document).on("click","#apply_next", function () {
                     var formData = new FormData();
                     formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                    vue_obj.$http.post(`/vue_update_application/`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -72,7 +71,7 @@ export default {
                 $(document).on("click","#apply_prev", function () {
                     var formData = new FormData();
                     formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                    vue_obj.$http.post(`/vue_update_application/`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -83,7 +82,7 @@ export default {
                 $(document).on("click","#apply_save", function () {
                     var formData = new FormData();
                     formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                    vue_obj.$http.post(`/vue_update_application/`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

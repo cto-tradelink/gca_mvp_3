@@ -31,7 +31,7 @@ export default {
         var vue_obj = this
         $.ajax({
             method:"post",
-            url: `${vue_obj.baseURI}/vue_get_agent_dashboard/`,
+            url: `/vue_get_agent_dashboard/`,
             data: data,
             success:function(res){
                 vue_obj.dashboard_list = $.extend(true, {}, res);

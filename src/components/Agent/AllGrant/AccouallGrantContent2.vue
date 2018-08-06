@@ -58,8 +58,8 @@ export default {
         var vue_obj = this
         
         $(document).ready(function(){
-            var baseURI = "http://127.0.0.1:8000"
-                   vue_obj.$http.get(`${baseURI}/vue_get_grant_list/`)
+            var  = "http://127.0.0.1:8000"
+                   vue_obj.$http.get(`/vue_get_grant_list/`)
                 .then((result) => {        
                     console.log(result)    
                     vue_obj.data = result.data                    

@@ -2,12 +2,12 @@
 
     <div id="startup_header_con">
          <div id="startup_head_img" style="position:relative;">
-             <img id="back_img" :src="this.baseURI+ '/' + startup.back_img">
+             <img id="back_img" :src=" '/' + startup.back_img">
              <div id="modi_back" onclick="$('#img_back').click()"  class="hidden">수정</div>
          </div>
          <div id="startup_head_bottom">
              
-             <div id="st_logo"><img id="st_logo_img" :src="this.baseURI + '/' +startup.logo">
+             <div id="st_logo"><img id="st_logo_img" :src="'/' +startup.logo">
              <div id="modi_logo" onclick="$('#img_logo').click()" class="hidden">수정</div></div>
            
              <div id="startup_head_text">
@@ -41,7 +41,7 @@ export default {
             $("#modi_btn").remove()
         }
           $(document).ready(function(){
-        vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"))
+        vue_obj.$http.get(`/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"))
              .then((result) => {
              console.log("this!")
              console.log(result)
@@ -52,9 +52,9 @@ export default {
                   var data={
                   "id":localStorage.getItem("id")
               }
-              console.log(`${vue_obj.baseURI}/vue_my_interest_set/`)
+              console.log(`/vue_my_interest_set/`)
                  $.ajax({
-                        url:`${vue_obj.baseURI}/vue_my_interest_set/`,
+                        url:`/vue_my_interest_set/`,
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)
@@ -135,7 +135,7 @@ export default {
 
                                   
                 formData.append('json_data', JSON.stringify(this.startup));    
-                this.$http.post(`${this.baseURI}/vue_update_startup_detail_base/`, formData, {
+                this.$http.post(`/vue_update_startup_detail_base/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
@@ -152,7 +152,7 @@ export default {
                          "id":localStorage.getItem("id")
                      }
                      $.ajax({
-                        url:`${this.baseURI}/vue_add_interest_st/`,
+                        url:`/vue_add_interest_st/`,
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)

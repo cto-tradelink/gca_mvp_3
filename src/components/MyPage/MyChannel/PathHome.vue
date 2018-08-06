@@ -86,7 +86,7 @@ export default {
      var vue_obj = this
      $(document).ready(function(){
          $.ajax({
-             url:vue_obj.baseURI+"/vue_get_path/",
+             url:"/vue_get_path/",
              type:"post",
              data:{"id":vue_obj.$route.params.id},
              success:function(res){

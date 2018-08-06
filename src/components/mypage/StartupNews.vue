@@ -138,12 +138,12 @@ export default {
                 var data = {"id":id}
                 console.log(data)
                 formData.append('json_data', JSON.stringify(data));    
-                this.$http.post(`${this.baseURI}/vue_del_startup_news/`, formData, {
+                this.$http.post(`/vue_del_startup_news/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
                 }).then((result) => {
-                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=`+this.st.startup_id)
+                this.$http.get(`/vue_get_startup_detail/?id=`+this.st.startup_id)
                 .then((result) => {
                     console.log(result)
                     this.st = result.data
@@ -168,13 +168,13 @@ export default {
             formData.append('json_data', JSON.stringify(this.st));
                  var file1 = document.querySelector('#add_img');                    
             formData.append("file_news", file1.files[0]);
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
             })
             .then((result) => {
-                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=`+this.st.startup_id)
+                this.$http.get(`/vue_get_startup_detail/?id=`+this.st.startup_id)
                 .then((result) => {
                     this.st = result.data
                     $(".news_con:eq(0)>div>input").attr("data-id",this.startup.news[0].id )
@@ -198,13 +198,13 @@ export default {
             formData.append('json_data', JSON.stringify(this.st));            
             var file1 = document.querySelector('#add_img');                    
             formData.append("file_news", file1.files[0]);             
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
             })
             .then((result) => {
-                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=`+this.st.startup_id)
+                this.$http.get(`/vue_get_startup_detail/?id=`+this.st.startup_id)
                 .then((result) => {
                     console.log(result)
                     this.st = result.data
@@ -221,7 +221,7 @@ export default {
                     target = this.st.news[k].id    
                    
                     $.ajax({
-                        url:this.baseURI + "/vue_set_activity_like/",
+                        url: "/vue_set_activity_like/",
                         type:"POST",
                         data:{
                             id:localStorage.getItem("id"),
@@ -233,13 +233,13 @@ export default {
                     })
                      var formData = new FormData();
             formData.append('json_data', JSON.stringify(this.st));    
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
                 })
             .then((result) => {
-                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=`+this.st.startup_id)
+                this.$http.get(`/vue_get_startup_detail/?id=`+this.st.startup_id)
                 .then((result) => {
                     console.log(result)
                     this.st = result.data
@@ -264,13 +264,13 @@ export default {
                     $(e.path[0]).val("")
                      var formData = new FormData();
             formData.append('json_data', JSON.stringify(this.st));    
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
                 })
             .then((result) => {
-                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=`+this.st.startup_id)
+                this.$http.get(`/vue_get_startup_detail/?id=`+this.st.startup_id)
                 .then((result) => {
                     console.log(result)
                     this.st = result.data;
@@ -301,7 +301,7 @@ export default {
              console.log("news ready")
           
             // $.ajax({
-            //     url: `${vue_obj.baseURI}/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
+            //     url: `/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
             //     type:"get",
             //     success:function(res){
             //         console.log(res)
@@ -312,7 +312,7 @@ export default {
             // })
         setTimeout(function(){
              $.ajax({
-                url: `${vue_obj.baseURI}/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
+                url: `/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
                 type:"get",
                 success:function(res){
                     console.log(res)

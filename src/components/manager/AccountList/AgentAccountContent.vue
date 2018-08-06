@@ -181,7 +181,7 @@ export default {
         var vue_obj = this
         $.ajax({
             method:"post",
-            url:vue_obj.baseURI + "/vue_get_agent_account/",
+            url: "/vue_get_agent_account/",
             data:{
                 id:84
             },
@@ -286,7 +286,7 @@ export default {
             })
 
             $(document).on("click","#create_btn", function(){
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_get_grant_info/`, {
+                vue_obj.$http.post(`/vue_get_grant_info/`, {
                     "user":"user", // 로그인 프로세스 진행후 본인의 파라미터를 넣어야 기관 소속으로 등록됨
                     "name":$("#name").val(),                    
                     "belong_to":"GCA",

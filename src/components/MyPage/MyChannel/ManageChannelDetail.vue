@@ -72,7 +72,7 @@ export default {
                 if(btn == "path") vue_obj.$router.push("/make_path")
             } )
             $.ajax({
-                url:vue_obj.baseURI + "/vue_get_manager_lecture?id="+localStorage.getItem("id"),
+                url: "/vue_get_manager_lecture?id="+localStorage.getItem("id"),
                 type:"get",
                 success:function(res){
                     console.log(res)

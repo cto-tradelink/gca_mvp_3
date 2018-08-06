@@ -18,7 +18,7 @@ export default {
     },
     mounted:function(){
         var vue_obj = this
-        this.$http.get(`${this.baseURI}/vue_get_startup_list/`)
+        this.$http.get(`/vue_get_startup_list/`)
             .then((result) => {
                 console.log(result)
                 this.startup_list_pre = result.data
@@ -28,7 +28,7 @@ export default {
                 "id":localStorage.getItem("id")
             }          
             $.ajax({
-                url:`${this.baseURI}/vue_my_interest_set/`,
+                url:`/vue_my_interest_set/`,
                 method:"POST",
                 data:data,
                 success:function(res){
@@ -85,7 +85,7 @@ export default {
                 if($(this).find("img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 "+text+"에서 삭제하시겠습니까?")){
                         $.ajax({
-                            url:vue_obj.baseURI+url,
+                            url:url,
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
@@ -99,7 +99,7 @@ export default {
                     }
                 } else {
                     $.ajax({
-                        url:vue_obj.baseURI+"/toggle_int_clip/",
+                        url:"/toggle_int_clip/",
                         type:"post", 
                         data:{
                             "id":localStorage.getItem("id"),

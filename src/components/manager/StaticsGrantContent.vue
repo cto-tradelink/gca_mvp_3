@@ -422,7 +422,7 @@ $(document).ready(function(){
     $("#loading").css("left","50%")
     $("#loading").css("margin-left","-200px")
     $.ajax({
-        url: vue_obj.baseURI+"/vue_get_manager_list/",
+        url: "/vue_get_manager_list/",
         type:"post",
         data:{
             "id":localStorage.getItem("id")
@@ -440,7 +440,7 @@ $(document).ready(function(){
     $("#loading").css("top","400px")
     $("#loading").css("left","50%")
     $("#loading").css("margin-left","-200px")
-        var url = `${vue_obj.baseURI}/get_grant_static_detail/?id=`+localStorage.getItem("id")+"&sb_id="+ $("#grant_select").find("option:selected").attr("data-id")
+        var url = `/get_grant_static_detail/?id=`+localStorage.getItem("id")+"&sb_id="+ $("#grant_select").find("option:selected").attr("data-id")
         vue_obj.$http.get(url)
             .then((result) => {
                 console.log(result.data.title)
@@ -488,7 +488,7 @@ $(document).ready(function(){
             location.href = ee.getXLSDataURI();
         })
        
-        vue_obj.$http.get(`${vue_obj.baseURI}/get_static_info/?id=`+localStorage.getItem("id"))
+        vue_obj.$http.get(`/get_static_info/?id=`+localStorage.getItem("id"))
         .then((result) => {
                    $("#loading").addClass("hidden")
                 vue_obj.base_info = result.data
@@ -514,7 +514,7 @@ $(document).ready(function(){
 
                     if( vue_obj.$route.params.id != undefined){
 
-            vue_obj.$http.get(`${vue_obj.baseURI}/get_grant_static_detail/?id=`+localStorage.getItem("id")+"&sb_id="+ vue_obj.$route.params.id)
+            vue_obj.$http.get(`/get_grant_static_detail/?id=`+localStorage.getItem("id")+"&sb_id="+ vue_obj.$route.params.id)
             .then((result) => {
                 console.log(result.data.title)
                 $("#select_zone>.basic").find("option:contains('"+ result.data.title +"')").prop("selected",true)
@@ -646,7 +646,7 @@ $(document).ready(function(){
     $(document).off("change","#grant_sel")
     $(document).on("change","#grant_sel",function(){
         
-    vue_obj.$http.get(`${vue_obj.baseURI}/get_grant_static_detail/?id=`+$("#manager_sel").val()+"&sb_id="+$(this).find(":selected").attr("data-id"))
+    vue_obj.$http.get(`/get_grant_static_detail/?id=`+$("#manager_sel").val()+"&sb_id="+$(this).find(":selected").attr("data-id"))
         .then((result) => {
             var temp_data_0 = vue_obj.base_info.current_grant_list
             var temp_data_1 = vue_obj.base_info.current_grant
@@ -679,7 +679,7 @@ $(document).ready(function(){
 $(document).off("click","#top_banner>div:eq(1)")
     $(document).on("click","#top_banner>div:eq(1)",function(){
         
-    vue_obj.$http.get(`${vue_obj.baseURI}/get_all_static_info/?id=`+localStorage.getItem("id"))
+    vue_obj.$http.get(`/get_all_static_info/?id=`+localStorage.getItem("id"))
         .then((result) => {
             console.log(result)
             $("#top_banner>div").removeClass("on");
@@ -709,7 +709,7 @@ $(document).off("click","#top_banner>div:eq(1)")
      $(document).off("click","#top_banner>div:eq(0)")
      $(document).on("click","#top_banner>div:eq(0)",function(){
         
-    vue_obj.$http.get(`${vue_obj.baseURI}/get_static_info/?id=`+localStorage.getItem("id"))
+    vue_obj.$http.get(`/get_static_info/?id=`+localStorage.getItem("id"))
         .then((result) => {
             console.log(result)
                    $("#top_banner>div").removeClass("on")

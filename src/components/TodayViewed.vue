@@ -23,7 +23,7 @@ export default {
     mounted:
     function(){            
         var data =(this.viewed)  
-        $(document).ready(function(){
+       
              var obj = new Object()
              obj.src = localStorage.getItem("first_grant_src")
              obj.title =  localStorage.getItem("first_grant_title")
@@ -32,32 +32,21 @@ export default {
              obj2.src = localStorage.getItem("second_grant_src")
              obj2.title =  localStorage.getItem("second_grant_title")
              data.push(obj2)
+
              if ( $(".today_pic:eq(0)").attr("src") == undefined || $(".today_pic:eq(0)").attr("src") == ""){
                 $(".today_pic:eq(0)").addClass("hidden")
-            
+
             }
-                
-        })
+                     
     }
 }
 </script>
-
 <style scoped>
-    /* span{
-        font-size: 12px;
-        font-weight: bold; 
-        color: #1a2f53;
-    }
-    img{
-        width: 72px;
-        height: 108px;
-        border: solid 1px #dddddd;
-        float: left;
-    } */
+
     .today_viewed_ttl{
         font-weight: bold;
         font-size: 12px;
-        width: 80px;
+        width: 147px;
         float: left;
         color: #243d68;
         margin-left:8px;

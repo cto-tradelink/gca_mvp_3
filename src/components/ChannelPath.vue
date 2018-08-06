@@ -67,7 +67,7 @@ export default {
         $(document).ready(function(){
             vue_obj.path_on = vue_obj.path.slice()
             $.ajax({
-                url:vue_obj.baseURI+"/vue_get_path_all/",
+                url:"/vue_get_path_all/",
                 success:function(res){
                     console.log(res)
                     for(var k = 0; k< res.length; k++){
@@ -111,7 +111,7 @@ export default {
                 if($(this).find("img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 패스에서 삭제하시겠습니까?")){
                         $.ajax({
-                            url:vue_obj.baseURI+"/toggle_int_path/",
+                            url:"/toggle_int_path/",
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
@@ -128,7 +128,7 @@ export default {
                     else{
                         console.log("add")
                         $.ajax({
-                            url:vue_obj.baseURI+"/toggle_int_path/",
+                            url:"/toggle_int_path/",
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),

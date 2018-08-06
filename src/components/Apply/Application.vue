@@ -216,7 +216,7 @@
                         <td>
                             <div class="file_no">
                                   <span v-if=" startup.patent_file_name == '' || startup.patent_file_name == undefined ">선택된 파일 없음</span>
-                                  <span v-else ><a target="_blank" :href="baseURI+'/'+startup.patent_file_name" >{{startup.patent_file_name.split(/[/]+/).pop()}}</a></span>
+                                  <span v-else ><a target="_blank" :href="+'/'+startup.patent_file_name" >{{startup.patent_file_name.split(/[/]+/).pop()}}</a></span>
                                     
                             </div>
                         </td>
@@ -227,7 +227,7 @@
                         <td>
                             <div class="file_no">
                                <span v-if=" startup.trade_file_name == '' || startup.trade_file_name == undefined ">선택된 파일 없음</span>
-                               <span v-else ><a target="_blank" :href="baseURI+'/'+startup.trade_file_name" >{{startup.trade_file_name.split(/[/]+/).pop()}}</a></span>
+                               <span v-else ><a target="_blank" :href="+'/'+startup.trade_file_name" >{{startup.trade_file_name.split(/[/]+/).pop()}}</a></span>
                             </div>
                         </td>
                     </tr>
@@ -237,7 +237,7 @@
                         <td>
                             <div class="file_no">
                                <span v-if=" startup.sub_patent_file_name == '' || startup.sub_patent_file_name == undefined ">선택된 파일 없음</span>
-                               <span v-else> <a target="_blank" :href="baseURI+'/'+startup.sub_patent_file_name" >{{startup.sub_patent_file_name.split(/[/]+/).pop()}}</a></span>
+                               <span v-else> <a target="_blank" :href="+'/'+startup.sub_patent_file_name" >{{startup.sub_patent_file_name.split(/[/]+/).pop()}}</a></span>
                             </div>
                         </td>
                     </tr>
@@ -247,7 +247,7 @@
                         <td>
                             <div class="file_no">
                                <span v-if=" startup.design_file_name == '' || startup.design_file_name == undefined ">선택된 파일 없음</span>
-                               <span v-else ><a target="_blank" :href="baseURI+'/'+startup.design_file_name" >{{startup.design_file_name.split(/[/]+/).pop()}}</a></span>
+                               <span v-else ><a target="_blank" :href="+'/'+startup.design_file_name" >{{startup.design_file_name.split(/[/]+/).pop()}}</a></span>
                             </div>
                         </td>
                     </tr>
@@ -311,7 +311,7 @@ export default {
         var vue_obj = this
         var seg = $(".wr_con_1.seg").detach()
         $(document).ready(function(){
-            vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+            vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result);
                    vue_obj.$props.startup = result.data
@@ -321,7 +321,7 @@ export default {
 
                 $(document).off("click","#apply_next")
                 $(document).on("click","#apply_next", function () {
-                    vue_obj.$http.get(`${vue_obj.baseURI}/vue_submit_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+                    vue_obj.$http.get(`/vue_submit_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
                     vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/complete")
                 })
                 $(document).on("click","#apply_prev", function () {

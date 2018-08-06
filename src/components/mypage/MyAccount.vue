@@ -77,7 +77,7 @@ export default {
             // $(".check:checkbox").mSwitch();
 
             $.ajax({
-                url:vue_obj.baseURI+"/vue_get_user_info/",
+                url:"/vue_get_user_info/",
                 type:"post",
                 data:{
                     "id":localStorage.getItem("id")
@@ -98,7 +98,7 @@ export default {
                     $("#modi_account").addClass("hidden")
                     mode="show"                    
             $.ajax({
-                url:vue_obj.baseURI+"/vue_set_user_info/",
+                url:"/vue_set_user_info/",
                 type:"post",
                 data:{
                     "id":localStorage.getItem("id"),

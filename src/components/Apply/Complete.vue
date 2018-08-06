@@ -34,17 +34,17 @@ export default {
             $("#bottom_control").css("display","none")
             $("#navi_con").css("display","none")
         })
-           vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+           vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result)
                    vue_obj.$props.startup = result.data              
             })
-            vue_obj.$http.get(`${vue_obj.baseURI}/get_grant_detail/?id=`+vue_obj.$route.params.id)
+            vue_obj.$http.get(`/get_grant_detail/?id=`+vue_obj.$route.params.id)
         .then((result) => {
             this.grant_info = result.data
             this.open_date = result.data.pro_0_end
         })
-            vue_obj.$http.get(`${vue_obj.baseURI}/similar_grant/?q=`+`184`)
+            vue_obj.$http.get(`/similar_grant/?q=`+`184`)
         .then((result) => {
             this.similar_list = result.data.data            
         })

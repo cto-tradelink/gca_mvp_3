@@ -368,7 +368,7 @@ export default {
             this.startup.business_file = $("#business_file").val().replace(/^.*[\\\/]/, '')
             formData.append("file", file.files[0]);
             formData.append('json_data', JSON.stringify(this.startup));    
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
@@ -444,7 +444,7 @@ export default {
             console.log("hiddeninfo ready")
                 setTimeout(function(){
              $.ajax({
-                url: `${vue_obj.baseURI}/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
+                url: `/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
                 type:"get",
                 success:function(res){
                     console.log(res)

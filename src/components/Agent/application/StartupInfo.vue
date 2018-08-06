@@ -189,7 +189,7 @@ export default {
         var vue_obj = this
         $(document).ready(function(){
 
-            vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_application/?id=60&gr=147`)
+            vue_obj.$http.get(`/vue_get_application/?id=60&gr=147`)
             .then((result) => {            
                    console.log(result)
                    vue_obj.$props.startup = result.data
@@ -212,7 +212,7 @@ export default {
                         formData.append("file_4", file4.files[0]);
 
                         formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_startup_with_application_3/`, formData)
+                        vue_obj.$http.post(`/vue_update_startup_with_application_3/`, formData)
                         .then((result) => {
                             console.log(result)
                         })
@@ -221,7 +221,7 @@ export default {
                  var formData = new FormData();
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -248,7 +248,7 @@ export default {
                         formData.append("file_4", file4.files[0]);
 
                         formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_startup_with_application_3/`, formData)
+                        vue_obj.$http.post(`/vue_update_startup_with_application_3/`, formData)
                         .then((result) => {
                             console.log(result)
                         })
@@ -256,7 +256,7 @@ export default {
                  var formData = new FormData();
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -268,7 +268,7 @@ export default {
                 var formData = new FormData();
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

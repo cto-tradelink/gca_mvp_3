@@ -34,6 +34,13 @@ var order_num=0;
             if (a.rec < b.rec) {
                 return -1;
             }
+            if(a.rec == b.rec ){
+                if(a.int > b.int )
+                return -1
+                else{
+                    return 1
+                }
+            }
             
         return 0;
         }
@@ -91,17 +98,7 @@ var order_num=0;
                     var temp_arr =  obj.grant.slice(0)
                     obj.grant= []
                     temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
+                  
                     obj.grant = temp_arr.slice(0)
           
 
@@ -192,7 +189,7 @@ export default {
             console.log($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
             tag_list.push($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
         }
-        vue_obj.$http.get(`${vue_obj.baseURI}/vue_home_grant/?q=`+ tag_list.join(","))
+        vue_obj.$http.get(`/vue_home_grant/?q=`+ tag_list.join(","))
         .then((result) => {
             vue_obj.grant=[]
             for(var k=0; k< result.data.data.length; k++){
@@ -225,7 +222,7 @@ export default {
             console.log($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
             tag_list.push($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
         }
-        vue_obj.$http.get(`${vue_obj.baseURI}/vue_home_grant/?q=`+ tag_list.join(","))
+        vue_obj.$http.get(`/vue_home_grant/?q=`+ tag_list.join(","))
         .then((result) => {
             vue_obj.grant=[]
             for(var k=0; k< result.data.data.length; k++){

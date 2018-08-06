@@ -281,13 +281,13 @@ export default {
                 $(".modify.year").text("추가")
                 var formData = new FormData();
             formData.append('json_data', JSON.stringify(this.$props.startup));    
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
                 })
             .then((result) => {
-                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=60`)
+                this.$http.get(`/vue_get_startup_detail/?id=`+this.$route.params.id)
                 .then((result) => {
                     console.log(result)
                     this.startup = result.data

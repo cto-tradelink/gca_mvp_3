@@ -28,7 +28,7 @@ export default {
                 "id":localStorage.getItem("id")
                 }   
                     $.ajax({
-                        url:`${vue_obj.baseURI}/vue_my_interest_set_detail/`,
+                        url:`/vue_my_interest_set_detail/`,
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)

@@ -32,7 +32,7 @@ export default {
          $("#startup_header_con").css("margin-top","0")
          $("#startup_info_con").css("margin-top","32px")
          console.log("pre_this")
-        //    vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"))
+        //    vue_obj.$http.get(`/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"))
         //     .then((result) => {
         //     console.log("this!")
         //     console.log(result)

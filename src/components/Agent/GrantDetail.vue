@@ -148,7 +148,7 @@ export default {
     },
     mounted:function(){
         var vue_obj=this
-        this.$http.get(`${this.baseURI}/get_grant_detail/?id=`+this.$route.params.id)
+        this.$http.get(`/get_grant_detail/?id=`+this.$route.params.id)
         .then((result) => {          
             this.grant_info = result.data               
         })
@@ -183,7 +183,7 @@ export default {
                       }
             })
             $.ajax({
-                url: vue_obj.baseURI + "/vue_get_grant_detail?id="+vue_obj.$route.params.id,
+                url:  "/vue_get_grant_detail?id="+vue_obj.$route.params.id,
                 type:"get",
                 success:function(re){
                     console.log(re)

@@ -326,7 +326,7 @@ export default {
             this.$props.startup.business_file = $("#business_file").val().replace(/^.*[\\\/]/, '')
             formData.append("file", file.files[0]);
             formData.append('json_data', JSON.stringify(this.$props.startup));    
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }

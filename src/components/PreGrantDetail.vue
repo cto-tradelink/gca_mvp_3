@@ -33,13 +33,13 @@ export default {
   SideBanner, GrantDetailCard,GrantDetailInfo,LeftNavi,GrantMoreDetailInfo, SimilarGrant
  },
  mounted:function(){
-   const baseURI = "http://127.0.0.1:8000"
-   this.$http.get(`${baseURI}/get_grant_detail/?id=`+this.$route.params.id)
+
+   this.$http.get(`/get_grant_detail/?id=`+this.$route.params.id)
         .then((result) => {
           
             this.grant_info = result.data               
         })
-    this.$http.get(`${baseURI}/similar_grant/?q=`+this.$route.params.id)
+    this.$http.get(`/similar_grant/?q=`+this.$route.params.id)
         .then((result) => {
             
             this.similar_list = result.data.data            
@@ -53,7 +53,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #bottom_btn_con{
       width: 100%;
       height: 56px;;

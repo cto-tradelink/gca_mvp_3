@@ -116,7 +116,7 @@ export default {
     mounted:function(){
         var vue_obj = this
         $(document).ready(function(){
-            vue_obj.$http.get(`${vue_obj.baseURI}/vue_static_user`)
+            vue_obj.$http.get(`/vue_static_user`)
                     .then((result) => {
                         vue_obj.data = result.data
                 })

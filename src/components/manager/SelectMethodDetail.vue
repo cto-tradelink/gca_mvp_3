@@ -226,7 +226,7 @@ export default {
                 console.log(grant_info)
 
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_4/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_4/`, formData)
                 .then((result) => {            
                      vue_obj.$router.push("/manager/make/grant/"+ vue_obj.$route.params.id +"/attached_file")
                 })    
@@ -250,7 +250,7 @@ export default {
                 console.log(grant_info)
 
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_4/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_4/`, formData)
                 .then((result) => {            
                     alert("저장되었습니다.")
                 })    

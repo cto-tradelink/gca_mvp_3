@@ -251,8 +251,8 @@ export default {
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 $(document).ready(function(){
-    const baseURI = "http://127.0.0.1:8000"
-    vue_obj.$http.get(`${baseURI}/get_child_info/?id=`+84)
+    const  = "http://127.0.0.1:8000"
+    vue_obj.$http.get(`${}/get_child_info/?id=`+84)
         .then((result)=>{
             console.log(result)
             
@@ -261,7 +261,7 @@ $(document).ready(function(){
 
     
     
-    vue_obj.$http.get(`${baseURI}/get_static_info/?id=`+86)
+    vue_obj.$http.get(`${}/get_static_info/?id=`+86)
         .then((result) => {
                 
                 vue_obj.base_info = result.data
@@ -372,8 +372,8 @@ $(document).ready(function(){
 
     $(document).on("change","#select_zone>.basic",function(){
         
-        const baseURI = "http://127.0.0.1:8000"
-    vue_obj.$http.get(`${baseURI}/get_grant_static_detail/?id=`+86+"&sb_id="+$(this).find(":selected").attr("data-id"))
+        const  = "http://127.0.0.1:8000"
+    vue_obj.$http.get(`${}/get_grant_static_detail/?id=`+86+"&sb_id="+$(this).find(":selected").attr("data-id"))
         .then((result) => {
             console.log(result)
             var temp_data_0 = vue_obj.base_info.current_grant_list
@@ -407,8 +407,8 @@ $(document).ready(function(){
 
     $(document).on("click","#top_banner>div:eq(1)",function(){
         
-        const baseURI = "http://127.0.0.1:8000"
-    vue_obj.$http.get(`${baseURI}/get_all_static_info/?id=`+86)
+        const  = "http://127.0.0.1:8000"
+    vue_obj.$http.get(`${}/get_all_static_info/?id=`+86)
         .then((result) => {
             console.log(result)
             $("#top_banner>div").css("background-color", "#d8d8d8")
@@ -437,8 +437,8 @@ $(document).ready(function(){
 
      $(document).on("click","#top_banner>div:eq(0)",function(){
         
-        const baseURI = "http://127.0.0.1:8000"
-    vue_obj.$http.get(`${baseURI}/get_static_info/?id=`+86)
+        const  = "http://127.0.0.1:8000"
+    vue_obj.$http.get(`${}/get_static_info/?id=`+86)
         .then((result) => {
             console.log(result)
                    $("#top_banner>div").css("background-color", "#d8d8d8")

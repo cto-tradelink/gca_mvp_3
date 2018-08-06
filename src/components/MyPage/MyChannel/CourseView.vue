@@ -100,7 +100,7 @@ export default {
 
     function watch_course_history(){
          $.ajax({
-                url:vue_obj.baseURI + "/vue_watch_course_history/",
+                url: "/vue_watch_course_history/",
                 type:"post",
                 data:{
                     "id":localStorage.getItem("id"),
@@ -125,7 +125,7 @@ export default {
           
 
             $.ajax({
-                url:vue_obj.baseURI + "/vue_hit_course_log/",
+                url: "/vue_hit_course_log/",
                 type:"post",
                 data:{
                     "id":localStorage.getItem("id"),
@@ -142,7 +142,7 @@ export default {
                 if($("#heart_con>img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 강의에서 삭제하시겠습니까?")){
                         $.ajax({
-                            url:vue_obj.baseURI+"/toggle_int_clip/",
+                            url:"/toggle_int_clip/",
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
@@ -159,7 +159,7 @@ export default {
                     else{
                         console.log("add")
                         $.ajax({
-                            url:vue_obj.baseURI+"/toggle_int_clip/",
+                            url:"/toggle_int_clip/",
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
@@ -175,7 +175,7 @@ export default {
                 
             })
             $.ajax({
-            url:vue_obj.baseURI+"/vue_get_course/",
+            url:"/vue_get_course/",
             type:"POST",
             data:{"id":vue_obj.$route.params.id, "clip":vue_obj.$route.params.clip},
             success:function(res){

@@ -12,7 +12,7 @@
            
         </div>     
         <div id="bottom_btn_con" class="fixed">
-            <div id="int_btn"><img src="/static/img/like_w.png" style="display: inline-block; vertical-align: sub; margin-bottom: -4px;"> 관심담기</div>
+            <div id="int_btn"><img  style="display: inline-block; vertical-align: sub; width:24px; margin-bottom: -3px;" src="/static/img/like_w.png"> 관심담기</div>
             <div id="apply_btn" >지원하기</div>
         </div>
         <SimilarGrant v-if="similar_list !== null" :similar_list="similar_list"></SimilarGrant>
@@ -42,16 +42,32 @@ export default {
  },
  mounted:function(){
      var vue_obj=this
-   this.$http.get(`${this.baseURI}/get_grant_detail/?id=`+this.$route.params.id)
+   this.$http.get(`/get_grant_detail/?id=`+this.$route.params.id)
         .then((result) => {          
             this.grant_info = result.data               
         })
-    this.$http.get(`${this.baseURI}/similar_grant/?q=`+this.$route.params.id)
+    this.$http.get(`/similar_grant/?q=`+this.$route.params.id)
         .then((result) => {
             
             this.similar_list = result.data.data            
         })
         $(document).ready(function(){
+            if( $("#d_day_con").text().indexOf("마감") == -1 ){
+                $("#apply_btn").css("background-color","#a8a8a8")
+                $("#int_btn").css("color","#fff")
+            }
+            try{
+            $.ajax({
+                url:"/vue_fav_sb_list/?id="+localStorage.getItem("id"),
+                success:function(res){
+                    if( res.indexOf( parseInt(vue_obj.$route.params.id)) != -1  ){
+                          $("#int_btn>img").attr("src","/static/img/like_p.png")
+                    }
+                }
+            })
+            }
+            catch(e){}
+
             $(document).on("click","#apply_btn", function(){
                 if( $("#d_day_con").text().indexOf("마감") == -1 ){
                     vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/base_info/")
@@ -69,19 +85,18 @@ export default {
                             "val":vue_obj.$route.params.id
                         }
                     $.ajax({
-                        url:`${vue_obj.baseURI}/vue_add_interest_sb/`,
+                        url:`/vue_toggle_interest_sb/`,
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)
                             if(res=="ok-add"){alert("관심 사업에 추가되었습니다.")
-                           
+                                $("#int_btn>img").attr("src","/static/img/like_p.png")
                             }else{
                                 alert("관심사업에서 삭제되었습니다.")
-                             
+                             $("#int_btn>img").attr("src","/static/img/like_w.png")
                             }
                         },
-                        error:function(e){console.log(e)
-                       
+                        error:function(e){console.log(e)                       
                         }
                      })
                      }

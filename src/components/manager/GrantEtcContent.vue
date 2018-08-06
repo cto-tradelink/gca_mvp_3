@@ -85,7 +85,7 @@ function save(obj){
                 grant_info["additional_faq"]= $("#additional_faq").text()
                 grant_info["etc"]= $("#etc").text()               
                 formData.append('json_data', JSON.stringify(grant_info));    
-                obj.$http.post(`${obj.baseURI}/vue_set_grant_6/`, formData)
+                obj.$http.post(`/vue_set_grant_6/`, formData)
 }
 
 export default {
@@ -164,7 +164,7 @@ export default {
         $(document).ready(function(){
 
              $.ajax({
-                    url:vue_obj.baseURI+"/vue_get_grant_information?id="+vue_obj.$route.params.id,
+                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
                     success:function(res){
                         console.log("asdfasdf")
                         console.log(res)
@@ -186,7 +186,7 @@ export default {
                 grant_info["etc"]= $("#etc").val()                
                 
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_6/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_6/`, formData)
                 .then((result) => {  
                     alert("저장하였습니다.")
                 })    
@@ -203,7 +203,7 @@ export default {
                 grant_info["etc"]= $("#etc").val()                
                 
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_6/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_6/`, formData)
                 .then((result) => {  
                     vue_obj.$router.push("/manager/make/grant/"+ vue_obj.$route.params.id +"/complete")
                 })    

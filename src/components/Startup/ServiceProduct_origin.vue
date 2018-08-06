@@ -66,7 +66,7 @@ export default {
                     "service_id":$(e.path[0]).attr("data-id")
                 }
                 $.ajax({
-                    url:this.baseURI + "/vue_remove_service_product/",
+                    url: "/vue_remove_service_product/",
                     type:"post",
                     data:data,
                     success:function(res){
@@ -113,7 +113,7 @@ export default {
             formData.append("file_2", file2.files[0]);
             
             formData.append('json_data', JSON.stringify(this.$props.startup));    
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
@@ -143,7 +143,7 @@ export default {
                         $(this).children().addClass("fa-eye-slash")
 // 비공개 설정
                         $.ajax({
-                            url:vue_obj.baseURI+"/vue_set_service_show/",
+                            url:"/vue_set_service_show/",
                              type:"post",
                             data:{
                                     "id":$(this).children().attr("data-id"),
@@ -159,7 +159,7 @@ export default {
                         $(this).children().addClass("fa-eye")
               // 공개 설정
                      $.ajax({
-                            url:vue_obj.baseURI+"/vue_set_service_show/",
+                            url:"/vue_set_service_show/",
                             type:"post",
                             data:{
                                     "id":$(this).children().attr("data-id"),

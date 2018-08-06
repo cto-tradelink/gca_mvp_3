@@ -76,7 +76,7 @@ import ChannelClip from "@/components/ChannelClip"
 import ChannelCourse from "@/components/ChannelCourse"
 import ChannelPath from "@/components/ChannelPath"
 
-import Main from "@/components/Main"
+import Index from "@/components/Pages/Index"
 import ManageChanneling from "@/components/mypage/MyChannel/ManageChannelIng"
 import ManageChannelint from "@/components/mypage/MyChannel/ManageChannelInt"
 import ManageChannelDetail from "@/components/mypage/MyChannel/ManageChannelDetail"
@@ -119,7 +119,7 @@ export default new Router({
 
     {
       path: '/',
-      component: Main
+      component: Index
     },
     {
       path: '/grant',

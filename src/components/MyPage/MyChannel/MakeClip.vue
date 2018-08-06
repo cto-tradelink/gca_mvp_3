@@ -105,9 +105,9 @@ export default {
       var vue_obj = this
      $(document).ready(function(){
      
-        console.log(vue_obj.baseURI+"/vue_get_lec_tag")
+        console.log("/vue_get_lec_tag")
         $.ajax({
-            url:vue_obj.baseURI+"/vue_get_lec_tag/",
+            url:"/vue_get_lec_tag/",
             type:"GET",
             success:function(res){
                 console.log(res)
@@ -157,7 +157,7 @@ export default {
             formData.append('json_data', JSON.stringify(vue_obj.clip[0]));    
             console.log(formData)
            
-            vue_obj.$http.post(`${vue_obj.baseURI}/vue_upload_clip/`, formData, {
+            vue_obj.$http.post(`/vue_upload_clip/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }

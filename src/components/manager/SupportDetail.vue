@@ -134,7 +134,7 @@
             grant_info["supply_tag"] = supply_tag
             grant_info["support_detail"] = obj.data
             formData.append('json_data', JSON.stringify(grant_info));    
-            obj.$http.post(`${obj.baseURI}/vue_set_grant_2/`, formData)
+            obj.$http.post(`/vue_set_grant_2/`, formData)
             .then((result) => {            
             })    
         }
@@ -221,7 +221,7 @@ export default {
             })
 
                $.ajax({
-                    url:vue_obj.baseURI+"/vue_get_grant_information?id="+vue_obj.$route.params.id,
+                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
                     success:function(res){
                         vue_obj.grant_info = res
                          for(var k =0; k < vue_obj.grant_info.tag.length; k++){
@@ -257,7 +257,7 @@ export default {
                 grant_info["supply_tag"] = supply_tag
                 grant_info["supply_content"] = vue_obj.grant_info.supply_content
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_2/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_2/`, formData)
                 .then((result) => {            
                     console.log( vue_obj)
                   alert("저장되었습니다.")
@@ -277,7 +277,7 @@ export default {
                 grant_info["supply_tag"] = supply_tag
                 grant_info["supply_content"] = vue_obj.grant_info.supply_content
                 formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_grant_2/`, formData)
+                vue_obj.$http.post(`/vue_set_grant_2/`, formData)
                 .then((result) => {            
                     console.log( vue_obj)
                     vue_obj.$router.push("/manager/make/grant/"+ vue_obj.$route.params.id +"/recruit_content")

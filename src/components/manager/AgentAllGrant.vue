@@ -162,7 +162,7 @@ export default {
             })
             $("#gca_content").css("background-color","#f4f7fa")
             var data={}
-            vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_grant_info/`, data)
+            vue_obj.$http.get(`/vue_get_grant_info/`, data)
                 .then((result) => {          
                   console.log(result)  
                  vue_obj.data = result.data

@@ -9,7 +9,7 @@
             </div>
             <div  style="margin-top:16px; width:962px;height:1px ; border-bottom:1px solid #c1d1f7"></div>
             <div id="filter_con" style="margin-top:16px;">
-                <span class="filter_b" v-for="f in this.sta.select_tag">{{f}}</span> 
+                <span class="filter_b" v-for="f in this.sta.information.tag">{{f}}</span> 
             </div>     
             </div>
             <div class="info_con">
@@ -55,7 +55,7 @@
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Phone.png">전화번호</span>
-                            <span class="h_content">{{sta.repre_tel}}</span>
+                            <span class="h_content">{{sta.tel}}</span>
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Work.png">사업분야</span>
@@ -63,7 +63,7 @@
                         </li>
                         <li class="inner_li">
                             <span class="h_ttl"><img src="/static/img/Tag.png">관련태그</span>
-                            <span class="h_content"></span>
+                            <span class="h_content">{{sta.tag_string}}</span>
                         </li>
                     </ul>
                 </div>  
@@ -78,8 +78,10 @@
         <div class="info_con">
             <div class="info_ttl">회사 소개</div>
             <textarea  placeholder="회사 소개글을 입력하세요." v-model="sta.intro_text"></textarea>
-            <div class="=info_ttl">필터 선택</div>
-            <div id="filter_con"></div>
+            <div class="info_ttl">필터 선택</div>
+            <div id="filter_con">
+                <span class="filter_b" v-for="f in this.sta.information.tag">{{f}}</span> 
+            </div>
             <div class="hr" ></div>
             <div v-on:click="filter_popup_toggle" id="add_filter">추가하기</div>    
         </div>
@@ -87,8 +89,8 @@
         <div class="info_con">
             <div class="info_ttl">연혁</div>
             
-            <datetime v-model="date"  style=" display:inline-block; border:1px silid #000; height:40px;"> </datetime>
-            <input type="text" id="history_con" placeholder="연혁을 입력하세요" class="input_normal">
+            <div style="display:inline-block"><datetime v-model="date"  style="  border:1px silid #000; height:40px;"> </datetime></div>
+            <input type="text" id="history_con" placeholder="연혁을 입력하세요" class="input_normal" style="margin-left:10px;">
             <div class="hr"></div>
             <ul>
                 <li v-for="h in sta.history"><span class="year">{{h.year}}.{{h.month}}</span>
@@ -99,32 +101,33 @@
 
         <div class="info_con">
             <div class="info_ttl">기업정보</div>
-            <div class="info_seg"><img src="/static/img/Homepage.png"><span>홈페이지</span><input v-model="sta.information.homepage"  class="input_normal"></div>
-            <div class="info_seg"><img src="/static/img/SNS.png"><span>SNS</span>
-            <div class="sns_con"><img src="/static/img/facebook_1.png"> <input v-model="sta.facebook" class="input_normal"> </div>
-            <div class="sns_con"><img src="/static/img/insta.png"> <input v-model="sta.insta"  class="input_normal"> </div>
-            <div class="sns_con"><img src="/static/img/youtube.png"> <input  v-model="sta.youtube"  class="input_normal"> </div>                
+            <div class="info_seg"><span><img src="/static/img/Homepage.png">홈페이지</span><input v-model="sta.information.homepage"  class="input_normal"></div>
+            <div class="info_seg"><span><img src="/static/img/SNS.png">SNS</span>
+            <div id="sns_input" style="display:inline-block; vertical-align:top;">
+                <div class="sns_con"><img src="/static/img/facebook_1.png"> <input v-model="sta.facebook" class="input_normal" style="padding-left:40px;width:352px;margin-bottom:10px;"> </div>
+                <div class="sns_con"><img src="/static/img/insta.png"> <input v-model="sta.insta"  class="input_normal" style="padding-left:40px;width:352px;margin-bottom:10px;"> </div>
+                <div class="sns_con"><img src="/static/img/youtube.png"> <input  v-model="sta.youtube"  class="input_normal" style="padding-left:40px;width:352px;margin-bottom:10px;"> </div>                
             </div>
-            <div class="info_seg"><img src="/static/img/com_start.png"><span>설립일</span>
+            </div>
+            <div class="info_seg"><span><img src="/static/img/com_start.png">설립일</span>
             <datetime v-model="sta.found_date"  style=" display:inline-block; border:1px silid #000; height:40px;"> </datetime>  </div>
-            <div class="info_seg"><img src="/static/img/Man.png"><span>대표자명</span><input placeholder="대표자명을 입력하세요" class="input_normal"></div>
-            <div class="info_seg"><img src="/static/img/Mail2.png"><span>대표메일</span><input placeholder="대표 메일을 입력하세요" class="input_normal"></div>
-            <div class="info_seg"><img src="/static/img/Phone.png"><span>전화번호</span><input placeholder="000-000-0000" class="input_normal"></div>
-            <div class="info_seg"><img src="/static/img/Work.png"><span>사업분야</span><input class="input_normal" v-model="sta.category" placeholder="사업분야를 입력하세요"></div>
-            <div class="info_seg"><img src="/static/img/Tag.png"><span>관련태그</span><input v-on:keyup="make_hash_string($event)" placeholder="#해시태그 #입력 #해주세요 #띄어쓰기로구분" class="input_normal"></div>
+            <div class="info_seg"><span><img src="/static/img/Man.png">대표자명</span><input placeholder="대표자명을 입력하세요" v-model="sta.repre_name" class="input_normal"></div>
+            <div class="info_seg"><span><img src="/static/img/Mail2.png">대표메일</span><input placeholder="대표 메일을 입력하세요" v-model="sta.information.email" class="input_normal"></div>
+            <div class="info_seg"><span><img src="/static/img/Phone.png">전화번호</span><input placeholder="000-000-0000" v-model="sta.tel" class="input_normal"></div>
+            <div class="info_seg"><span><img src="/static/img/Work.png">사업분야</span><input class="input_normal" v-model="sta.category" placeholder="사업분야를 입력하세요"></div>
+            <div class="info_seg"><span><img src="/static/img/Tag.png">관련태그</span><input v-on:keyup="make_hash_string($event)" v-model="sta.tag_string" placeholder="#해시태그 #입력 #해주세요 #띄어쓰기로구분" class="input_normal"></div>
         </div>
         <div class="info_con">
             <div class="info_ttl">소재지</div>
-            <div id="add_local">주소검색</div>
-            <input readonly placeholder="주소검색을 이용하세요">
-            <input placeholder="상세 주소 입력">
+            <div id="add_local" v-on:click="sample5_execDaumPostcode" >주소검색</div>
+            <input style="border: 1px solid #f4f7fa;" v-on:click="sample5_execDaumPostcode" id="map_text" c-on:change="insert_map" v-model="sta.location" placeholder="주소검색을 이용하세요">
+            <input  v-model="sta.location2" placeholder="상세 주소 입력" class="input_normal">
+            <div id="map" style="width:100px; height:100px;" ></div>
         </div>
 
        <div id="modi_btn2" >수정하기</div>
-
         <div id="back_layer">           
         </div>
-        
         <div id="filter_seg" class="hidden">
             <div id="filter_hd"><span>필터 선택 </span> <span class="x_btn" v-on:click="filter_popup_toggle" id="filter_x_btn" >X</span><div ></div></div>
             <div id="filter_popup_wr" style="clear:both">
@@ -166,17 +169,23 @@
 </template>
 <script>
 var select_tag= new Array();
-var mapContainer  
-     var  mapOption
+var mapContainer = document.getElementById('map')
+var  mapOption = {
+            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+            level: 5 // 지도의 확대 레벨
+        };
+var map;
     //지도를 미리 생성
-    var map  
-    //주소-좌표 변환 객체를 생성
-    var geocoder 
+     //주소-좌표 변환 객체를 생성
+//주소-좌표 변환 객체를 생성
+    var geocoder = new daum.maps.services.Geocoder();
     //마커를 미리 생성
     var marker
+var vue_obj
 
 export default {
-    computed:{
+    
+     computed:{
           is_manage_page(){
             if (this.$route.fullPath.indexOf("mypage")==-1){
                 return false 
@@ -213,9 +222,13 @@ export default {
                 "etc":["마케팅지원","퍼블리싱 지원","B2B 상담 지원","번역지원"],
             },
             sta:{},
+            select_tag:[]
         }
     },
     methods:{
+        insert_map:function(){
+           
+        },
         add_history:function(){
             console.log(this.date)
             var year = this.date.split("-")[0]
@@ -286,13 +299,13 @@ export default {
                 $(".modify.year").text("추가")
                 var formData = new FormData();
             formData.append('json_data', JSON.stringify(this.sta));    
-            this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+            this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
                 })
             .then((result) => {
-                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=`+localStorage.getItem("id"))
+                this.$http.get(`/vue_get_startup_detail/?id=`+localStorage.getItem("id"))
                 .then((result) => {
                     console.log(result)
                     this.sta = result.data
@@ -302,6 +315,8 @@ export default {
     sample5_execDaumPostcode :function () {
         new daum.Postcode({
             oncomplete: function(data) {
+           
+             
                 // 각 주소의 노출 규칙에 따라 주소를 조합한다.
                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
                 var fullAddr = data.address; // 최종 주소 변수
@@ -320,16 +335,21 @@ export default {
                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
                 }
                 // 주소 정보를 해당 필드에 넣는다.
-                document.getElementById("map").value = fullAddr;
-                // 주소로 상세 정보를 검색
+                document.getElementById("map_text").value = fullAddr;
+                vue_obj.sta.location = fullAddr
+                console.log(vue_obj)
+                alert("상세 주소를 입력해주세요.")
+               // 주소로 상세 정보를 검색
                 geocoder.addressSearch(data.address, function(results, status) {
                     // 정상적으로 검색이 완료됐으면
+                    console.log("herer")
                     if (status === daum.maps.services.Status.OK) {
                         var result = results[0]; //첫번째 결과의 값을 활용
                         // 해당 주소에 대한 좌표를 받아서
                         var coords = new daum.maps.LatLng(result.y, result.x);
                         // 지도를 보여준다.
-                        mapContainer.style.display = "block";
+                       // mapContainer.style.display = "block";
+                        console.log(vue_obj.map)
                         map.relayout();
                         // 지도 중심을 변경한다.
                         map.setCenter(coords);
@@ -342,29 +362,63 @@ export default {
         }
     },
     created:function(){   
+        console.log("created")
              $.ajax({
-                url: `${this.baseURI}/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id"),
+                url: `/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id"),
                 type:"get",
                 success:function(res){
                     this.sta = res                   
                 },
              })
+        vue_obj=this
+
+             vue_obj = this;
          
     },
     mounted: function(){
         var vue_obj = this
                 $.ajax({
-                url: `${this.baseURI}/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id"),
+                url: `/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id"),
                 type:"get",
                 success:function(res){
                     this.sta = res      
                 },
              })
-
+     
         $(document).ready(function(){
+         
+  var values = ["제한없음"]
+                            for (var k = 1; k < 100; k++) {
+                                values.push(k + "명 이하")
+                            }
+                            values.push("100명 이상")
+                    $("#range_01").ionRangeSlider({
+                                values: values,
+                                type: "single",
+                                min: 0,
+                                max: 100,
+                                from:0,
+                                onFinish:
+                                    function (data) {
+                                        $("#range_01").val(data.from)
+                                    },
+                            });
+            $(document).on("click",".filter_a", function(){
+                var text = $(this).text().trim();
+                if( vue_obj.sta.information.tag.indexOf(text) == -1 ){
+                    vue_obj.sta.information.tag.push(text)
+                    $(this).addClass("filter_on")
+                }else{
+                    console.log(text)
+                    console.log( vue_obj.sta.information.tag.indexOf(text))
+                    vue_obj.sta.information.tag.splice( vue_obj.sta.information.tag.indexOf(text),1 )
+                    $(this).removeClass("filter_on")
+                }
+            })
+
              console.log("intro ready")
               $.ajax({
-                url: `${vue_obj.baseURI}/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id"),
+                url: `/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id"),
                 type:"get",
                 success:function(res){
                     vue_obj.sta = res           
@@ -381,8 +435,10 @@ export default {
               
                   
             var formData = new FormData();
+            vue_obj.sta.select_tag=vue_obj.select_tag
+
             formData.append('json_data', JSON.stringify(vue_obj.sta));                
-            vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_startup_detail_base/`, formData, {
+            vue_obj.$http.post(`/vue_update_startup_detail_base/`, formData, {
              })
             .then((result) => {  
                 console.log(result)
@@ -413,9 +469,16 @@ export default {
                             });
 
             try{
+
+                             console.log("map1")
+                map = new daum.maps.Map(mapContainer, mapOption); 
+                console.log(map)
+                console.log("map")
+
+
                     //
-                var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-                 mapOption = {
+                mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
                 center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
                 level: 3 // 지도의 확대 레벨
             };
@@ -460,19 +523,19 @@ export default {
                 vue_obj.sample5_execDaumPostcode()
                 })
             }
-
+             console.log("map1")
+            //    map = new daum.maps.Map(mapContainer, mapOption); 
+            //    console.log(map)
+                console.log("map")
                console.log("intro end")
         })
     },
+    beforeUpdated:function(){
+        console.log("before updated~~~!!!")
+    },
     updated:function(){
      console.log("data changed");
-             $.ajax({
-                url: `${this.baseURI}/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id"),
-                type:"get",
-                success:function(res){
-                    this.sta = res                   
-                },
-             })              
+                  
     },
 
 }
@@ -480,7 +543,7 @@ export default {
 <style>
 .vdatetime{
     display: inline-block;
-    width:181px;
+    width:171px;
 }
 
 .vdatetime>input{
@@ -491,12 +554,13 @@ export default {
     padding-left: 20px!important;
     font-size: 14px;
     display: inline-block;
+    margin-right:10px;
 }
 
 
 </style>
 
-
+1
 <style scoped>
 
 .year{
@@ -587,7 +651,7 @@ textarea{
     color: #1a2a53;
 }
 
-.filter_a{
+.filter_a, .filter_b{
     margin-right: 6px;
     cursor: pointer;
     border-radius: 100px;
@@ -639,7 +703,7 @@ textarea{
     height: 28px;
     opacity: 0.8;
     font-size: 17px;
-    font-weight: bold;
+    margin-bottom:15px;
     line-height: 1.65;
     letter-spacing: -0.3px;
     color: #1a2f53;
@@ -706,19 +770,7 @@ textarea{
     font-size: 14px;
     cursor: pointer;
 }
-.filter_b{
-    background-color: #f5f8ff;
-    padding:7px 21px;
-    opacity: 0.7;  
-    font-size: 14px; 
-    line-height: 1.86;
-    letter-spacing: -0.1px;
-    text-align: center;
-    color: #1a2a53;
-    border-radius:30px; 
-    display: inline-block;
-    margin-right: 8px;
-}
+
 .inner_wr{
     padding:0px 16px; width:939px; border:1px solid #c1d1f7; 
     margin-top:16px;
@@ -791,5 +843,45 @@ min-height: 46px;width:939px; border-bottom:1px solid #c1d1f7;font-size: 14px;;c
     z-index: 999;
     background-color: rgba(26, 47, 83, 0.8);
 }
-
+.filter_on{
+    background-color: rgba(27,73,244, 0.7)!important;
+    color: #fff!important;
+}
+.info_seg{
+    padding-bottom:10px;
+    border-bottom:1px solid #ddd;
+    margin-bottom:10px;
+    width:576px;
+}
+.info_seg>span{
+    width:168px;
+    display: inline-block;
+    }
+.info_seg>span>img{
+    margin-right:7px;
+}
+.sns_con>img{
+    width:24px;
+    position: absolute;
+    top:10px;
+}
+.sns_con{
+    position: relative;
+}
+#add_local{
+    text-align:center;
+    line-height:40px;
+    width: 100px;
+    height: 40px;
+    border-radius: 28px;
+    background-color: #ffffff;
+    border: solid 1px #1b66f4;
+    color:#1b66f4;
+    display: inline-block;
+}
+#map_text{
+     width: 196px;
+  height: 40px;
+  background-color: #f4f7fa;
+}
 </style>

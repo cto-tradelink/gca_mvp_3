@@ -93,7 +93,7 @@ export default {
                 if($(this).find("img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 "+text+"에서 삭제하시겠습니까?")){
                         $.ajax({
-                            url:vue_obj.baseURI+url,
+                            url:url,
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
@@ -109,7 +109,7 @@ export default {
                     }
                     else{
                         $.ajax({
-                            url:vue_obj.baseURI+url,
+                            url:url,
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
@@ -130,7 +130,7 @@ export default {
                 if(btn == "path") vue_obj.$router.push("/make_path")
             } )
             $.ajax({
-                url:vue_obj.baseURI + "/vue_get_ing_lecture?id="+localStorage.getItem("id"),
+                url: "/vue_get_ing_lecture?id="+localStorage.getItem("id"),
                 type:"get",
                 success:function(res){
                     vue_obj.clip_list = res.results.clip_list.slice(0,3)

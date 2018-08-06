@@ -80,7 +80,7 @@ export default {
                             "val":$(this).attr("data-id")
                         }
                      $.ajax({
-                        url:`${vue_obj.baseURI}/vue_add_interest_sb/`,
+                        url:`/vue_add_interest_sb/`,
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)
@@ -112,7 +112,7 @@ export default {
                 $("."+$(this).attr("data-target")).removeClass("hidden")
             })
             $.ajax({
-                url: vue_obj.baseURI + "/get_startup_application/",
+                url:  "/get_startup_application/",
                 type:"post",
                 data:{"id":localStorage.getItem("id")},
                 success:function(res){

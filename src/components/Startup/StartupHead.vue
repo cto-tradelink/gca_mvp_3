@@ -45,9 +45,9 @@ export default {
                   var data={
                   "id":localStorage.getItem("id")
               }
-              console.log(`${vur_obj.baseURI}/vue_my_interest_set/`)
+              console.log(`/vue_my_interest_set/`)
                  $.ajax({
-                        url:`${vur_obj.baseURI}/vue_my_interest_set/`,
+                        url:`/vue_my_interest_set/`,
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)
@@ -128,7 +128,7 @@ export default {
 
                                   
                 formData.append('json_data', JSON.stringify(this.$props.startup));    
-                this.$http.post(`${this.baseURI}/vue_update_startup_detail/`, formData, {
+                this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
@@ -147,7 +147,7 @@ export default {
                          "id":localStorage.getItem("id")
                      }
                      $.ajax({
-                        url:`${this.baseURI}/vue_add_interest_st/`,
+                        url:`/vue_add_interest_st/`,
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)

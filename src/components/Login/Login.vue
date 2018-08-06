@@ -102,7 +102,7 @@ function get_sns_auth(token,sns,context){
     var target = context
     $.ajax({
             method:"POST",
-            url:context.baseURI+`/vue_get_sns_auth/`,
+            url:`/vue_get_sns_auth/`,
             data: {
             "token":  token ,
             "provider":sns                           
@@ -186,7 +186,7 @@ export default {
                   "val":$("#email_add").val()
               }         
                 $.ajax({
-                    url:`${vue_obj.baseURI}/cert_email/`,
+                    url:`/cert_email/`,
                     data:data,
                     method:"post",
                     success:function(res){
@@ -251,7 +251,7 @@ export default {
                     "confirmation_code":$("#token").val()
                 }
                 $.ajax({
-                    url:`${vue_obj.baseURI}/vue_signup/`,
+                    url:`/vue_signup/`,
                     data:data,
                     method:"post",
                     success:function(res){
@@ -278,7 +278,7 @@ export default {
                   "target":$("#email_add").val()
               }         
                 $.ajax({
-                    url:`${vue_obj.baseURI}/cert_email/`,
+                    url:`/cert_email/`,
                     data:data,
                     method:"post",
                     success:function(res){

@@ -121,7 +121,7 @@ export default {
         $(document).ready(function(){
             $("#gca_content").css("background-color","#fff")
             $.ajax({
-                url: vue_obj.baseURI + "/vue_get_grant_detail?id="+vue_obj.$route.params.id,
+                url: "/vue_get_grant_detail?id="+vue_obj.$route.params.id,
                 type:"get",
                 success:function(re){
                     console.log(re)

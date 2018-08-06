@@ -26,7 +26,7 @@ export default {
                 return false
             } 
             $.ajax({
-                url:this.baseURI + "vue_submit_application",
+                url: "vue_submit_application",
                 type:"post",
                 data:{
                         "id":this.$route.params.id, 

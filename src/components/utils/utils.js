@@ -37,7 +37,7 @@ export class HeartAdd{
                     if($(event.target).attr("src").indexOf("_p") != -1){
                     if(confirm("관심 "+text+"에서 삭제하시겠습니까?")){
                         $.ajax({
-                            url:vue_obj.baseURI+url,
+                            url:url,
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
@@ -53,7 +53,7 @@ export class HeartAdd{
                     }
                     else{
                         $.ajax({
-                            url:vue_obj.baseURI+url,
+                            url:url,
                             type:"post", 
                             data:{
                                 "id":localStorage.getItem("id"),
@@ -82,7 +82,7 @@ export class HeartAdd{
 
 export function check_fav(obj){
     $.ajax({
-        url:obj.baseURI+"/vue_get_all_fav/",
+        url:"/vue_get_all_fav/",
         type:"post",
         data:{"id":localStorage.getItem("id")},
         success:function(res){
@@ -134,7 +134,7 @@ class RevenueManager{
     year_arr=[]
     // 연혁에서 최초 설립일 데이터를 받아옴.
     init(id,obj){
-        axios.get(`${obj.baseURI}/vue_get_startup_detail`,{"id":id})
+        axios.get(`/vue_get_startup_detail`,{"id":id})
         .then((result)=>{
             console.log(result)
             if(result.found_date != ""){

@@ -384,7 +384,7 @@ $(document).ready(function(){
     init_zoomable_line()
     // 전체 패스와 코스 강의 데이터 받아오는 부분
     $.ajax({
-        url:vue_obj.baseURI+"/vue_get_statics_by_channel",
+        url:"/vue_get_statics_by_channel",
         type:"get",
         success:function(res){
             console.log(res)
@@ -393,7 +393,7 @@ $(document).ready(function(){
     })
 
     $.ajax({
-        url:vue_obj.baseURI+"/vue_get_channel_statics_path/?path_id=12",
+        url:"/vue_get_channel_statics_path/?path_id=12",
         type:"get",
         success:function(res){
             console.log(res)            
@@ -403,7 +403,7 @@ $(document).ready(function(){
     })
     $(document).on("change","#b_0", function(){
         $.ajax({
-            url:vue_obj.baseURI+"/vue_get_channel_statics_path/?path_id="+$("#b_0").val(),
+            url:"/vue_get_channel_statics_path/?path_id="+$("#b_0").val(),
             type:"get",
             success:function(res){
                 var result = dict_sort(res.path_local_tag)
@@ -423,7 +423,7 @@ $(document).ready(function(){
 
     $(document).on("change","#b_1", function(){
   $.ajax({
-            url:vue_obj.baseURI+"/vue_get_channel_statics_course/?course_id="+$("#b_1").val(),
+            url:"/vue_get_channel_statics_course/?course_id="+$("#b_1").val(),
             type:"get",
             success:function(res){
                 console.log(res)
@@ -444,7 +444,7 @@ $(document).ready(function(){
     $(document).on("change","#b_2", function(){
         console.log("durldi")
     $.ajax({
-            url:vue_obj.baseURI+"/vue_get_channel_statics_clip/?clip_id="+$("#b_2").val(),
+            url:"/vue_get_channel_statics_clip/?clip_id="+$("#b_2").val(),
             type:"get",
             success:function(res){       
                 console.log(res)

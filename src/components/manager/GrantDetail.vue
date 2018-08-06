@@ -212,7 +212,7 @@ export default {
                     location.href = ee.getXLSDataURI();
                 })
 
-            vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_grant_appliance/?gr=`+vue_obj.$route.params.id)
+            vue_obj.$http.get(`/vue_get_grant_appliance/?gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result)
                    vue_obj.app_list = result.data
@@ -221,7 +221,7 @@ export default {
 
             $("#gca_content").css("background-color","#fff")
             $.ajax({
-                url: vue_obj.baseURI + "/vue_get_grant_detail?id="+vue_obj.$route.params.id,
+                url:  "/vue_get_grant_detail?id="+vue_obj.$route.params.id,
                 type:"get",
                 success:function(re){
                     console.log(re)

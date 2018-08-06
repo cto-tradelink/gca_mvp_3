@@ -75,8 +75,8 @@ export default {
     mounted:function(){
         var vue_obj = this
         $(document).ready(function(){
-             const baseURI = "http://127.0.0.1:8000"
-            vue_obj.$http.get(`${baseURI}/vue_static_user`)
+             const  = "http://127.0.0.1:8000"
+            vue_obj.$http.get(`${}/vue_static_user`)
                 .then((result) => {
                         vue_obj.data = result.data
                 })

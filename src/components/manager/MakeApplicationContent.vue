@@ -104,7 +104,7 @@ export default {
              
    
                    $.ajax({
-                    url:vue_obj.baseURI+"/vue_get_grant_information?id="+vue_obj.$route.params.id,
+                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
                     success:function(res){
                         vue_obj.grant_info = res
                          for(var k =0; k < vue_obj.grant_info.meta.split(",").length; k++){
@@ -129,7 +129,7 @@ export default {
                 data["meta"]=meta_val
                 data["id"]= vue_obj.$route.params.id
                 console.log(data)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_application/`, data)
+                vue_obj.$http.post(`/vue_set_application/`, data)
                 .then((result) => {            
                                 alert("수정하였습니다.")
                 })    
@@ -145,7 +145,7 @@ export default {
                 data["meta"]=meta_val
                 data["id"]= vue_obj.$route.params.id
                 console.log(data)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_set_application/`, data)
+                vue_obj.$http.post(`/vue_set_application/`, data)
                 .then((result) => {   
                     alert("승인 요청 하였습니다.")         
                var supply_tag = [] 
