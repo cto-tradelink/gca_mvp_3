@@ -297,7 +297,11 @@ export default {
 
         $(document).ready(function(){       
             
+<<<<<<< HEAD
          vue_obj.$http.get(`/vue_get_startup_detail/?id=`+vue_obj.$route.params.id)
+=======
+         vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_startup_detail/?id=`+vue_obj.$route.params.id)
+>>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
                 .then((result) => {
                     console.log("sss")
                     console.log(result)

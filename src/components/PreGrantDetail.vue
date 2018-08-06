@@ -35,7 +35,7 @@ export default {
  mounted:function(){
 
    this.$http.get(`/get_grant_detail/?id=`+this.$route.params.id)
-        .then((result) => {
+           .then((result) => {
           
             this.grant_info = result.data               
         })

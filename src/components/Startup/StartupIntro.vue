@@ -287,7 +287,11 @@ export default {
                 }
                 })
             .then((result) => {
+<<<<<<< HEAD
                 this.$http.get(`/vue_get_startup_detail/?id=`+this.$route.params.id)
+=======
+                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=`+this.$route.params.id)
+>>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
                 .then((result) => {
                     console.log(result)
                     this.startup = result.data

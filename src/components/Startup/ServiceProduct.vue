@@ -7,7 +7,11 @@
                 <div class="service_text" v-html='s.intro'></div>
                 <div class="hr"></div>
                 <div class="category_text" v-html='s.category'></div>
+<<<<<<< HEAD
                    <div class="file_show" v-if="s.file_name" v-on:click="down(+'/'+s.file)"><img src="/static/img/clip.png" style="width: 14px; height: 18px; margin-top:11px; margin-left:6px; ">
+=======
+                   <div class="file_show" v-if="s.file_name" v-on:click="down(baseURI+'/'+s.file)"><img src="/static/img/clip.png" style="width: 14px; height: 18px; margin-top:11px; margin-left:6px; ">
+>>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
                     <span>{{s.file_name}}</span><img style="" src="/static/img/d.png" style="float:right; margin-top:10px;width:24px; height:24px;">
                     <div style="clear:both"></div>
                 </div>

@@ -58,7 +58,11 @@ export default {
             }
             try{
             $.ajax({
+<<<<<<< HEAD
                 url:"/vue_fav_sb_list/?id="+localStorage.getItem("id"),
+=======
+                url:vue_obj.baseURI+"/vue_fav_sb_list/?id="+localStorage.getItem("id"),
+>>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
                 success:function(res){
                     if( res.indexOf( parseInt(vue_obj.$route.params.id)) != -1  ){
                           $("#int_btn>img").attr("src","/static/img/like_p.png")
@@ -85,7 +89,11 @@ export default {
                             "val":vue_obj.$route.params.id
                         }
                     $.ajax({
+<<<<<<< HEAD
                         url:`/vue_toggle_interest_sb/`,
+=======
+                        url:`${vue_obj.baseURI}/vue_toggle_interest_sb/`,
+>>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)
