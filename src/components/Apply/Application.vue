@@ -1,7 +1,7 @@
 <template>
     <div id="application" style="padding-bottom:100px;">
         <div class="title_con">
-            <div class="seg_ttl">기본정보</div>
+            <div class="seg_ttl">기본정보 PR </div>
         
         </div>
         
