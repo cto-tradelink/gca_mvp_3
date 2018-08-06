@@ -143,6 +143,65 @@ export default {
                 alert("내용 작성후 '다음'버튼을 클릭해서 진행하세요.")
             }
         },
+        apply_save:function(){
+                meta_val=[]
+                var formData = new FormData();
+                var file = document.querySelector('#input_file');
+                formData.append("file", file.files[0]);
+                var data={}
+                var grant_info ={}
+                grant_info["id"]=this.$route.params.id
+                grant_info["title"] = $("#title_input").val()
+                grant_info["tag"] = $("#tag_input").val()
+                grant_info["short_desc"] = $("#short_desc_input").val()
+                grant_info["poster"] = $("#input_file").val().replace(/^.*[\\\/]/, '') 
+                grant_info["sub_title"] = $("#sub_title_input").val()
+                console.log(this.grant_info.business_period_start)
+                grant_info["start"] = this.grant_info.business_period_start
+                grant_info["end"] = this.grant_info.business_period_end
+                grant_info["location"] = $("#location").val()
+                grant_info["subject"] = $("#subject").text()
+                grant_info["business_detail"] = $("#business_detail").text()
+                grant_info["step"] = "1"
+                formData.append('json_data', JSON.stringify(grant_info));    
+                this.$http.post(`/vue_set_grant_1/`, formData)
+                .then((result) => {  
+                    console.log(result)          
+                    var id= result.data.result;
+                    this.id = result.data.result;
+                })   
+        },
+        apply_next:function(){
+             meta_val=[]
+                var formData = new FormData();
+                var file = document.querySelector('#input_file');
+                formData.append("file", file.files[0]);
+                var data={}
+                var grant_info ={}
+                grant_info["user_id"]= localStorage.getItem("id")
+                grant_info["id"]=this.$route.params.id
+                grant_info["title"] = $("#title_input").val()
+                grant_info["tag"] = $("#tag_input").val()
+                grant_info["short_desc"] = $("#short_desc_input").val()
+                grant_info["poster"] = $("#input_file").val().replace(/^.*[\\\/]/, '') 
+                grant_info["sub_title"] = $("#sub_title_input").val()
+                console.log(this.grant_info.business_period_start)
+                grant_info["start"] = this.grant_info.business_period_start.split("T")[0]
+                grant_info["end"] = this.grant_info.business_period_end.split("T")[0]
+                grant_info["location"] = $("#location").val()
+                grant_info["subject"] = this.grant_info.subject
+                grant_info["business_detail"] =  this.grant_info.business_detail
+                grant_info["step"] = "1"
+                
+                formData.append('json_data', JSON.stringify(grant_info));    
+                this.$http.post(`/vue_set_grant_1/`, formData)
+                .then((result) => {  
+                    console.log(result)          
+                    var id= result.data.result;
+                    this.id = result.data.result;
+                    this.$router.push("/manager/make/grant/"+id+"/support_content")
+                }) 
+        },
         
 
     },
@@ -157,13 +216,10 @@ grant_info:{},
     mounted:function(){
         var vue_obj = this
         $(document).ready(function(){
-            $(document).on("keyup","#tag_input", function(){
-                
+            $(document).on("keyup","#tag_input", function(){                
                 $(this).val("#"+$(this).val().slice(1,$(this).val().length).replace("##","#").replace(/\s/g,"#"));
-                $(this).val($(this).val().replace("##","#"));
-                
-            })
-           
+                $(this).val($(this).val().replace("##","#"));                
+            })           
             $(document).off("click","input[type='checkbox']")
             $(document).on("click","input[type='checkbox']",function(){
                 if( $(this).is(":checked") ){
@@ -176,82 +232,13 @@ grant_info:{},
             var meta_val = []
             if (vue_obj.$route.params.id != "new"){
                 //아이디가 있다면 어디까지 썻는지에 대한 데이터가 있을것..  
-                $.ajax({
-                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
-                    success:function(res){
-                        vue_obj.grant_info = res
-                    }
-                })
+              vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id,)
+              .then((res)=>{
+                  vue_obj.grant_info = res.data
+              })
+             
             }
             
-
-
-
-            $(document).off("click","#apply_next")
-            $(document).on("click","#apply_next", function(){                
-                meta_val=[]
-                var formData = new FormData();
-                var file = document.querySelector('#input_file');
-                formData.append("file", file.files[0]);
-                var data={}
-                var grant_info ={}
-                grant_info["user_id"]= localStorage.getItem("id")
-                grant_info["id"]=vue_obj.$route.params.id
-                grant_info["title"] = $("#title_input").val()
-                grant_info["tag"] = $("#tag_input").val()
-                grant_info["short_desc"] = $("#short_desc_input").val()
-                grant_info["poster"] = $("#input_file").val().replace(/^.*[\\\/]/, '') 
-                grant_info["sub_title"] = $("#sub_title_input").val()
-                console.log(vue_obj.grant_info.business_period_start)
-                grant_info["start"] = vue_obj.grant_info.business_period_start.split("T")[0]
-                grant_info["end"] = vue_obj.grant_info.business_period_end.split("T")[0]
-                grant_info["location"] = $("#location").val()
-                grant_info["subject"] = vue_obj.grant_info.subject
-                grant_info["business_detail"] =  vue_obj.grant_info.business_detail
-                grant_info["step"] = "1"
-                
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_1/`, formData)
-                .then((result) => {  
-                    console.log(result)          
-                    var id= result.data.result;
-                    vue_obj.id = result.data.result;
-                    vue_obj.$router.push("/manager/make/grant/"+id+"/support_content")
-                })    
-            })
-
-
-              $(document).off("click","#apply_save")
-            $(document).on("click","#apply_save", function(){                
-                meta_val=[]
-                var formData = new FormData();
-                var file = document.querySelector('#input_file');
-                formData.append("file", file.files[0]);
-                var data={}
-                var grant_info ={}
-                grant_info["id"]=vue_obj.$route.params.id
-                grant_info["title"] = $("#title_input").val()
-                grant_info["tag"] = $("#tag_input").val()
-                grant_info["short_desc"] = $("#short_desc_input").val()
-                grant_info["poster"] = $("#input_file").val().replace(/^.*[\\\/]/, '') 
-                grant_info["sub_title"] = $("#sub_title_input").val()
-                console.log(vue_obj.grant_info.business_period_start)
-                grant_info["start"] = vue_obj.grant_info.business_period_start
-                grant_info["end"] = vue_obj.grant_info.business_period_end
-                grant_info["location"] = $("#location").val()
-                grant_info["subject"] = $("#subject").text()
-                grant_info["business_detail"] = $("#business_detail").text()
-                grant_info["step"] = "1"
-                
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_1/`, formData)
-                .then((result) => {  
-                    console.log(result)          
-                    var id= result.data.result;
-                    vue_obj.id = result.data.result;
-                    
-                })    
-            })
 
         })
     }

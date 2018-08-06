@@ -30,10 +30,10 @@ export default {
     },
     mounted:function(){
         var vue_obj=this
-        $(document).ready(function(){
+        
             $("#bottom_control").css("display","none")
             $("#navi_con").css("display","none")
-        })
+      
            vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result)

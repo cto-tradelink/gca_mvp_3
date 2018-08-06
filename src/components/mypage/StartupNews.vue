@@ -300,27 +300,15 @@ export default {
       
              console.log("news ready")
           
-            // $.ajax({
-            //     url: `/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
-            //     type:"get",
-            //     success:function(res){
-            //         console.log(res)
-            //         console.log("qwee")
-            //         console.log(vue_obj)
-            //         vue_obj.st = res 
-            //     },
-            // })
+         
         setTimeout(function(){
-             $.ajax({
-                url: `/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
-                type:"get",
-                success:function(res){
+            vue_obj.$http.get(`/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),).
+                then((res)=>{
                     console.log(res)
                     console.log("qwee")
                     console.log(vue_obj)
-                    vue_obj.st = res 
-                },
-            })
+                    vue_obj.st = res.data 
+             })
             },100)
          
             $(document).on("keyup","#add_news", function(e){

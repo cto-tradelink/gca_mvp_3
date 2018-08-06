@@ -1,7 +1,7 @@
 <template>
    
     <div id="clip_view">
-        <Header></Header>
+        <app-header></app-header>
         <Header2></Header2>
 
      
@@ -32,8 +32,7 @@
                 </div>
                      <div id="exp_con">
                         <div id="filter_p_con"  style="padding-top:24px;">
-                        <div class="filter_p" v-for="t in con.tag"># {{t}}</div>
-                        
+                        <div class="filter_p" v-for="t in con.tag"># {{t}}</div>                        
                     </div>
                     <div id="exp" style="padding-top:16px;margin-left:24px;">
                             <div class="sub_ttl">
@@ -62,13 +61,13 @@
 
 <script>
 import RecoClip from "./RecoClip.vue"
-import Header from "../../Common/Header.vue"
+import AppHeader from "../../Common/Header.vue"
 import Header2 from "./Common/HeaderClip.vue"
 
 
 export default {
     components:{
-        Header2, RecoClip,Header
+        Header2, RecoClip,AppHeader
     },
     data:function(){
         return{
@@ -103,84 +102,133 @@ export default {
         }
 
         function watch_clip_history(){
-            $.ajax({
-                url: "/vue_watch_clip_history/",
-                type:"post",
-                data:{
+            this.$http.post("/vue_watch_clip_history/",{
                     "id":localStorage.getItem("id"),
                     "val" : vue_obj.$route.params.id,                    
-                },
-                success:function(res){
-                    // 강의 수강 기록
+                } ).then((res)=>{
+
+                })
+
+            // $.ajax({
+            //     url: "/vue_watch_clip_history/",
+            //     type:"post",
+            //     data:{
+            //         "id":localStorage.getItem("id"),
+            //         "val" : vue_obj.$route.params.id,                    
+            //     },
+            //     success:function(res){
+            //         // 강의 수강 기록
                     
-                }
-            })
+            //     }
+            // })
         }
 
         $(document).ready(function(){
-            $.ajax({
-                url: "/vue_hit_clip_log/",
-                type:"post",
-                data:{
+
+            vue_obj.$http.post("/vue_hit_clip_log/",{
                     "id":localStorage.getItem("id"),
                     "val" : vue_obj.$route.params.id,                    
-                },
-                success:function(res){
-                    // 강의 수강 기록
-                }
-            })
+                } ).then((res)=>{
+
+                })
+            // $.ajax({
+            //     url: "/vue_hit_clip_log/",
+            //     type:"post",
+            //     data:{
+            //         "id":localStorage.getItem("id"),
+            //         "val" : vue_obj.$route.params.id,                    
+            //     },
+            //     success:function(res){
+            //         // 강의 수강 기록
+            //     }
+            // })
             
             $(document).off("click","#heart_con")
             $(document).on("click","#heart_con", function(){
                 console.log("here")
                 if($("#heart_con>img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 강의에서 삭제하시겠습니까?")){
-                        $.ajax({
-                            url:"/toggle_int_clip/",
-                            type:"post", 
-                            data:{
+                        
+                        vue_obj.$http.post("/toggle_int_clip/",{
                                 "id":localStorage.getItem("id"),
                                 "val":vue_obj.$route.params.id
-                            },
-                            success:function(res){
-                                alert("성공적으로 삭제 되었습니다.")
+                            } ).then((res)=>{
+                                           alert("성공적으로 삭제 되었습니다.")
                                 $("#heart_con>img").attr("src","/static/img/like_d.png")
                                 vue_obj.con.int =  parseInt(vue_obj.con.int)  - 1
-                            }
-                        })
+                            })
+
+                        // $.ajax({
+                        //     url:"/toggle_int_clip/",
+                        //     type:"post", 
+                        //     data:{
+                        //         "id":localStorage.getItem("id"),
+                        //         "val":vue_obj.$route.params.id
+                        //     },
+                        //     success:function(res){
+                        //         alert("성공적으로 삭제 되었습니다.")
+                        //         $("#heart_con>img").attr("src","/static/img/like_d.png")
+                        //         vue_obj.con.int =  parseInt(vue_obj.con.int)  - 1
+                        //     }
+                        // })
+                    
+                    
+
                     }
                 } else {
                     console.log("add")
-                    $.ajax({
-                        url:"/toggle_int_clip/",
-                        type:"post", 
-                        data:{
-                            "id":localStorage.getItem("id"),
-                            "val":vue_obj.$route.params.id
-                        },
-                        success:function(res){
-                            alert("성공적으로 등록 되었습니다.")
-                            $("#heart_con>img").attr("src","/static/img/like_p.png")
-                            vue_obj.con.int =  parseInt(vue_obj.con.int)  + 1
-                        }
-                    })
+
+                        vue_obj.$http.post("/toggle_int_clip/",{
+                                "id":localStorage.getItem("id"),
+                                "val":vue_obj.$route.params.id
+                            } ).then((res)=>{
+                                           alert("성공적으로 등록 되었습니다.")
+                                $("#heart_con>img").attr("src","/static/img/like_p.png")
+                                vue_obj.con.int =  parseInt(vue_obj.con.int)  + 1
+                            })
+
+
+                    // $.ajax({
+                    //     url:"/toggle_int_clip/",
+                    //     type:"post", 
+                    //     data:{
+                    //         "id":localStorage.getItem("id"),
+                    //         "val":vue_obj.$route.params.id
+                    //     },
+                    //     success:function(res){
+                    //         alert("성공적으로 등록 되었습니다.")
+                    //         $("#heart_con>img").attr("src","/static/img/like_p.png")
+                    //         vue_obj.con.int =  parseInt(vue_obj.con.int)  + 1
+                    //     }
+                    // })
                 }                
             })
 
-            $.ajax({
-                url:"/vue_get_clip/",
-                type:"POST",
-                data:{"id":vue_obj.$route.params.id, "user":localStorage.getItem("id")},
-                success:function(res){
-                    console.log(res)
-                    vue_obj.con = res
+            vue_obj.$http.post("/vue_get_clip/", {"id":vue_obj.$route.params.id, "user":localStorage.getItem("id")} )
+            .then((res)=>{
+                  console.log(res)
+                  console.log(res)
+                    vue_obj.con = res.data
                     // Load the IFrame Player API code asynchronously.
                     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-                    onYouTubePlayerAPIReady(res.youtube)
+                    onYouTubePlayerAPIReady(res.data.youtube)
                     // Replace the 'ytplayer' element with an <iframe> and
                     // YouTube player after the API code downloads.
-                }
             })
+            // $.ajax({
+            //     url:"/vue_get_clip/",
+            //     type:"POST",
+            //     data:{"id":vue_obj.$route.params.id, "user":localStorage.getItem("id")},
+            //     success:function(res){
+            //         console.log(res)
+            //         vue_obj.con = res
+            //         // Load the IFrame Player API code asynchronously.
+            //         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            //         onYouTubePlayerAPIReady(res.youtube)
+            //         // Replace the 'ytplayer' element with an <iframe> and
+            //         // YouTube player after the API code downloads.
+            //     }
+            // })
         })
     }
 }

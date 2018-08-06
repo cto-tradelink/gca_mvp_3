@@ -43,53 +43,48 @@ export default {
         if(confirm("페이지를 벗어나시겠습니까?")){
             next()
         }
-  },
- mounted:function(){
+    },
+    methods:{
+        apply_next:function(){
+            var formData = new FormData();
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            this.$http.post(`/vue_update_application/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            this.$router.push("/apply/"+this.$route.params.id+"/attached_file")
+        },
+        apply_prev:function(){
+            var formData = new FormData();
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            this.$http.post(`/vue_update_application/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            this.$router.push("/apply/"+this.$route.params.id+"/oversea_info")
+        },
+        apply_save:function(){
+            var formData = new FormData();
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            this.$http.post(`/vue_update_application/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+                })
+            alert("임시 저장하였습니다.")
+        }
+
+    },
+     mounted:function(){
         var vue_obj = this 
-        $(document).ready(function(){
-          vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+        vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result);
                    vue_obj.$props.startup = result.data
-                   }                      
-                   )
-     
-
-
-
-                $(document).off("click","#apply_next")
-                $(document).on("click","#apply_next", function () {
-                    var formData = new FormData();
-                    formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`/vue_update_application/`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                    })
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/attached_file")
-                })
-                $(document).on("click","#apply_prev", function () {
-                    var formData = new FormData();
-                    formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`/vue_update_application/`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                    })
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/oversea_info")
-                })
-                $(document).off("click","#apply_save")
-                $(document).on("click","#apply_save", function () {
-                    var formData = new FormData();
-                    formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`/vue_update_application/`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                    })
-                    alert("임시 저장하였습니다.")
-                })
-        })
+                   })
+        
     }
 }
 </script>

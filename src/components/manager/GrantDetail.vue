@@ -17,7 +17,7 @@
             </div>
             <div id="hr" style="overflow:auto">
                  <div id="export">공고문 내보내기 PDF</div>
-                <div id="show_static"  style="cursor:pointer">통계보기<i class="fas fa-chart-pie"></i></div>
+                <div id="show_static" @click="show_static"  style="cursor:pointer">통계보기<i class="fas fa-chart-pie"></i></div>
             </div>
             <div id="nav">
                 <ul>
@@ -30,7 +30,7 @@
             <div id="tbl_hd" style="margin-left:54px;">
             <div id="input_box"><input type="text"><i class="fas fa-search"></i></div>
            
-            <span id="list_excel">리스트 엑셀로 내보내기</span>
+            <span id="list_excel" @click="list_excel">리스트 엑셀로 내보내기</span>
             <div id="list_num_con">
                 <span id="list_10" class="list_num">10개 보기</span>
                 <span id="list_50" class="list_num">50개 보기</span>
@@ -175,27 +175,35 @@ export default {
             next()
         }
   },
+  methods:{
+        show_static:function(){
+            location.href = ("/manager/statics/by_grant/"+this.$route.params.id)
+        },
+        apply_next:function(){
+            var check_list = []
+            this.win_list = [] 
+            console.log( $("input:checked").length)
+            for(var k = 0 ; k< $("input:checked").length; k++){
+                for(var j=0; j < this.app_list.length; j++){
+                    console.log($("input:checked").eq(k).attr("data-id") )
+                    if(  $("input:checked").eq(k).attr("data-id") == this.app_list[j].id  ){
+                        this.win_list.push(this.app_list[j])
+                    }
+                }
+            }
+        },
+        list_excel:function(){
+            var id;
+            var target ;
+            id = $(".tbl_con").not(".hidden").find("table").attr("id")
+            var ee = excelExport(id).parseToCSV().parseToXLS("excelexport sheet");
+            location.href = ee.getXLSDataURI();
+        },
+  },
     mounted:function(){
         var vue_obj = this
         $(document).ready(function(){
-            $(document).off("click","#show_static")
-            $(document).on("click","#show_static", function(){
-                location.href = ("/manager/statics/by_grant/"+vue_obj.$route.params.id)
-            })  
-            $(document).on("click", "#apply_next", function(){
-                var check_list = []
-                vue_obj.win_list = [] 
-                console.log( $("input:checked").length)
-                for(var k = 0 ; k< $("input:checked").length; k++){
-                    for(var j=0; j < vue_obj.app_list.length; j++){
-                        console.log($("input:checked").eq(k).attr("data-id") )
-                        if(  $("input:checked").eq(k).attr("data-id") == vue_obj.app_list[j].id  ){
-                            vue_obj.win_list.push(vue_obj.app_list[j])
-                        }
-                    }
-                }
-            })  
-
+  
             $(document).on("click","#nav>ul>li", function(){
                 $("#nav>ul>li").removeClass("hover")
                 $(this).addClass("hover")
@@ -204,13 +212,6 @@ export default {
                 $( ".tbl_con[data-panel='"+target+"']" ).removeClass("hidden")
             })
 
-             $(document).on("click", "#list_excel", function(){                    
-                    var id;
-                    var target ;
-                    id = $(".tbl_con").not(".hidden").find("table").attr("id")
-                    var ee = excelExport(id).parseToCSV().parseToXLS("excelexport sheet");
-                    location.href = ee.getXLSDataURI();
-                })
 
             vue_obj.$http.get(`/vue_get_grant_appliance/?gr=`+vue_obj.$route.params.id)
             .then((result) => {            
@@ -220,19 +221,17 @@ export default {
 
 
             $("#gca_content").css("background-color","#fff")
-            $.ajax({
-                url:  "/vue_get_grant_detail?id="+vue_obj.$route.params.id,
-                type:"get",
-                success:function(re){
-                    console.log(re)
-                    console.log(eval(re.result))
-                    vue_obj.grant = eval(re.result)
-                    vue_obj.comp = (re.comp)
-                    vue_obj.int =  (re.int)
-                    vue_obj.view = (re.view)
-                    vue_obj.ap = (re.ap)
-                }
-            }) 
+  
+            vue_obj.$http.get( "/vue_get_grant_detail?id="+vue_obj.$route.params.id,)
+            .then((res)=>{
+              console.log(res.data)
+                    console.log(eval(res.data.result))
+                    vue_obj.grant = eval(res.data.result)
+                    vue_obj.comp = (res.data.comp)
+                    vue_obj.int =  (res.data.int)
+                    vue_obj.view = (res.data.view)
+                    vue_obj.ap = (res.data.ap)
+            })  
         })
     }
     

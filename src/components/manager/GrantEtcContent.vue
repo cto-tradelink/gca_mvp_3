@@ -156,59 +156,48 @@ export default {
                 save(this);
             }
       
-      this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
+        sthis.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
+        },
+        apply_save:function(){
+            var formData = new FormData();
+            var grant_info ={}
+            console.log(this)
+            grant_info["id"]=this.$route.params.id
+            grant_info["ceremony"]= $("#ceremony").val()
+            grant_info["faq"]= $("#faq").val()
+            grant_info["additional_faq"]= $("#additional_faq").val()
+            grant_info["etc"]= $("#etc").val()                
+            formData.append('json_data', JSON.stringify(grant_info));    
+            this.$http.post(`/vue_set_grant_6/`, formData)
+            .then((result) => {  
+                alert("저장하였습니다.")
+            })    
+        },
+        apply_next:function(){
+            var formData = new FormData();
+            var grant_info ={}
+            console.log(this)
+            grant_info["id"]=this.$route.params.id
+            grant_info["ceremony"]= $("#ceremony").val()
+            grant_info["faq"]= $("#faq").val()
+            grant_info["additional_faq"]= $("#additional_faq").val()
+            grant_info["etc"]= $("#etc").val()                
+            formData.append('json_data', JSON.stringify(grant_info));    
+            this.$http.post(`/vue_set_grant_6/`, formData)
+            .then((result) => {  
+                this.$router.push("/manager/make/grant/"+ this.$route.params.id +"/complete")
+            })  
         }
     },  
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
-
-             $.ajax({
-                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
-                    success:function(res){
-                        console.log("asdfasdf")
-                        console.log(res)
-                        vue_obj.grant_info = res
-                    }
-                })
-
-                
-            $("#gca_content").css("background-color","#fdfeff")
-            $(document).off("click","#apply_save")
-            $(document).on("click","#apply_save", function(){
-                    var formData = new FormData();
-                var grant_info ={}
-                console.log(vue_obj)
-                grant_info["id"]=vue_obj.$route.params.id
-                grant_info["ceremony"]= $("#ceremony").val()
-                grant_info["faq"]= $("#faq").val()
-                grant_info["additional_faq"]= $("#additional_faq").val()
-                grant_info["etc"]= $("#etc").val()                
-                
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_6/`, formData)
-                .then((result) => {  
-                    alert("저장하였습니다.")
-                })    
-            })
-            $(document).off("click","#apply_next")
-            $(document).on("click","#apply_next", function(){
-                    var formData = new FormData();
-                var grant_info ={}
-                console.log(vue_obj)
-                grant_info["id"]=vue_obj.$route.params.id
-                grant_info["ceremony"]= $("#ceremony").val()
-                grant_info["faq"]= $("#faq").val()
-                grant_info["additional_faq"]= $("#additional_faq").val()
-                grant_info["etc"]= $("#etc").val()                
-                
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_6/`, formData)
-                .then((result) => {  
-                    vue_obj.$router.push("/manager/make/grant/"+ vue_obj.$route.params.id +"/complete")
-                })    
-            })
-        })
+       
+        vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id)
+        .then((res)=>{
+            vue_obj.grant_info = res.data
+        })    
+        $("#gca_content").css("background-color","#fdfeff")       
+     
     }
 }
 </script>

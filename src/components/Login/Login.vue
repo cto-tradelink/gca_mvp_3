@@ -100,7 +100,7 @@ function get_sns_auth(token,sns,context){
         $("#ka_loading").removeClass("hidden")
     }
     var target = context
-    $.ajax({
+        $.ajax({
             method:"POST",
             url:`/vue_get_sns_auth/`,
             data: {
@@ -184,21 +184,13 @@ export default {
               var data = {
                   "type":"confirm",
                   "val":$("#email_add").val()
-              }         
-                $.ajax({
-                    url:`/cert_email/`,
-                    data:data,
-                    method:"post",
-                    success:function(res){
-                        console.log(res)
+              }    
+              vue_obj.$http.post(`/cert_email/`, vue_obj.qs(data)).then((res)=>{
+                      console.log(res.data)
                         $("tr.hidden").removeClass("hidden")
                         alert("이메일을 발송하였습니다.메일함을 확인해보세요.")
-                    },
-                    error:function(e){
-                        console.log(e)
-                        alert("서버와의 연결이 원활하지 않습니다. 잠시후에 다시 시도해주세요.")
-                    },
-                })
+              })              
+  
             })
             $(document).on("keyup","#pw1", function(){                
                 if($("#pw1").val() != $("#pw2").val()) {
@@ -250,25 +242,20 @@ export default {
                     "password":$("#pw1").val(),
                     "confirmation_code":$("#token").val()
                 }
-                $.ajax({
-                    url:`/vue_signup/`,
-                    data:data,
-                    method:"post",
-                    success:function(res){
+                
+                vue_obj.$http.post(`/vue_signup/`,vue_obj.qs(data)).then((res)=>{
                         console.log(res)
-                        if (res.result == "ok"){
-                            localStorage.setItem("id", res.id)
-                            localStorage.setItem("user", res.user)
+                        if (res.data.result == "ok"){
+                            localStorage.setItem("id", res.data.id)
+                            localStorage.setItem("user", res.data.user)
                             localStorage.setItem("login", true)       
                             vue_obj.$router.push("/")                     
                         }else{
                             alert("이미 가입되어있는 이메일 입니다.")
-                        }                        
-                    },
-                    error:function(e){
-                        console.log(e)
-                    },
-                })               
+                        }  
+                })
+
+                    
             })
              $(document).on("click","#cert_confirm", function(){
                 console.log("this")
@@ -276,14 +263,11 @@ export default {
                   "type":"confirm2",
                   "confirmation_code":$("#token").val(),
                   "target":$("#email_add").val()
-              }         
-                $.ajax({
-                    url:`/cert_email/`,
-                    data:data,
-                    method:"post",
-                    success:function(res){
-                        console.log(res)
-                        if(res=="ok"){
+              }      
+              
+              vue_obj.$http.post(`/cert_email/`, vue_obj.qs(data)).then((res)=>{
+                    console.log(res)
+                        if(res.data=="ok"){
                             confirm = true
                             $("#confirm").addClass("hidden")
                             alert("이메일이 인증되었습니다. 회원가입을 진행해주세요")
@@ -292,11 +276,8 @@ export default {
                             confirm= false
                             alert("인증코드를 바르게 입력해주세요.")
                         }
-                    },
-                    error:function(e){
-                        console.log(e)
-                    },
-                })
+              })
+
             })
         })
     }

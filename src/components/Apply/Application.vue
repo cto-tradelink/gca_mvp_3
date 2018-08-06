@@ -305,32 +305,24 @@ import jsPDF from 'jspdf'
 export default {
     props:["startup"],
     methods:{
-      
+        apply_next:function(){
+            this.$http.get(`/vue_submit_application/?id=`+localStorage.getItem("id")+`&gr=`+this.$route.params.id)
+            this.$router.push("/apply/"+this.$route.params.id+"/complete")
+        },  // 다음 버튼을 누른 경우 
+        apply_prev:function(){
+            this.$router.push("/apply/"+this.$route.params.id+"/attached_file")
+        },
     },
     mounted:function(){
         var vue_obj = this
-        var seg = $(".wr_con_1.seg").detach()
-        $(document).ready(function(){
-            vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
-            .then((result) => {            
-                   console.log(result);
-                   vue_obj.$props.startup = result.data
+        var seg = $(".wr_con_1.seg").detach()   
+        vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+        .then((result) => {            
+                console.log(result);
+                vue_obj.$props.startup = result.data
                 console.log(vue_obj.$props.startup)
-                   }                      
-                   )
-
-                $(document).off("click","#apply_next")
-                $(document).on("click","#apply_next", function () {
-                    vue_obj.$http.get(`/vue_submit_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/complete")
-                })
-                $(document).on("click","#apply_prev", function () {
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/attached_file")
-                })
-
-             
-        })
-    }
+            })
+        }
 }
 </script>
 

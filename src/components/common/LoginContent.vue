@@ -53,7 +53,7 @@
                         <input type="password" @keyup.enter="onSubmit" placeholder="비밀번호를 입력하세요" id="pw"  class="input_login"></td></tr>
                 </table>
                 <div id="error_span" class="hidden" style=" color:red ;margin-left: 155px;">아이디와 비밀번호가 일치하지않습니다.</div>
-                <div id="login_btn">로그인</div>
+                <div id="login_btn" @click="onSubmit">로그인</div>
                 <div id="hr"></div>
                 <div class="sns_seg"  v-on:click="loginwithfacebook" style="margin-top:40px; cursor:pointer;position:relative"><img src="/static/img/icon_facebook.png">페이스북계정 로그인<img  src="/static/img/loading2.gif" id="fb_loading" style="position:absolute; right:20px;;width:20px; height:20px;top:-2px;" class="hidden sns_loading" ></div>
                 <div class="sns_seg"  v-on:click="loginWithKakao" style=" cursor:pointer;position:relative"><img src="/static/img/icon_kakao.png">카카오계정 로그인<img  src="/static/img/loading2.gif" id="ka_loading"  style="position:absolute; right:20px;;width:20px; height:20px;top:-2px"  class="hidden sns_loading"></div>
@@ -76,14 +76,10 @@ function get_sns_auth(token,sns,context){
      if(sns == "kakao"){
         $("#ka_loading").removeClass("hidden")
     }
-    $.ajax({
-            method:"POST",
-            url:`/vue_get_sns_auth/`,
-            data: {
+    this.$http.post(`/vue_get_sns_auth/`, this.qs( {
             "token":  token ,
             "provider":sns                           
-            },
-                success:function(e){
+            })).then((res)=>{
                     console.log(e)
                     alert(e.name+"님 환영합니다.!")
                     localStorage.setItem("id",189)
@@ -91,9 +87,7 @@ function get_sns_auth(token,sns,context){
                     localStorage.setItem("user","u")
                     console.log(target)
                     window.location.reload()
-                    //context.$router.push("/")
                     $(".sns_loading").addClass("hidden")
-           }
             })
 }
 
@@ -101,20 +95,19 @@ function get_sns_auth(token,sns,context){
 export default {
     computed:{
         check_alarm:function(){
-              $.ajax({
-                    url:`/get_unread_alarm/?id=`+localStorage.getItem("id"),                   
-                    method:"GET",
-                    success:function(res){
-                        console.log("test")
-                        console.log(res)
-                        if (res.length.alarm_set ==0){
+             this.$http.get(`/get_unread_alarm/?id=`+localStorage.getItem("id"), )
+             .then((res)=>{
+                   console.log("test")
+                        console.log(res.data)
+                        if (res.data.length.alarm_set ==0){
                             return false;
                         }
                         else{
                             return true
                         }
-                    }
-                })
+             })
+
+
         }
     },
     methods:{
@@ -149,32 +142,30 @@ export default {
 
         onSubmit:function(){
             var vue_obj = this
- var data_1={
+            var data_1={
                     "username":$("#username").val(),
                     "password":$("#pw").val(),
                 }
                 console.log(data_1)
-                $.ajax({
-                    url:`/vue_login_user/`,
-                    data:data_1,
-                    method:"POST",
-                    success:function(res){
-                        console.log(res)
-                        if(res.user=="ma"){
+
+                this.$http.post(`/vue_login_user/`, this.qs(data_1))
+                .then(res=>{
+                          console.log(res.data)
+                        if(res.data.user=="ma"){
                             vue_obj.$router.push('/agent/dashboard')
-                             localStorage.setItem("id",res.id)
-                        localStorage.setItem("user",res.user)                        
+                             localStorage.setItem("id",res.data.id)
+                        localStorage.setItem("user",res.data.user)                        
                         localStorage.setItem("login",true)
                         }
-                        else if(res.user =="m"){
+                        else if(res.data.user =="m"){
                             vue_obj.$router.push('/manager/dashboard')
-                             localStorage.setItem("id",res.id)
-                        localStorage.setItem("user",res.user)                        
+                             localStorage.setItem("id",res.data.id)
+                        localStorage.setItem("user",res.data.user)                        
                         localStorage.setItem("login",true)
-                        }else if(res.user =="u"){
+                        }else if(res.data.user =="u"){
                             console.log("here")
-                                localStorage.setItem("id",res.id)
-                        localStorage.setItem("user",res.user)                        
+                                localStorage.setItem("id",res.data.id)
+                        localStorage.setItem("user",res.data.user)                        
                         localStorage.setItem("login",true)
                         
                             console.log("페이지 새로 고침")
@@ -183,13 +174,9 @@ export default {
                         }else{
                             $("#error_span").removeClass("hidden")
                         }
-                      
-                    }, 
-                    error:function(e){
-                        console.log(e)
-                        alert("서버와의 연결이 원활하지 않습니다. 잠시후에 다시 시도해주세요.")
-                    }
-                })    
+                })
+
+               
         },
     },
     mounted:function(){
@@ -252,48 +239,7 @@ export default {
             $(document).on("mouseleave", "#profile_popup_con", function(){
                 $("#profile_popup_con").addClass("hidden")
             })
-
-            $(document).off("click","#login_btn")
-            $(document).on("click","#login_btn", function(){
-                var data_1={
-                    "username":$("#username").val(),
-                    "password":$("#pw").val(),
-                }
-                console.log(data_1)
-                $.ajax({
-                    url:`/vue_login_user/`,
-                    data:data_1,
-                    method:"POST",
-                    success:function(res){
-                        console.log(res)
-                        if(res.user=="ma"){
-                            vue_obj.$router.push('/agent/dashboard')
-                             localStorage.setItem("id",res.id)
-                        localStorage.setItem("user",res.user)                        
-                        localStorage.setItem("login",true)
-                        }
-                        else if(res.user =="m"){
-                            vue_obj.$router.push('/manager/dashboard')
-                             localStorage.setItem("id",res.id)
-                        localStorage.setItem("user",res.user)                        
-                        localStorage.setItem("login",true)
-                        }else if(res.user =="u"){
-                            console.log("here")                                         
-                             localStorage.setItem("id",res.id)
-                        localStorage.setItem("user",res.user)                        
-                        localStorage.setItem("login",true)
-                        vue_obj.$router.push("/")
-                        window.location.reload();
-                        }else{
-                            $("#error_span").removeClass("hidden")
-                        }
-                      
-                    }, 
-                    error:function(e){
-                        console.log(e)
-                    }
-                })                
-            })
+          
             $(document).off("click", "#register_hd")
             $(document).on("click", "#register_hd", function(){
                 vue_obj.$router.push('/login')

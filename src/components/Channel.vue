@@ -175,40 +175,29 @@ export default {
                 else if(t == "course") {var url = "/toggle_int_course/"; var text="코스";}
                 else if(t == "clip") {var url = "/toggle_int_clip/"; var text="강의";}
                 else if(t == "startup") {var url = "/vue_toggle_interest_st/"; var text="스타트업";}
-                else if(t == "sp") {var url = "/vue_toggle_interest_sb/"; var text="지우너사업";}
+                else if(t == "sp") {var url = "/vue_toggle_interest_sb/"; var text="지원사업";}
                 
                 if($(this).find("img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 "+text+"에서 삭제하시겠습니까?")){
-                        $.ajax({
-                            url:url,
-                            type:"post", 
-                            data:{
+                        vue_obj.$http.post(url,vue_obj.qs({
                                 "id":localStorage.getItem("id"),
                                 "val":$(target).attr("data-id")
-                            },
-                            success:function(res){
+                            })).then((res)=>{
                                 alert("성공적으로 삭제 되었습니다.")
-                                $(target).find("img").attr("src","/static/img/like_d.png")
-                                                             
-                            }
-                        })
-                    }
+                                $(target).find("img").attr("src","/static/img/like_d.png")                                                             
+                            })
+                        }
                     }
                     else{
-                        $.ajax({
-                            url:url,
-                            type:"post", 
-                            data:{
-                                "id":localStorage.getItem("id"),
-                                "val":$(target).attr("data-id")
-                            },
-                            success:function(res){
-                                alert("성공적으로 등록 되었습니다.")
-                                 $(target).find("img").attr("src","/static/img/like_p.png")
-                              
-                            }
-                        })
-                    }                
+                        vue_obj.$http.post(url,vue_obj.qs({
+                        "id":localStorage.getItem("id"),
+                        "val":$(target).attr("data-id")
+                        }))
+                        .then((res)=>{
+                            alert("성공적으로 등록 되었습니다.")
+                        $(target).find("img").attr("src","/static/img/like_p.png")                                                             
+                    })                   
+                }                
             })
 
 

@@ -383,13 +383,12 @@ export default {
 $(document).ready(function(){
     init_zoomable_line()
     // 전체 패스와 코스 강의 데이터 받아오는 부분
-    $.ajax({
-        url:"/vue_get_statics_by_channel",
-        type:"get",
-        success:function(res){
-            console.log(res)
-            vue_obj.path_data = res.path.slice()
-        }
+    vue_obj.$http.get("/vue_get_statics_by_channel", ).then((res)=>{
+        vue_obj.path_data = res.data.path.slice()
+    })
+    
+       vue_obj.$http.get("/vue_get_channel_statics_path/?path_id=12", ).then((res)=>{
+        vue_obj.path_data = res.data.path.slice()
     })
 
     $.ajax({

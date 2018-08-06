@@ -29,18 +29,7 @@ export default {
     mounted:function(){
         var data= {"id": "84"}
         var vue_obj = this
-        $.ajax({
-            method:"post",
-            url: `/vue_get_agent_dashboard/`,
-            data: data,
-            success:function(res){
-                vue_obj.dashboard_list = $.extend(true, {}, res);
-            },
-            error:function(e){
-                console.log(e)
-            }
-        })
-
+        vue_obj.$http.post(`/vue_get_agent_dashboard/`,vue_obj.qs(data)).then((res)=>{  vue_obj.dashboard_list = $.extend(true, {}, res.data); })
     }
 }
 </script>

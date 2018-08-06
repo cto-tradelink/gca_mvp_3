@@ -258,20 +258,12 @@ export default {
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
         $(document).ready(function(){
-        $.ajax({
-            url:"/vue_get_manager_list/",
-            type:"post", 
-            data:{"id":localStorage.getItem("id"),},
-            success:function(res){
-                    console.log(res)            
-                    vue_obj.manager_list= res
-            
-            },
-            error:function(e){
-                console.log(e)
-                
-            }
-        })
+            vue_obj.$http.post("/vue_get_manager_list/", vue_obj.qs({"id":localStorage.getItem("id"),})).then((res)=>{
+                   console.log(res)            
+                    vue_obj.manager_list= res.data
+            })
+
+    
 
 
         vue_obj.$http.get(`/get_static_info/?id=`+86)

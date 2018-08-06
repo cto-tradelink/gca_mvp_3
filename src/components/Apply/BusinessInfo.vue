@@ -38,7 +38,7 @@
             
         </table>
             <div style="width:968px; height:1px; border-bottom:1px solid #e7edfc"></div>
-            <div  id="add_genre">추가하기</div>
+            <div :click="add_genre"  id="add_genre">추가하기</div>
 
             </div>
             <div id="wr_con_3">
@@ -68,7 +68,7 @@
         <div id="filter_panel">
             <div id="filter_panel_hd" style="width:100%; height:40px;line-height:40px; background-color: #e7edfc;">
                 <span style="display:inline-block;line-height:40px;margin-left:16px;font-size:12px;">필터선택</span>
-                <span id="x_btn" style="float:right; margin-right:10px;cursor:pointer">X</span></div>
+                <span id="x_btn" :click="close" style="float:right; margin-right:10px;cursor:pointer">X</span></div>
         <table style="border-collapse:collapse; width:890px">
             <tr>
                 <td id="f_col" class="col_name sel_0" style="height:121px; padding-left: 58px;  padding-top: 18px;">
@@ -76,7 +76,7 @@
                         <div></div>
                         기본장르
                     </div><br>                
-                    <span class="filter filter_up" v-for="t in filter_table_item.base">{{t}}</span>
+                    <span class="filter filter_up" :click="filter_up($event)" v-for="t in filter_table_item.base">{{t}}</span>
                 </td>
             </tr>
             <tr>
@@ -86,12 +86,12 @@
                         영역
                     </div>                                 
                     <ul id="f_li">
-                        <li><span class="filter_ttl">창작</span> <span class="filter filter_do"  v-for="t in filter_table_item.create">{{t}}</span></li>
-                        <li><span class="filter_ttl">IT 관련</span> <span class="filter filter_do" v-for="t in filter_table_item.it">{{t}}</span></li>
-                        <li><span class="filter_ttl">창업</span> <span class="filter filter_do" v-for="t in filter_table_item.startup">{{t}}</span></li>
-                        <li><span class="filter_ttl">제조/융합</span> <span class="filter filter_do" v-for="t in filter_table_item.manufacture">{{t}}</span></li>
-                        <li  style="clear:left"><span class="filter_ttl">신규산업</span> <span class="filter filter_do" v-for="t in filter_table_item.new">{{t}}</span></li>
-                        <li><span class="filter_ttl">기타</span> <span class="filter filter_do" v-for="t in filter_table_item.etc">{{t}}</span></li>
+                        <li><span class="filter_ttl">창작</span> <span class="filter filter_do"  :click="filter_do($event)" v-for="t in filter_table_item.create">{{t}}</span></li>
+                        <li><span class="filter_ttl">IT 관련</span> <span class="filter filter_do" :click="filter_do($event)"  v-for="t in filter_table_item.it">{{t}}</span></li>
+                        <li><span class="filter_ttl">창업</span> <span class="filter filter_do" :click="filter_do($event)"  v-for="t in filter_table_item.startup">{{t}}</span></li>
+                        <li><span class="filter_ttl">제조/융합</span> <span class="filter filter_do" :click="filter_do($event)"  v-for="t in filter_table_item.manufacture">{{t}}</span></li>
+                        <li  style="clear:left"><span class="filter_ttl">신규산업</span> <span class="filter filter_do"  :click="filter_do($event)" v-for="t in filter_table_item.new">{{t}}</span></li>
+                        <li><span class="filter_ttl">기타</span> <span class="filter filter_do" :click="filter_do($event)"  v-for="t in filter_table_item.etc">{{t}}</span></li>
                     </ul>
                 </td>
             </tr>
@@ -129,139 +129,131 @@ export default {
         }
     },
     methods:{
-       make_hash_string:function(e){
+        make_hash_string:function(e){
             this.utils.make_hash_string(e)
-       },
-      
-    },
-    
-    mounted:function(){
-        var vue_obj = this
-        $(document).ready(function(){
-
-              $(document).on("keyup","#tag_input", function(){
-                
-            })
-
-            $(document).on("click","#add_genre", function(){
-                $("#filter_popup").removeClass("hidden")
-                 $("#back_layer").removeClass("hidden")
-                $("#back_layer").css("position","fixed")                
-                $("#back_layer").css("width",$(window).width())
-                $("#back_layer").css("height",$(window).height())
-                $("#back_layer").css("top","0")
-                $("#back_layer").css("left","0")
-            })
-
-            $(document).on("click","#x_btn", function(){
-                $("#filter_popup").addClass("hidden")
-                 $("#back_layer").addClass("hidden")
-           
-            })
-
-
-              vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
-            .then((result) => {            
-                   console.log(result)
-                   vue_obj.$props.startup = result.data
-                for(var k =0 ; k < vue_obj.$props.startup.tag.length; k++ ){
-                    $(".filter:contains("+vue_obj.$props.startup.tag[k]+")").addClass("on")
-                    if($(".filter:contains("+vue_obj.$props.startup.tag[k]+")").parent().hasClass("sel_0")){
-                          vue_obj.sel_tag_0.push(vue_obj.$props.startup.tag[k])
-                    }else{
-                          vue_obj.sel_tag_1.push(vue_obj.$props.startup.tag[k])
-                    }
-                }
-            })
-                $(document).off("click",".filter_up")
-                $(document).on("click",".filter_up",function(){                               
-                    
-                    if($(this).hasClass("on")){                     
-                        $(this).removeClass("on")
-                        vue_obj.sel_tag_0.splice( vue_obj.sel_tag_0.indexOf($(this).text().trim()),1)
-                    }else{
-                        $(this).addClass("on")
-                        vue_obj.sel_tag_0.push($(this).text().trim())
-                    }                    
+        },
+        close:function(){
+            $("#filter_popup").addClass("hidden")
+            $("#back_layer").addClass("hidden")
+        },
+        add_genre:function(){
+            $("#filter_popup").removeClass("hidden")
+            $("#back_layer").removeClass("hidden")
+            $("#back_layer").css("position","fixed")                
+            $("#back_layer").css("width",$(window).width())
+            $("#back_layer").css("height",$(window).height())
+            $("#back_layer").css("top","0")
+            $("#back_layer").css("left","0")
+        },
+        apply_next:function(){
+            var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
+            for(var k =0; k < $(".filter.on").length; k++){
+                this.$props.startup.tag.push($(".filter.on:eq("+k+")").text())
+            }// 태그 리스트 회사 정보에 저장
+            if(result == true){
+                var formData = new FormData();
+                formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                this.$http.post(`/vue_update_startup_with_application_2/`,formData)
+                .then((result) => {            
+                    console.log(result)
                 })
-
-                $(document).off("click",".filter_do")
-                $(document).on("click",".filter_do",function(){                               
-                    
-                    if($(this).hasClass("on")){                     
-                        $(this).removeClass("on")
-                        vue_obj.sel_tag_1.splice( vue_obj.sel_tag_1.indexOf($(this).text().trim()),1)
-                    }else{
-                        $(this).addClass("on")
-                        vue_obj.sel_tag_1.push($(this).text().trim())
-                    }                    
-                })
-
-            $(document).off("click","#apply_save" )            
-            $(document).on("click","#apply_save", function(){
-                  for(var k =0; k < $(".filter.on").length; k++){
-                        vue_obj.$props.startup.tag.push($(".filter.on:eq("+k+")").text())
-                    }// 태그 리스트 회사 정보에 저장
-                    var formData = new FormData();
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
+            }                
+            var formData = new FormData();
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            this.$http.post(`/vue_update_application/`, formData, {
+            headers: {
+            'Content-Type': 'multipart/form-data'
+            }
+            })               
+            this.$router.push("/apply/"+this.$route.params.id+"/startup_info")
+        },
+        filter_up:function(e){
+            if($(e.target).hasClass("on")){                     
+                $(e.target).removeClass("on")
+                this.sel_tag_0.splice( this.sel_tag_0.indexOf($(e.target).text().trim()),1)
+            }else{
+                $(e.target).addClass("on")
+                this.sel_tag_0.push($(e.target).text().trim())
+            }    
+        },
+        filter_do(e){
+            if($(e.target).hasClass("on")){                     
+                $(e.target).removeClass("on")
+                this.sel_tag_1.splice( this.sel_tag_1.indexOf($(e.target).text().trim()),1)
+            }else{
+                $(e.target).addClass("on")
+                this.sel_tag_1.push($(e.target).text().trim())
+            }
+        },
+        apply_save:function(){
+            for(var k =0; k < $(".filter.on").length; k++){
+                    this.$props.startup.tag.push($(".filter.on:eq("+k+")").text())
+            }// 태그 리스트 회사 정보에 저장
+                var formData = new FormData();
+                formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                this.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
                 })
-                alert("저장되었습니다.")          
-            })
-
-                $(document).off("click","#apply_next")
-                $(document).on("click","#apply_next", function () {
-                var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
+            alert("저장되었습니다.")    
+        },
+        apply_next:function(){
+            var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
                  for(var k =0; k < $(".filter.on").length; k++){
-                        vue_obj.$props.startup.tag.push($(".filter.on:eq("+k+")").text())
+                        this.$props.startup.tag.push($(".filter.on:eq("+k+")").text())
                     }// 태그 리스트 회사 정보에 저장
                  if(result == true){
                       var formData = new FormData();
-                        formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`/vue_update_startup_with_application_2/`,formData)
+                        formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                        this.$http.post(`/vue_update_startup_with_application_2/`,formData)
                         .then((result) => {            
                             console.log(result)
                         })
                 }                
                 var formData = new FormData();
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
+                formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                this.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
                 })               
-                vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/startup_info")
+            this.$router.push("/apply/"+this.$route.params.id+"/startup_info")
+        },
+        apply_prev:function(){
+            var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
+            if(result == true){
+                var formData = new FormData();
+                formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                this.$http.post(`/vue_update_startup_with_application_2/`, formData)
+                .then((result) => {
+                    console.log(result)
                 })
-                $(document).off("click","#apply_prev")
-                $(document).on("click","#apply_prev", function () {
-                       var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
-                      if(result == true){
-                     var formData = new FormData();
-                        formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`/vue_update_startup_with_application_2/`, formData)
-                        .then((result) => {
-                            console.log(result)
-                        })
-                    }
-                    else{
-                    } 
-
-                     var formData = new FormData();
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
+            }                    
+            var formData = new FormData();
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+               this.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
                 })
-
-                vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/base_info")
-                })
-                     
-        
-
+                this.$router.push("/apply/"+this.$route.params.id+"/base_info")
+        },
+    },
+    mounted:function(){
+        var vue_obj = this
+        vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+        .then((result) => {            
+                console.log(result)
+                vue_obj.$props.startup = result.data
+            for(var k =0 ; k < vue_obj.$props.startup.tag.length; k++ ){
+                $(".filter:contains("+vue_obj.$props.startup.tag[k]+")").addClass("on")
+                if($(".filter:contains("+vue_obj.$props.startup.tag[k]+")").parent().hasClass("sel_0")){
+                        vue_obj.sel_tag_0.push(vue_obj.$props.startup.tag[k])
+                }else{
+                        vue_obj.sel_tag_1.push(vue_obj.$props.startup.tag[k])
+                }
+            }
         })
     }
 }

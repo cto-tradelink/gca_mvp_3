@@ -28,7 +28,7 @@
                     <tr>
                         <td style="vertical-align:top; padding-top:16px;">진출현황<br><span class="text_num">최대 1000자 내외</span></td>
                         <td>
-                            <textarea >{{oversea.content}}</textarea>
+                            <textarea v-model="oversea.content"></textarea>
                         </td>
                     </tr>                                    
                 </table>
@@ -40,12 +40,46 @@
 export default {
     props:["startup"],
     methods:{
+        apply_save:function(){
+            var formData = new FormData();               
+            if( $("#nation").val().trim() != ""  && $("textarea").val().trim()!="" ){
+                this.$props.startup.oversea.push({
+                    "content": $("textarea").val().trim(),"nation":$("#nation").val().trim()
+                    })
+                }               
+                formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                this.$http.post(`/vue_update_application/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+                }).then((result)=>{
+                    alert("임시 저장되었습니다.")
+                })    
+        },
         add_oversea:function(e){
             this.$props.startup.oversea.unshift(
                 {"nation": $("#nation").val() , "content":$("#text").val() }
             )
             $("#nation").val("")
             $("#text").val("")
+        },
+        apply_next:function(){
+            var formData = new FormData();
+            if( $("#nation").val().trim() != ""  && $("textarea").val().trim()!="" ){
+                this.$props.startup.oversea.push({
+                    "content": $("textarea").val().trim(),"nation":$("#nation").val().trim()
+                })
+            }
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            this.$http.post(`/vue_update_application/`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+            })
+            this.$router.push("/apply/"+this.$route.params.id+"/startup_intro")
+        },
+        apply_prev:function(){
+            vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/startup_info")
         }
     }, 
      beforeRouteLeave (to, from, next) {
@@ -55,57 +89,10 @@ export default {
   },
     mounted:function(){
         var vue_obj = this
-         $(document).ready(function(){     
-
-            vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
-            .then((result) => {            
-                   console.log(result);
-                   vue_obj.$props.startup = result.data
-                   }                      
-                   )
-
-            $(document).off("click","#apply_next")
-                $(document).on("click","#apply_next", function () {
-                    var formData = new FormData();
-                       console.log($("#nation").val().trim())
-                console.log($("textarea").val().trim())
-                if( $("#nation").val().trim() != ""  && $("textarea").val().trim()!="" ){
-                    vue_obj.$props.startup.oversea.push({
-                        "content": $("textarea").val().trim(),"nation":$("#nation").val().trim()
-                    })
-                }
-                    formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                    vue_obj.$http.post(`/vue_update_application/`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                    })
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/startup_intro")
-                })
-                $(document).on("click","#apply_prev", function () {
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/startup_info")
-                })
-
-
-                $(document).off("click","#apply_save" )            
-                $(document).on("click","#apply_save", function(){
-                var formData = new FormData();               
-         
-                if( $("#nation").val().trim() != ""  && $("textarea").val().trim()!="" ){
-                    vue_obj.$props.startup.oversea.push({
-                        "content": $("textarea").val().trim(),"nation":$("#nation").val().trim()
-                    })
-                }               
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-                }).then((result)=>{
-                    alert("임시 저장되었습니다.")
-                })                
-            })
+        vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+        .then((result) => {            
+                console.log(result);
+                vue_obj.$props.startup = result.data
         })
     }
 }

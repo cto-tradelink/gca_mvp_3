@@ -48,13 +48,13 @@
                 <div id="page_title">제출서류</div>              
                  <div class="grant_info_con">
                     <div class="grant_info_title">제출서류 </div>
-                     <span class="file" meta-data ="file_0">사업계획서</span>
-                     <span class="file" meta-data ="file_1">사업자등록증</span>
-                     <span class="file" meta-data ="file_2">지방세/국세납입증</span>
-                     <span class="file" meta-data ="file_3">투자 유치 증빙서류</span>
-                     <span class="file" meta-data ="file_4">발표심사 PPT</span>
+                     <span class="file" @click="file($event)" meta-data ="file_0">사업계획서</span>
+                     <span class="file" @click="file($event)"  meta-data ="file_1">사업자등록증</span>
+                     <span class="file" @click="file($event)"  meta-data ="file_2">지방세/국세납입증</span>
+                     <span class="file" @click="file($event)"  meta-data ="file_3">투자 유치 증빙서류</span>
+                     <span class="file" @click="file($event)"  meta-data ="file_4">발표심사 PPT</span>
                      <span id="etc" meta-data ="file_5" style="margin-right:0px;">
-                         <input id="etc_file" type="checkbox" >
+                         <input id="etc_file" @click="etc_file($event)" type="checkbox" >
                          <span id="etc_text">기타</span>
                          <input type="file" id="file" class="hidden" style="width:164px;">
                          </span>
@@ -142,77 +142,61 @@ export default {
             }
       
       this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
-        }
+        },
+        etc_file:function(e){
+            if($(e.target).is(":checked")){
+                $("#etc_text").addClass("hidden")
+                $("#file").removeClass("hidden")
+            }else{
+                $("#etc_text").removeClass("hidden")
+                $("#file").addClass("hidden")
+            }
+        },
+        file:function(e){
+            if( $(e.target).hasClass("hover")) $(e.target).removeClass("hover")
+            else $(e.target).addClass("hover")
+        },
+        apply_next:function(){
+            var file_arr=[]
+            $(".file.hover").each(function(){
+                file_arr.push($(this).text())
+            })
+            if( $("input:checked").length == 1 ) file_arr.push("file_5")
+            var formData = new FormData();
+            var grant_info ={}
+            grant_info["id"]=this.$route.params.id
+            grant_info["file_list"]= file_arr
+            formData.append('json_data', JSON.stringify(grant_info));    
+            this.$http.post(`/vue_set_grant_5/`, formData)
+            .then((result) => {            
+                this.$router.push("/manager/make/grant/"+ this.$route.params.id +"/etc")
+            })
+        },
+        apply_save:function(){
+            var file_arr=[]
+            $(".file.hover").each(function(){
+                file_arr.push($(this).text())
+            })
+            if( $("input:checked").length == 1 ) file_arr.push("file_5")
+            var formData = new FormData();
+            var grant_info ={}
+            grant_info["id"]=this.$route.params.id
+            grant_info["file_list"]= file_arr
+            formData.append('json_data', JSON.stringify(grant_info));    
+            this.$http.post(`/vue_set_grant_5/`, formData)
+            .then((result) => {            
+                alert("저장되었습니다.")
+            })
+        },
     },  
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
-
-                $.ajax({
-                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
-                    success:function(res){
-                        vue_obj.grant_info = res
-                        for (var k=0; k < vue_obj.grant_info.meta_file_info.length; k++){
-                            $(".file:contains('"+vue_obj.grant_info.meta_file_info[k]+"')").addClass("hover")
-                        }
-                    }
-                })
-
-            $(document).on("click","#etc_file", function(){
-                if($(this).is(":checked")){
-                    $("#etc_text").addClass("hidden")
-                    $("#file").removeClass("hidden")
-                }else{
-                    $("#etc_text").removeClass("hidden")
-                    $("#file").addClass("hidden")
-                }
-            })
-            $("#gca_content").css("background-color","#fdfeff")
-            $(document).off("click", ".file")
-            $(document).on("click", ".file", function(){
-                if( $(this).hasClass("hover")) $(this).removeClass("hover")
-                else $(this).addClass("hover")
-            })
-
-
-            $(document).off("click","#apply_next")
-            $(document).on("click","#apply_next", function(){
-                var file_arr=[]
-                $(".file.hover").each(function(){
-                    file_arr.push($(this).text())
-                })
-                if( $("input:checked").length == 1 ) file_arr.push("file_5")
-                var formData = new FormData();
-                var grant_info ={}
-                grant_info["id"]=vue_obj.$route.params.id
-                grant_info["file_list"]= file_arr
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_5/`, formData)
-                .then((result) => {            
-                        vue_obj.$router.push("/manager/make/grant/"+ vue_obj.$route.params.id +"/etc")
-                })
-            })
-
-            $(document).off("click","#apply_save")
-            $(document).on("click","#apply_save", function(){
-                var file_arr=[]
-                $(".file.hover").each(function(){
-                    file_arr.push($(this).text())
-                })
-                if( $("input:checked").length == 1 ) file_arr.push("file_5")
-                var formData = new FormData();
-                var grant_info ={}
-                grant_info["id"]=vue_obj.$route.params.id
-                grant_info["file_list"]= file_arr
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_5/`, formData)
-                .then((result) => {            
-                       alert("저장되었습니다.")
-                })
-            })
-
-
-
+        vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id,)
+        .then((res)=>{
+            vue_obj.grant_info = res
+            for (var k=0; k < vue_obj.grant_info.meta_file_info.length; k++){
+                $(".file:contains('"+vue_obj.grant_info.meta_file_info[k]+"')").addClass("hover")
+            }
         })
     }
 }

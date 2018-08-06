@@ -34,23 +34,13 @@ export default {
             var data={
                 "id":localStorage.getItem("id")
                 }   
-            $.ajax({
-                url:  "/get_startup_application/",
-                type:"post",
-                data:{"id":localStorage.getItem("id")},
-                success:function(res){
-                    console.log(res)
-                    console.log("======================")
-                    vue_obj.comp = res.comp.slice()
-                    vue_obj.inte = res.interest.slice()
-                    vue_obj.writing = res.writing.slice()
-                    vue_obj.end = res.comp.slice()
-                   
-                }
+            vue_obj.$http.post("/get_startup_application/", vue_obj.qs(qs))
+            .then((res)=>{
+                    vue_obj.comp = res.data.comp.slice()
+                    vue_obj.inte = res.data.interest.slice()
+                    vue_obj.writing = res.data.writing.slice()
+                    vue_obj.end = res.data.comp.slice()
             })
-    
-           
-    
     }
 }
 </script>

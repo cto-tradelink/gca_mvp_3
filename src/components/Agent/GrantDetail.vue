@@ -182,18 +182,14 @@ export default {
                       $("#bottom_control").css("bottom", "0px")
                       }
             })
-            $.ajax({
-                url:  "/vue_get_grant_detail?id="+vue_obj.$route.params.id,
-                type:"get",
-                success:function(re){
-                    console.log(re)
-                    console.log(eval(re.result))
-                    vue_obj.grant = eval(re.result)
-                    vue_obj.comp = (re.comp)
-                    vue_obj.int =  (re.int)
-                    vue_obj.view = (re.view)
-                    vue_obj.ap = (re.ap)
-                }
+
+            vue_obj.$http.get( "/vue_get_grant_detail?id="+vue_obj.$route.params.id,)
+            .then((res)=>{
+                    vue_obj.grant = eval(res.data.result)
+                    vue_obj.comp = (res.data.comp)
+                    vue_obj.int =  (res.data.int)
+                    vue_obj.view = (res.data.view)
+                    vue_obj.ap = (res.data.ap)
             })
         })
     }    

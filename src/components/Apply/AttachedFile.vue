@@ -37,75 +37,71 @@
 <script>
 export default {
     props:["startup"],
-      beforeRouteLeave (to, from, next) {
+    beforeRouteLeave (to, from, next) {
         if(confirm("페이지를 벗어나시겠습니까?")){
             next()
+        }
+    },
+    methods:{
+        apply_next:function(){
+            var formData = new FormData();
+            var file5 = document.querySelector('#patent');
+            var file6 = document.querySelector('#business_file');
+            var file7 = document.querySelector('#service_intro');
+            var file8 = document.querySelector('#paper');
+            formData.append("file_5", file5.files[0]);
+            formData.append("file_6", file6.files[0]);
+            formData.append("file_7", file7.files[0]);
+            formData.append("file_8", file8.files[0]);
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            console.log(this.$props.startup)
+            this.$http.post(`/vue_update_application/`, formData, {
+            headers: {'Content-Type': 'multipart/form-data' }
+            })
+            this.$router.push("/apply/"+this.$route.params.id+"/application")
+        },
+        apply_prev(){
+            var formData = new FormData();
+            var file5 = document.querySelector('#patent');
+            var file6 = document.querySelector('#business_file');
+            var file7 = document.querySelector('#service_intro');
+            var file8 = document.querySelector('#paper');
+            formData.append("file_5", file5.files[0]);
+            formData.append("file_6", file6.files[0]);
+            formData.append("file_7", file7.files[0]);
+            formData.append("file_8", file8.files[0]);
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            console.log(this.$props.startup)
+            this.$http.post(`/vue_update_application/`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+            })
+            this.$router.push("/apply/"+this.$route.params.id+"/startup_intro")
+        },
+        apply_save:function(){
+            var formData = new FormData();
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            console.log(this.$props.startup)
+            this.$http.post(`/vue_update_application/`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+            }).then((result)=>{
+                alert(" 저장되었습니다.")
+                this.$router.push("/apply/"+this.$route.params.id+"/application")
+            })    
         }
     },
     mounted:function(){
         var vue_obj = this
         var seg = $(".wr_con_1.seg").detach()
-        $(document).ready(function(){
-            vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
-                .then((result) => {            
-                    console.log(result);
-                    vue_obj.$props.startup = result.data
-                    console.log(vue_obj.$props.startup)
-                })
-            $(document).off("click","#apply_next")
-                $(document).on("click","#apply_next", function () {
-                var formData = new FormData();
-                var file5 = document.querySelector('#patent');
-                var file6 = document.querySelector('#business_file');
-                var file7 = document.querySelector('#service_intro');
-                var file8 = document.querySelector('#paper');
-                formData.append("file_5", file5.files[0]);
-                formData.append("file_6", file6.files[0]);
-                formData.append("file_7", file7.files[0]);
-                formData.append("file_8", file8.files[0]);
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {'Content-Type': 'multipart/form-data' }
-                })
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/application")
-                })
-                $(document).on("click","#apply_prev", function () {                    
-                    var formData = new FormData();
-                    var file5 = document.querySelector('#patent');
-                    var file6 = document.querySelector('#business_file');
-                    var file7 = document.querySelector('#service_intro');
-                    var file8 = document.querySelector('#paper');
-                    formData.append("file_5", file5.files[0]);
-                    formData.append("file_6", file6.files[0]);
-                    formData.append("file_7", file7.files[0]);
-                    formData.append("file_8", file8.files[0]);
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-                })
-                vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/startup_intro")
-                })
-                  $(document).off("click","#apply_save" )            
-                $(document).on("click","#apply_save", function(){
-                var formData = new FormData();
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-                }).then((result)=>{
-                    alert(" 저장되었습니다.")
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/application")
-                })             
-              
-            })
-
-        })
+        vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
+        .then((result) => {            
+            console.log(result);
+            vue_obj.$props.startup = result.data
+            console.log(vue_obj.$props.startup)
+    })
     }
 }
 </script>

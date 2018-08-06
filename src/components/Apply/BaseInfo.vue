@@ -85,14 +85,14 @@ export default {
                    vue_obj.startup.mark_name =   vue_obj.startup.repre_name
                 } 
             })   
-             $(document).off("keyup",".same_1")
-             $(document).on("keyup",".same_1", function(){
+            $(document).off("keyup",".same_1")
+            $(document).on("keyup",".same_1", function(){
                 if( $("#checkbox2").is(":checked")){
                  vue_obj.startup.mark_tel =   vue_obj.startup.repre_tel
                 } 
             })   
-             $(document).off("keyup",".same_2")
-             $(document).on("keyup",".same_2", function(){
+            $(document).off("keyup",".same_2")
+            $(document).on("keyup",".same_2", function(){
                 if( $("#checkbox2").is(":checked")){
                    vue_obj.startup.mark_email =   vue_obj.startup.repre_email
                 } 
@@ -101,8 +101,6 @@ export default {
             .then((result)=>{
                 console.log(result)
             })    
-
-
             vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
             .then((result) => {            
                    console.log(result)
@@ -123,62 +121,59 @@ export default {
                 $(".same_2:eq(1)").val( $(".same_2:eq(0)").val() )
                 }
             })
-            $(document).off("click","#apply_save" )            
-            $(document).on("click","#apply_save", function(){
-                var formData = new FormData();
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-                }).then((result)=>{
-                    alert("임시 저장되었습니다.")
-                })                
-            })
-            $(document).off("click","#apply_next")
-            $(document).on("click","#apply_next", function () {
-                var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
-                if(result == true){
-                      var formData = new FormData();
-                        formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`/vue_update_startup_with_application_1/`, formData)
-                        .then((result) => {            
-                            console.log(result)
-                        })
-                }
-                 var formData = new FormData();
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {
-                'Content-Type': 'multipart/form-data'
-                }
-                }).then( (result) =>{
-                    console.log(result)
-                } )
-                vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/business_info")
-            })
-
         })
     },
     methods:{
-          sample5_execDaumPostcode :function () {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                var fullAddr = data.address; // 최종 주소 변수
-                var extraAddr = ''; // 조합형 주소 변수
-                if(data.addressType === 'R'){
-                    if(data.bname !== ''){
-                        extraAddr += data.bname;
-                    }
-                    if(data.buildingName !== ''){
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
-                }
-                vue_obj.$props.startup.location_1 = fullAddr           
+        apply_save:function(){
+            var formData = new FormData();
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            console.log(this.$props.startup)
+            this.$http.post(`/vue_update_application/`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
             }
-        }).open();
+            }).then((result)=>{
+                alert("임시 저장되었습니다.")
+            })   
+        },
+        apply_next:function(){
+            var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
+            if(result == true){
+                var formData = new FormData();
+                formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                this.$http.post(`/vue_update_startup_with_application_1/`, formData)
+                .then((result) => {            
+                    console.log(result)
+                })
+            }
+            var formData = new FormData();
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            this.$http.post(`/vue_update_application/`, formData, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            }).then( (result) =>{
+                console.log(result)
+            } )
+            this.$router.push("/apply/"+this.$route.params.id+"/business_info")
+        },
+        sample5_execDaumPostcode :function () {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var fullAddr = data.address; // 최종 주소 변수
+                    var extraAddr = ''; // 조합형 주소 변수
+                    if(data.addressType === 'R'){
+                        if(data.bname !== ''){
+                            extraAddr += data.bname;
+                        }
+                        if(data.buildingName !== ''){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                    }
+                    vue_obj.$props.startup.location_1 = fullAddr           
+                }
+            }).open();
         }
     }
 }

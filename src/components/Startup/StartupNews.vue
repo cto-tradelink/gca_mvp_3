@@ -359,13 +359,11 @@ export default {
           $(document).on("click","#pop_submit", function(){
                 var url_id = youtubeId($("#link_input").val())
                 $("#youtube_id").val(url_id);
-                 $.ajax({
-            url:'https://www.googleapis.com/youtube/v3/videos?id='+url_id+'&part=contentDetails&key=AIzaSyDQt1e_0DUVFiR8288ALtZWyVRlad45-Rc',
-            type:"get",
-            success:function(res){
-                console.log(res)
+                vue_obj.$http.get('https://www.googleapis.com/youtube/v3/videos?id='+url_id+'&part=contentDetails&key=AIzaSyDQt1e_0DUVFiR8288ALtZWyVRlad45-Rc',)
+                .then((res)=>{
+                    console.log(res)
                 alert("영상이 정상 등록되었습니다.");
-                console.log(res.items[0].contentDetails.duration)
+                console.log(res.data.items[0].contentDetails.duration)
                 var img ='https://img.youtube.com/vi/'+url_id+'/0.jpg'
                 $("#pre_img2").attr("src", img)
                 $("#pre_img2").removeClass("hidden")                
@@ -376,8 +374,8 @@ export default {
                  $("#back_layer").css("height",0)
                  $("#back_layer").css("top","0px")
                  $("#back_layer").css("left","0px")
-                }
-        })
+                })
+ 
     })
             $(document).on("click",".rep_con", function(){
                 $(this).parent().parent().find(".reply_con").addClass("show")

@@ -2,7 +2,7 @@
     <div class="card_without_poster_con ">
        <router-link :to="'/grant/'+item.id">
         <div class="card_top">
-            <div class="titlew" >{{item.title}}</div>
+            <div class="title" @click="titleClick($event)" >{{item.title}}</div>
             <div class="grant_sub_info">
             <div class="due">{{item.due.split("-")[0]}}년 {{item.due.split("-")[1]}}월 {{item.due.split("-")[2].split("T")[0]}}일 까지</div>
             <div class="int hidden" ><i class="fas fa-heart"></i>&nbsp;&nbsp;{{item.int}}</div>
@@ -23,21 +23,20 @@
 <script>
 export default {
    props:["item"],
+   methods:{
+       titleClick:function(e){
+           console.log(e)
+           this.$router.push($(e.target).attr("to"))
+       }
+   },
    mounted:function(){
        var vue_obj = this
        $(document).ready(function(){
-           $(document).off("click",".title")
-           $(document).on("click",".title", function(){
-               vue_obj.$router.push($(this).attr("to"))
-               console.log("here")
-           })
+       
        })
    },
-   watch: {
-  '$route' (to, from) {
-    // Whatever you need to change route
-  } 
-}
+ 
+
 }
 </script>
 <style scoped>

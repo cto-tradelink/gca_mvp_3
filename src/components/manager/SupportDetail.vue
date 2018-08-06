@@ -200,6 +200,42 @@ export default {
             }
       
       this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
+        },
+        apply_save:function(){
+            meta_val=[]
+                var formData = new FormData();
+                var grant_info ={}
+                grant_info["id"]=this.$route.params.id
+                var supply_tag = [] 
+                $("#tbl1>tr>td>ul>li.hover").each(function(){
+                    supply_tag.push($(this).text())
+                })
+                grant_info["supply_tag"] = supply_tag
+                grant_info["supply_content"] = this.grant_info.supply_content
+                formData.append('json_data', JSON.stringify(grant_info));                    
+                this.$http.post(`/vue_set_grant_2/`, formData)
+                .then((result) => {            
+                    console.log( this)
+                  alert("저장되었습니다.")
+                })       
+        },
+        apply_next:function(){
+             meta_val=[]
+                var formData = new FormData();
+                var grant_info ={}
+                grant_info["id"]=this.$route.params.id
+                var supply_tag = [] 
+                $("#tbl1>tr>td>ul>li.hover").each(function(){
+                    supply_tag.push($(this).text())
+                })
+                grant_info["supply_tag"] = supply_tag
+                grant_info["supply_content"] = this.grant_info.supply_content
+                formData.append('json_data', JSON.stringify(grant_info));    
+                this.$http.post(`/vue_set_grant_2/`, formData)
+                .then((result) => {            
+                    console.log( this)
+                    this.$router.push("/manager/make/grant/"+ this.$route.params.id +"/recruit_content")
+                })  
         }
     },
     data:function(){
@@ -213,23 +249,20 @@ export default {
         var vue_obj = this
         $(document).ready(function(){
 
-
             $(document).off("click","td>ul>li")
             $(document).on("click","td>ul>li",function(){
                 if($(this).hasClass("hover"))$(this).removeClass("hover");
                 else  $(this).addClass("hover");
             })
 
-               $.ajax({
-                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
-                    success:function(res){
-                        vue_obj.grant_info = res
-                         for(var k =0; k < vue_obj.grant_info.tag.length; k++){
-                             $("li:contains('"+vue_obj.grant_info.tag[k]+"')").addClass("hover")
-                            
-                         }
+            vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id,)
+            .then((res)=>{
+                vue_obj.grant_info = res.data
+                    for(var k =0; k < vue_obj.grant_info.tag.length; k++){
+                        $("li:contains('"+vue_obj.grant_info.tag[k]+"')").addClass("hover")
+                    
                     }
-                })
+            })
 
             $(document).off("click","input[type='checkbox']")
             $(document).on("click","input[type='checkbox']",function(){
@@ -240,49 +273,9 @@ export default {
                 }
             })
 
-
             $("#gca_content").css("background-color","#fdfeff");
                 var meta_val = []
 
- $(document).off("click","#apply_save")
-            $(document).on("click","#apply_save", function(){
-                meta_val=[]
-                var formData = new FormData();
-                var grant_info ={}
-                grant_info["id"]=vue_obj.$route.params.id
-                var supply_tag = [] 
-                $("#tbl1>tr>td>ul>li.hover").each(function(){
-                    supply_tag.push($(this).text())
-                })
-                grant_info["supply_tag"] = supply_tag
-                grant_info["supply_content"] = vue_obj.grant_info.supply_content
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_2/`, formData)
-                .then((result) => {            
-                    console.log( vue_obj)
-                  alert("저장되었습니다.")
-                })    
-            })
-
-            $(document).off("click","#apply_next")
-            $(document).on("click","#apply_next", function(){
-                meta_val=[]
-                var formData = new FormData();
-                var grant_info ={}
-                grant_info["id"]=vue_obj.$route.params.id
-                var supply_tag = [] 
-                $("#tbl1>tr>td>ul>li.hover").each(function(){
-                    supply_tag.push($(this).text())
-                })
-                grant_info["supply_tag"] = supply_tag
-                grant_info["supply_content"] = vue_obj.grant_info.supply_content
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_2/`, formData)
-                .then((result) => {            
-                    console.log( vue_obj)
-                    vue_obj.$router.push("/manager/make/grant/"+ vue_obj.$route.params.id +"/recruit_content")
-                })    
-            })
         })
     }
 }

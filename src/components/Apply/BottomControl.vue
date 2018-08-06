@@ -12,16 +12,15 @@
 <script>
 export default {
     props:["startup"],
-
+    methods:{
+        apply_cancel:function(){
+            if(confirm("취소하시겠습니까?"))
+            this.$router.push("/mypage/apply")
+        },
+    },
     mounted:function(){
         var vue_obj = this;
-        $(document).ready(function(){
-            $(document).off("click","#apply_cancel") 
-            $(document).on("click","#apply_cancel", function(){
-                if(confirm("취소하시겠습니까?"))
-                vue_obj.$router.push("/mypage/apply")
-            })
-        })
+     
     }
 }
 </script>

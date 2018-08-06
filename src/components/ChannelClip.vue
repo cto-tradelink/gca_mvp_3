@@ -66,16 +66,13 @@ export default {
         var vue_obj = this
         $(document).ready(function(){
             vue_obj.clip_on = vue_obj.clip.slice()
-            $.ajax({
-                url:"/vue_get_clip_all/",
-                success:function(res){
-                    console.log(res)
-                    for(var k = 0; k< res.length; k++){
-                        vue_obj.clip.push(res[k])
-                        vue_obj.clip_on.push(res[k])
-                    }
+            vue_obj.$http.get("/vue_get_clip_all/").then((res)=>{
+                for(var k = 0; k< res.data.length; k++){
+                    vue_obj.clip.push(res.data[k])
+                    vue_obj.clip_on.push(res.data[k])
                 }
-            })            
+            })
+
             $(".menu_top").removeClass("menu_on")
             $(".menu_top:eq(2)").addClass("menu_on")
 
@@ -111,36 +108,26 @@ export default {
                 var target = this
                 if($(this).find("img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 패스에서 삭제하시겠습니까?")){
-                        $.ajax({
-                            url:"/toggle_int_clip/",
-                            type:"post", 
-                            data:{
+                        vue_obj.$http.post("/toggle_int_clip/", vue_obj.qs({
                                 "id":localStorage.getItem("id"),
                                 "val":$(target).attr("data-id")
-                            },
-                            success:function(res){
-                                alert("성공적으로 삭제 되었습니다.")
+                            })).then((res)=>{
+                                 alert("성공적으로 삭제 되었습니다.")
                                  $(target).find("img").attr("src","/static/img/like_d.png")
-                               
-                            }
-                        })
+                            })
+
                     }
                     }
                     else{
                         console.log("add")
-                        $.ajax({
-                            url:"/toggle_int_clip/",
-                            type:"post", 
-                            data:{
+                        vue_obj.$http.post("/toggle_int_clip/", vue_obj.qs({
                                 "id":localStorage.getItem("id"),
                                 "val":$(target).attr("data-id")
-                            },
-                            success:function(res){
-                                alert("성공적으로 등록 되었습니다.")
-                                  $(target).find("img").attr("src","/static/img/like_p.png")
-                           
-                            }
-                        })
+                            })).then((res)=>{
+                                 alert("성공적으로 등록 되었습니다.")
+                                 $(target).find("img").attr("src","/static/img/like_p.png")
+                            })
+
                     }
                     return false;                
             })

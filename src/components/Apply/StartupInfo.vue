@@ -265,19 +265,90 @@ export default {
             }
          
         },
+        apply_next:function(){
+            var formData = new FormData();
+            var file1 = document.querySelector('#patent');
+            var file2 = document.querySelector('#trademark');
+            var file3 = document.querySelector('#subpatent');
+            var file4 = document.querySelector('#design');   
+            formData.append("file_1", file1.files[0]);
+            formData.append("file_2", file2.files[0]);
+            formData.append("file_3", file3.files[0]);
+            formData.append("file_4", file4.files[0]);
+            var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
+            if(result == true){
+                formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                this.$http.post(`/vue_update_startup_with_application_3/`, formData)
+                .then((result) => {
+                    console.log(result)
+                })
+            }              
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            console.log(this.$props.startup)
+            this.$http.post(`/vue_update_application/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((result)=>{
+            })
+            this.$router.push("/apply/"+this.$route.params.id+"/oversea_info")
+        },
+        apply_prev:function(){
+            var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
+            var formData = new FormData();
+            var file1 = document.querySelector('#patent');
+            var file2 = document.querySelector('#trademark');
+            var file3 = document.querySelector('#subpatent');
+            var file4 = document.querySelector('#design');
+            formData.append("file_1", file1.files[0]);
+            formData.append("file_2", file2.files[0]);
+            formData.append("file_3", file3.files[0]);
+            formData.append("file_4", file4.files[0]);
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            if(result == true){
+                formData.append('json_data', JSON.stringify(this.$props.startup)); 
+                this.$http.post(`/vue_update_startup_with_application_3/`, formData)
+                .then((result) => {
+                    console.log(result)
+                })
+            }
+            this.$http.post(`/vue_update_application/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            this.$router.push("/apply/"+this.$route.params.id+"/business_info")
+        },
+        apply_save:function(){
+            var formData = new FormData();
+            var file1 = document.querySelector('#patent');
+            var file2 = document.querySelector('#trademark');
+            var file3 = document.querySelector('#subpatent');
+            var file4 = document.querySelector('#design');
+            formData.append("file_1", file1.files[0]);
+            formData.append("file_2", file2.files[0]);
+            formData.append("file_3", file3.files[0]);
+            formData.append("file_4", file4.files[0]);
+            formData.append('json_data', JSON.stringify(this.$props.startup)); 
+            this.$http.post(`/vue_update_application/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((result)=>{
+                alert("임시 저장되었습니다.")
+            })    
+        }
     },
     mounted:function(){
         min_year = 2018;
         current_year = 0
         min_year_trade = 2018;
         current_year_trade = 0
-        
         var vue_obj = this
 
-       
         $(document).ready(function(){
             var id = localStorage.getItem("id")
-           $("#country").countrySelect();
+            $("#country").countrySelect();
 
 
         vue_obj.$http.get(`/vue_get_grant_optional_data/?gr=`+vue_obj.$route.params.id)
@@ -290,6 +361,7 @@ export default {
                     }  
                 })
             })    
+
          $(".niceCountryInputSelector").each(function(i,e){
                 new NiceCountryInput(e).init();
             });
@@ -307,102 +379,7 @@ export default {
              if($(".t_row").length == 1){
                 $(".add_trade_row").removeClass("hidden")
             }
-
-                $(document).off("click","#apply_next")
-                $(document).on("click","#apply_next", function () {
-                     var formData = new FormData();
-                        
-                        var file1 = document.querySelector('#patent');
-                        var file2 = document.querySelector('#trademark');
-                        var file3 = document.querySelector('#subpatent');
-                        var file4 = document.querySelector('#design');
-            
-                        formData.append("file_1", file1.files[0]);
-                        formData.append("file_2", file2.files[0]);
-                        formData.append("file_3", file3.files[0]);
-                        formData.append("file_4", file4.files[0]);
-                var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
-                if(result == true){
-                       
-
-                        formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`/vue_update_startup_with_application_3/`, formData)
-                        .then((result) => {
-                            console.log(result)
-                        })
-
-                }
-              
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-                }).then((result)=>{
-                   
-                })
-
-                vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/oversea_info")
-                })
-                $(document).off("click","#apply_prev")
-                $(document).on("click","#apply_prev", function () {
-                var result = confirm("해당 정보를 토대로 기업 정보를 업데이트 하시겠습니까?")
-                   var formData = new FormData();
-                        
-                        var file1 = document.querySelector('#patent');
-                        var file2 = document.querySelector('#trademark');
-                        var file3 = document.querySelector('#subpatent');
-                        var file4 = document.querySelector('#design');
-            
-                        formData.append("file_1", file1.files[0]);
-                        formData.append("file_2", file2.files[0]);
-                        formData.append("file_3", file3.files[0]);
-                        formData.append("file_4", file4.files[0]);
-                        formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                if(result == true){
                   
-                        formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                        vue_obj.$http.post(`/vue_update_startup_with_application_3/`, formData)
-                        .then((result) => {
-                            console.log(result)
-                        })
-                }
-         
-                     
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-                })
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/business_info")
-                })
-                  $(document).off("click","#apply_save" )            
-            $(document).on("click","#apply_save", function(){
-                var formData = new FormData();
-                                      
-                        var file1 = document.querySelector('#patent');
-                        var file2 = document.querySelector('#trademark');
-                        var file3 = document.querySelector('#subpatent');
-                        var file4 = document.querySelector('#design');
-            
-                        formData.append("file_1", file1.files[0]);
-                        formData.append("file_2", file2.files[0]);
-                        formData.append("file_3", file3.files[0]);
-                        formData.append("file_4", file4.files[0]);
-                formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
-                console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`/vue_update_application/`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-                }).then((result)=>{
-                    alert("임시 저장되었습니다.")
-                })                
-            })
-
-
-
             for(var k =0; k <= vue_obj.$props.startup.revenue.length ; k++){
                 try{
                 if( parseInt(vue_obj.$props.startup.revenue[k].year) < min_year )
@@ -429,7 +406,7 @@ export default {
             }
         })
     },
-      created: function() {
+    created: function() {
     this.getCountriesList()
   }
 }

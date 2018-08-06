@@ -95,67 +95,57 @@ export default {
         if(confirm("페이지를 벗어나시겠습니까?")){
             next()
         }
-  },
-    mounted:function(){
-        var vue_obj = this
-        console.log(vue_obj)
-        $(document).ready(function(){
-            var meta_val = []
-             
-   
-                   $.ajax({
-                    url:"/vue_get_grant_information?id="+vue_obj.$route.params.id,
-                    success:function(res){
-                        vue_obj.grant_info = res
-                         for(var k =0; k < vue_obj.grant_info.meta.split(",").length; k++){
-                             console.log("?")
-                             $("input[data-name='"+ vue_obj.grant_info.meta.split(",")[k]+"']").each(function(){
-                              $(this).click()
-                             })
-                           
-
-                         }
-                    }
-                })
-            
-
-            $(document).off("click","#apply_save")
-            $(document).on("click","#apply_save", function(){
+    },
+    methods:{
+        apply_save:function(){
                 meta_val=[]
                 $("input:checked").each(function(){
                         meta_val.push( $(this).attr("data-name") )
                 })
                 var data={}
                 data["meta"]=meta_val
-                data["id"]= vue_obj.$route.params.id
+                data["id"]= this.$route.params.id
                 console.log(data)
-                vue_obj.$http.post(`/vue_set_application/`, data)
+                this.$http.post(`/vue_set_application/`, data)
                 .then((result) => {            
                                 alert("수정하였습니다.")
                 })    
-            })
-
-            $(document).off("click","#apply_next")
-            $(document).on("click","#apply_next", function(){
-                meta_val=[]
+        },
+        apply_next:function(e){
+            meta_val=[]
                 $("input:checked").each(function(){
-                        meta_val.push( $(this).attr("data-name") )
+                        meta_val.push( $(e.targets).attr("data-name") )
                 })
                 var data={}
                 data["meta"]=meta_val
-                data["id"]= vue_obj.$route.params.id
+                data["id"]= this.$route.params.id
                 console.log(data)
-                vue_obj.$http.post(`/vue_set_application/`, data)
+                this.$http.post(`/vue_set_application/`, data)
                 .then((result) => {   
                     alert("승인 요청 하였습니다.")         
                var supply_tag = [] 
                 $("#tbl1>tr>td>ul>li.hover").each(function(){
-                    supply_tag.push($(this).text())
+                    supply_tag.push($(e.target).text())
                 grant_info["supply_tag"] = supply_tag
                 })    
             })
+        }
+    },
+    mounted:function(){
+        var vue_obj = this
+        console.log(vue_obj)
+      
+            var meta_val = []
+            vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id,)
+            .then((res)=>{
+                vue_obj.grant_info = res.data
+                    for(var k =0; k < vue_obj.grant_info.meta.split(",").length; k++){
+                        console.log("?")
+                        $("input[data-name='"+ vue_obj.grant_info.meta.split(",")[k]+"']").each(function(){
+                        $(this).click()
+                    })
+                }
             })
-    })
     }
     }
 

@@ -8,6 +8,8 @@ import axios from 'axios'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import * as utils from "./components/utils/utils"
 import 'vue-datetime/dist/vue-datetime.css'
+import qs from 'qs';
+
 // require styles
 //import 'swiper/dist/css/swiper.css'
 Vue.use(VueAwesomeSwiper, /* { default global options } */)
@@ -18,8 +20,12 @@ Vue.config.silent = true
 //   baseURL:"http://13.209.21.165"
 // })
 
+Vue.prototype.qs=qs.stringify
 Vue.prototype.$http=axios.create({
-  baseURL:(process.env.NODE_ENV === "production") ? "http://13.209.21.165" : "http://13.209.21.165"
+  baseURL:(process.env.NODE_ENV === "production") ? "http://13.209.21.165" : "http://13.209.21.165",
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
 })
 
 

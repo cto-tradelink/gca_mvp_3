@@ -174,25 +174,39 @@ export default {
         $(document).on("click","#pop_submit", function(){
                 var url_id = youtubeId($("#link_input").val())
                 $("#youtube_id").val(url_id);
-                 $.ajax({
-            url:'https://www.googleapis.com/youtube/v3/videos?id='+url_id+'&part=contentDetails&key=AIzaSyDQt1e_0DUVFiR8288ALtZWyVRlad45-Rc',
-            type:"get",
-            success:function(res){
-                console.log(res)
-                alert("강의가 정상 등록되었습니다.");
-                console.log(res.items[0].contentDetails.duration)
-                $("#time").val(convertISO8601ToSeconds(res.items[0].contentDetails.duration))
-                $("#up_link").addClass("hidden")
-                  $("#back_layer").addClass("hidden")
-                 $("#back_layer").css("position","fixed!important")
-                 $("#back_layer").css("width",0)
-                 $("#back_layer").css("height",0)
-                 $("#back_layer").css("top","0px")
-                 $("#back_layer").css("left","0px")
-                
-                }
+                vue_obj.$http.get('https://www.googleapis.com/youtube/v3/videos?id='+url_id+'&part=contentDetails&key=AIzaSyDQt1e_0DUVFiR8288ALtZWyVRlad45-Rc')
+                    .then((res)=>{
+                        console.log(res)
+                        alert("강의가 정상 등록되었습니다.");
+                        console.log(res.items[0].contentDetails.duration)
+                        $("#time").val(convertISO8601ToSeconds(res.items[0].contentDetails.duration))
+                        $("#up_link").addClass("hidden")
+                        $("#back_layer").addClass("hidden")
+                        $("#back_layer").css("position","fixed!important")
+                        $("#back_layer").css("width",0)
+                        $("#back_layer").css("height",0)
+                        $("#back_layer").css("top","0px")
+                         $("#back_layer").css("left","0px")                
+                    
+                    })
 
-        })
+        //          $.ajax({
+        //     url:'https://www.googleapis.com/youtube/v3/videos?id='+url_id+'&part=contentDetails&key=AIzaSyDQt1e_0DUVFiR8288ALtZWyVRlad45-Rc',
+        //     type:"get",
+        //     success:function(res){
+        //         console.log(res)
+        //         alert("강의가 정상 등록되었습니다.");
+        //         console.log(res.items[0].contentDetails.duration)
+        //         $("#time").val(convertISO8601ToSeconds(res.items[0].contentDetails.duration))
+        //         $("#up_link").addClass("hidden")
+        //           $("#back_layer").addClass("hidden")
+        //          $("#back_layer").css("position","fixed!important")
+        //          $("#back_layer").css("width",0)
+        //          $("#back_layer").css("height",0)
+        //          $("#back_layer").css("top","0px")
+        //          $("#back_layer").css("left","0px")                
+        //         }
+        // })
 
 
                

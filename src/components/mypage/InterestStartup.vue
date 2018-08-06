@@ -27,24 +27,13 @@ export default {
             var data={
                 "id":localStorage.getItem("id")
                 }   
-                    $.ajax({
-                        url:`/vue_my_interest_set_detail/`,
-                        method:"POST",
-                        data:data,
-                        success:function(res){console.log(res)
-                                vue_obj.startup_list = res  
-                                console.log (vue_obj)
-                                setTimeout(function(){
-                                    $(".heart").css("color","#ff0000")
-                                })
-                        },
-                        error:function(e){console.log(e)
-                       
-                        }
-         })
-    
-           
-    
+                vue_obj.$http.post(`/vue_my_interest_set_detail/`).then((res)=>{
+                        vue_obj.startup_list = res.data  
+                        console.log (vue_obj)
+                        setTimeout(function(){
+                        $(".heart").css("color","#ff0000")
+                    })
+                })
     }
 }
 </script>
