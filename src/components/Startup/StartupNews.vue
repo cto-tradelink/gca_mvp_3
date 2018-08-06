@@ -102,7 +102,7 @@ export default {
     },   
     data:function(){
         return{
-            st:{}
+           st:{}
         }
     },
     methods:{
@@ -295,22 +295,15 @@ export default {
     mounted: function(){
         var vue_obj = this
 
-        $(document).ready(function(){
-
-                  setTimeout(function(){
-             $.ajax({
-                url: `${vue_obj.baseURI}/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
-                type:"get",
-                success:function(res){
-                    console.log(res)
-                    console.log("qwee")
-                    console.log(vue_obj)
-                    vue_obj.st = res 
-                },
-            })
-            },100)
+        $(document).ready(function(){       
             
-        
+         vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_startup_detail/?id=`+vue_obj.$route.params.id)
+                .then((result) => {
+                    console.log("sss")
+                    console.log(result)
+                    vue_obj.st = result.data;
+                    console.log(vue_obj.st)
+                })
 
             $(document).on("keyup","#add_news", function(e){
                 console.log("dasd")

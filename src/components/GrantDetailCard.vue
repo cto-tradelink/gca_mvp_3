@@ -97,6 +97,7 @@ export default {
         color: #243d68;
         margin-top: 64px;
         width: 1016px;
+        word-break: keep-all;
     }
     #grant_ttl_cp{
         margin-top: 18px;

@@ -366,6 +366,7 @@ ul{
 
   #make_application_page{
         overflow-x: hidden;
+        background-color: #f4f7fa;
     }
     #application_header_bottom{
         width: 100%;

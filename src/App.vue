@@ -8,7 +8,14 @@
 import * as utils from "./components/utils/utils"
 
 export default {
-  name: 'gca_content'
+  name: 'gca_content',
+  mounted:function(){
+    var vue_obj = this
+    $(document).ready(function(){
+ 
+ 
+    })
+  },
 }
 </script>
 

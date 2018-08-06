@@ -46,16 +46,21 @@ export default {
                     $(".sub_info:eq("+k+")>div").parent().css("display","none")
                 }
             }      
-            localStorage.setItem("first_grant_title",localStorage.getItem("second_grant_title") )        
-            localStorage.setItem("second_grant_title",data_target.grant_info.title)
-            localStorage.setItem("first_grant_src",localStorage.getItem("second_grant_src") )        
-            localStorage.setItem("second_grant_src",data_target.grant_info.id)          
+            if( localStorage.getItem("second_grant_src") !=  data_target.grant_info.title ){
+                localStorage.setItem("first_grant_title",localStorage.getItem("second_grant_title") )        
+                localStorage.setItem("second_grant_title",data_target.grant_info.title)
+                localStorage.setItem("first_grant_src",localStorage.getItem("second_grant_src") )        
+                localStorage.setItem("second_grant_src",data_target.$route.params.id )
+            }
+                
            
         })
     },
     mounted:function(){
-        $.ajax({
-            url:`${this.baseURI}+/hit_sb/`,
+        try{
+            if(localStorage.getItem("user")=="u"){
+            $.ajax({
+            url:`${this.baseURI}/hit_sb/`,
             type:"post",
             data:{
                 "target" : this.$route.params.id,
@@ -64,7 +69,11 @@ export default {
             success:function(res){
                 console.log(res);
             }
-        })
+            })
+            }
+       
+        }
+        catch(e){}
 
        if($("#grant_poster").attr("src") == "" ||$("#grant_poster").attr("src") == undefined){
            $("#grant_poster").remove()

@@ -1,5 +1,6 @@
 <template>
 
+
     <div id="base_info" style="padding-bottom:200px;">
         <div id="case_con">
             <div id="base_title">기본정보</div>
@@ -21,7 +22,7 @@
                     </tr>
                     <tr>
                         <td>주소</td>
-                        <td><input type="text" v-model="startup.location_1" style="width:192px;margin-right:8px;" class="input_normal"><input type="text" style="width:196px;"  v-model="startup.location_2"  class="input_normal"></td>
+                        <td><input type="text" id="map_text" v-on:click="sample5_execDaumPostcode" v-model="startup.location_1" style="width:192px;margin-right:8px;" class="input_normal"><input type="text" style="width:196px;"  v-model="startup.location_2"  class="input_normal"></td>
 
                     </tr>                    
                 </table>
@@ -70,11 +71,12 @@
 
 <script>
 var app_id ; 
+var vue_obj;
 
 export default {
     props:["startup"],
     mounted:function(){
-        var vue_obj = this
+        vue_obj = this
         $(document).ready(function(){ 
             $("body").css("backgorund-color","#f4f7fa")
             $(document).off("keyup",".same_0")        
@@ -158,6 +160,26 @@ export default {
             })
 
         })
+    },
+    methods:{
+          sample5_execDaumPostcode :function () {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var fullAddr = data.address; // 최종 주소 변수
+                var extraAddr = ''; // 조합형 주소 변수
+                if(data.addressType === 'R'){
+                    if(data.bname !== ''){
+                        extraAddr += data.bname;
+                    }
+                    if(data.buildingName !== ''){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                }
+                vue_obj.$props.startup.location_1 = fullAddr           
+            }
+        }).open();
+        }
     }
 }
 </script>

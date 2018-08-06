@@ -524,8 +524,8 @@ export default {
                 })
             }
              console.log("map1")
-                map = new daum.maps.Map(mapContainer, mapOption); 
-                console.log(map)
+            //    map = new daum.maps.Map(mapContainer, mapOption); 
+            //    console.log(map)
                 console.log("map")
                console.log("intro end")
         })

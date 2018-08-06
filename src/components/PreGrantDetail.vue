@@ -53,7 +53,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #bottom_btn_con{
       width: 100%;
       height: 56px;;

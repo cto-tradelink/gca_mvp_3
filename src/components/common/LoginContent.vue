@@ -102,7 +102,7 @@ export default {
     computed:{
         check_alarm:function(){
               $.ajax({
-                    url:`${this.baseURI}/get_unread_alarm/`,                   
+                    url:`${this.baseURI}/get_unread_alarm/?id=`+localStorage.getItem("id"),                   
                     method:"GET",
                     success:function(res){
                         console.log("test")

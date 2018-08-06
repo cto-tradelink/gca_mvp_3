@@ -287,7 +287,7 @@ export default {
                 }
                 })
             .then((result) => {
-                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=60`)
+                this.$http.get(`${this.baseURI}/vue_get_startup_detail/?id=`+this.$route.params.id)
                 .then((result) => {
                     console.log(result)
                     this.startup = result.data

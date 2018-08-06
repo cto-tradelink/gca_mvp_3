@@ -57,7 +57,7 @@ export default {
     .today_viewed_ttl{
         font-weight: bold;
         font-size: 12px;
-        width: 80px;
+        width: 147px;
         float: left;
         color: #243d68;
         margin-left:8px;
