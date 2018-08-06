@@ -102,7 +102,7 @@ export default {
     computed:{
         check_alarm:function(){
               $.ajax({
-                    url:`${this.baseURI}/get_unread_alarm/?id=`+localStorage.getItem("id"),                   
+                    url:`/get_unread_alarm/?id=`+localStorage.getItem("id"),                   
                     method:"GET",
                     success:function(res){
                         console.log("test")
@@ -155,7 +155,7 @@ export default {
                 }
                 console.log(data_1)
                 $.ajax({
-                    url:`${vue_obj.baseURI}/vue_login_user/`,
+                    url:`/vue_login_user/`,
                     data:data_1,
                     method:"POST",
                     success:function(res){

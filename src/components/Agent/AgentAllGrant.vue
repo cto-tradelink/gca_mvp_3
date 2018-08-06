@@ -39,7 +39,7 @@ Array.prototype.sort_by = function(key){
         if(a[key] < b[key]){
             return 1;
         }else if(a[key] > b[key]){
-            return -1;dfsdfsdf
+            return -1;
         }
         return 0;
     });

@@ -397,15 +397,12 @@ export default {
             })
             var mouse_event;
             $(document).on("mouseenter",".share_con", function(){
-                $(".share_div").addClass("hidden")
-                
+                $(".share_div").addClass("hidden")                
                 $(this).find(".share_div").removeClass("hidden")
-
             })
             $(document).on("mouseleave",".share_div", function(){
                 $(this).addClass("hidden")
-            })
-            
+            })            
             if(vue_obj.$route.fullPath.indexOf("mypage") == - 1){
                 $(".more").each(function(){
                     $(this).remove()   

@@ -34,6 +34,13 @@ var order_num=0;
             if (a.rec < b.rec) {
                 return -1;
             }
+            if(a.rec == b.rec ){
+                if(a.int > b.int )
+                return -1
+                else{
+                    return 1
+                }
+            }
             
         return 0;
         }
@@ -91,17 +98,7 @@ var order_num=0;
                     var temp_arr =  obj.grant.slice(0)
                     obj.grant= []
                     temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
-                    temp_arr.sort(compare_by_due).reverse()
+                  
                     obj.grant = temp_arr.slice(0)
           
 
