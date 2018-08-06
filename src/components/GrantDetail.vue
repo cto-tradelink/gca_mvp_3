@@ -85,11 +85,7 @@ export default {
                             "val":vue_obj.$route.params.id
                         }
                     $.ajax({
-<<<<<<< HEAD
                         url:`/vue_toggle_interest_sb/`,
-=======
-                        url:`${vue_obj.baseURI}/vue_toggle_interest_sb/`,
->>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
                         method:"POST",
                         data:data,
                         success:function(res){console.log(res)
@@ -119,7 +115,22 @@ export default {
                 })
         })
 
- }
+ },
+   watch: {
+  '$route' (to, from) {   
+    console.log("to",to)
+    var id = to.params.id
+
+    this.$http.get(`/get_grant_detail/?id=`+id)
+        .then((result) => {          
+            this.grant_info = result.data               
+        })
+    this.$http.get(`/similar_grant/?q=`+id)
+        .then((result) => {            
+            this.similar_list = result.data.data            
+        })
+  } 
+  }
 }
 </script>
 

@@ -60,11 +60,7 @@ export default {
         try{
             if(localStorage.getItem("user")=="u"){
             $.ajax({
-<<<<<<< HEAD
             url:`/hit_sb/`,
-=======
-            url:`${this.baseURI}/hit_sb/`,
->>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
             type:"post",
             data:{
                 "target" : this.$route.params.id,

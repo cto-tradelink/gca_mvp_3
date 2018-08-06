@@ -126,11 +126,7 @@ function log(sel , message){
     var parseTime
     var valueline;
 $.ajax({
-<<<<<<< HEAD
     url:"/get_sb_hit_log/?id="+this.$route.params.id,
-=======
-    url:this.baseURI+"/get_sb_hit_log/?id="+this.$route.params.id,
->>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
     success:function(res){
         console.log(res)
             // Define margins, dimensions, and some line colors
@@ -164,11 +160,7 @@ $.ajax({
         var tooltipLine_1;
 
 
-<<<<<<< HEAD
 d3.json("/get_sb_hit_log/?id="+vue_obj.$route.params.id, function(error, data) {
-=======
-d3.json(vue_obj.baseURI+"/get_sb_hit_log/?id="+vue_obj.$route.params.id, function(error, data) {
->>>>>>> 1a6c11f90f1fb662cfe1d46b3f18dee3ffb132f2
   if (error) throw error;
   // format the data
   data.forEach(function(d) {

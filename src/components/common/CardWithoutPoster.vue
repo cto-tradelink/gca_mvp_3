@@ -1,6 +1,6 @@
 <template>
     <div class="card_without_poster_con ">
-       <a :href="'/grant/'+item.id">
+       <router-link :to="'/grant/'+item.id">
         <div class="card_top">
             <div class="titlew" >{{item.title}}</div>
             <div class="grant_sub_info">
@@ -17,11 +17,9 @@
                 <div class="tag" v-else ><span class="tag_seg" style="display:inline-block;margin-right:5px;" v-for="t in item.tag.slice(0, 7)">{{t}}</span></div>
             </div>
         </div> 
-        </a>
-    </div>
-    
+       </router-link>
+    </div>    
 </template>
-
 <script>
 export default {
    props:["item"],
@@ -34,7 +32,12 @@ export default {
                console.log("here")
            })
        })
-   }
+   },
+   watch: {
+  '$route' (to, from) {
+    // Whatever you need to change route
+  } 
+}
 }
 </script>
 <style scoped>
