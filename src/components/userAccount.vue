@@ -9,7 +9,7 @@
      </div>
 </template>
 
-<script>
+<1cript>
 import Header from "./Common/Header.vue"
 import FilterSetting from "./Common/FilterSetting.vue"
 import PicProfile from "./PicProfile.vue"
@@ -17,12 +17,11 @@ import DetailProfile from "./DetailProfile.vue"
 
 export default {
     components:{
-        'Header':Header,
-        "FilterSetting":FilterSetting,
+        Header,
+        FilterSetting,
         PicProfile,DetailProfile
     }
-
-  
+ 
 }
 </script>
 

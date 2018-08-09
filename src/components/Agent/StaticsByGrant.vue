@@ -19,8 +19,7 @@ export default {
 </script>
 
 <style scoped>
-    #static_page{
-      
+    #static_page{      
        
     }
 </style>

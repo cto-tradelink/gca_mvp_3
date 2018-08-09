@@ -32,7 +32,7 @@ Vue.prototype.$http=axios.create({
 Vue.prototype.$http.defaults.xsrfCookieName = 'csrftoken';
 Vue.prototype.$http.defaults.xsrfHeaderName = 'X-CSRFToken';
 Vue.prototype.utils = utils
-
+Vue.prototype.filter_array=["게임"]
 
 //Vue.prototype. = "http://127.0.0.1:890"
 Vue.prototype.HOST = "http://gconnect.kr"

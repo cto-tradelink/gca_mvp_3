@@ -2,10 +2,10 @@
     <div id="account_page" >
         <div id="page_ttl">내 계정 관리</div>
         <div id="account_info_con">
-            <div id="modi_btn">수정하기</div>
+            <div @click="modify($event)" id="modi_btn">수정하기</div>
             <ul>
                 <li><span class="ttl">ID</span><span class="text">gone0310@gdca.or.kr</span></li>
-                <li><span class="ttl">PW</span><span class="pw text" id="pw">*******</span></li>
+                <li><span class="ttl">PW</span><span class="pw text" @click="changePassword($event)" id="pw">*******</span></li>
                 <li class="hidden"><span class="ttl">현재 비밀 번호</span><span class="pw text" id="pw1"></span></li>
                 <li class="hidden"><span class="ttl">변경할 비밀번호</span><span class="pw text" id="pw2"></span></li>
                 <li class="hidden"><span class="ttl">변경할 비밀번호 확인</span><span class="pw text" id="pw3"></span></li>
@@ -24,10 +24,9 @@
 
 <script>
 export default {
-    mounted:function(){
-        $(document).ready(function(){
-            $(document).on("click","#modi_btn", function(){
-                if($(this).text() == "수정하기"){
+    methods:{
+        modify:function(e) {
+            if($(e.target).text() == "수정하기"){
                     $(".text").attr("contenteditable", true)
                     $(".text").css("border", "1px solid #ced4da")
                     $(".text").css("margin-bottom", "16px")
@@ -35,7 +34,7 @@ export default {
                     $("#pw").text("변경하기")
                     $("#pw").css("border","none")
                     $("#pw").attr("contenteditable", false)          
-                    $(this).text("완료")
+                    $(e.target).text("완료")
                 }
                 else{
                     $(".text").attr("contenteditable", false)
@@ -44,15 +43,16 @@ export default {
                     $("#pw").text("******")
                     $("#pw").parent().removeClass("hidden")
                      $(".text").css("margin-bottom", "0px")
-                    $(this).text("수정하기")
+                    $(e.target).text("수정하기")
                 }
-                
-            })
-            $(document).on("click","#pw", function(){
-                $(this).text("")
-                $("li.hidden").removeClass("hidden")
-            })
-        })
+        },
+        changePassword:function(e){
+            $(e.target).text("")
+            $("li.hidden").removeClass("hidden")
+        }
+    },
+    mounted:function(){
+  
     }
 }
 </script>

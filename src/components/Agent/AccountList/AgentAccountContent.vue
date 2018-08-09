@@ -178,35 +178,25 @@ export default {
     },
     created:function(){
         var vue_obj = this
-        $.ajax({
-            method:"post",
-            url:vue_obj.baseURI + "/vue_get_agent_account/",
-            data:{
-                id:84
-            },
-            success:function(res){
-                vue_obj.agent_account_origin_list = res.account_set.slice()
-                vue_obj.agent_account_list = vue_obj.agent_account_origin_list.slice(0,10)
-                vue_obj.agent_all_account_origin_list = res.all_account_set.slice()
-                vue_obj.agent_all_account_list = vue_obj.agent_all_account_origin_list.slice(0,10)
+        this.$http.post("/vue_get_agent_account/").then((res)=>{
+                this.agent_account_origin_list = res.data.account_set.slice()
+                this.agent_account_list = this.agent_account_origin_list.slice(0,10)
+                this.agent_all_account_origin_list = res.data.all_account_set.slice()
+                this.agent_all_account_list = this.agent_all_account_origin_list.slice(0,10)
                 var num = 10
                 gl_num = num
-                vue_obj.agent_account_list = vue_obj.agent_account_origin_list.slice(0, num)
-                vue_obj.agent_account_nav=[]
-                for(var k=1; k <= Math.ceil(vue_obj.agent_account_origin_list.length/num); k++ ){
-                   vue_obj.agent_account_nav.push(k)
+                this.agent_account_list = this.agent_account_origin_list.slice(0, num)
+                this.agent_account_nav=[]
+                for(var k=1; k <= Math.ceil(this.agent_account_origin_list.length/num); k++ ){
+                   this.agent_account_nav.push(k)
                 }
-                vue_obj.agent_all_account_list = vue_obj.agent_all_account_origin_list.slice(0, num)
-                vue_obj.agent_all_account_nav=[]
-                for(var k=1; k <= Math.ceil(vue_obj.agent_all_account_origin_list.length/num); k++ ){
-                   vue_obj.agent_all_account_nav.push(k)
+                this.agent_all_account_list = this.agent_all_account_origin_list.slice(0, num)
+                this.agent_all_account_nav=[]
+                for(var k=1; k <= Math.ceil(this.agent_all_account_origin_list.length/num); k++ ){
+                   this.agent_all_account_nav.push(k)
                 }
-
-            },
-            error:function(error){
-                console.log(error)
-            }
         })
+    
     },
     mounted:function(){
         var vue_obj = this
@@ -224,7 +214,6 @@ export default {
                 $(".tbl_con").addClass("hidden")
                 $(".tbl_con:eq(1)").removeClass("hidden")
             })
-
             $(document).on("click","#created", function(){
                 $("#create_manager").removeClass("hidden")
                 $("#back_layer").css("position","fixed")
@@ -258,7 +247,7 @@ export default {
             })
 
             $(document).on("click","#create_btn", function(){                
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_get_grant_info/`, {
+                vue_obj.$http.post(`/vue_get_grant_info/`, {
                     "user":"user", // 로그인 프로세스 진행후 본인의 파라미터를 넣어야 기관 소속으로 등록됨
                     "name":$("#name").val(),                    
                     "belong_to":"GCA",

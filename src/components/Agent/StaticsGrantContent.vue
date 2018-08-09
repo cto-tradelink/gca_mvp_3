@@ -526,162 +526,162 @@ export default {
 
   var min_date = new Date(vue_obj.base_info.min_date)
   min_date.setDate(min_date.getDate() - 1);
-
-  var extent = d3.extent(data, function(d) {  return parseDate(d.date); });
-  var dateHash = data.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers.forEach(function(header) {
-                emptyRow[header] = null;
-            });
-            data.push(emptyRow);
-        });
-  data.sort(function(a, b) { return d3.ascending(a.date, b.date); });
-
-
-  var extent2= d3.extent(data2, function(d) {  return parseDate(d.date); });
-  var dateHash2 = data2.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers2 = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash2[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers2.forEach(function(header2) {
-                emptyRow[header2] = null;
-            });
-            data2.push(emptyRow);
-        });
-    data2.sort(function(a, b) { return d3.ascending(a.date, b.date); });
-
-  var extent3= d3.extent(data3, function(d) {  return parseDate(d.date); });
-  var dateHash3 = data3.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers3 = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash3[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers3.forEach(function(header2) {
-                emptyRow[header2] = null;
-            });
-            data3.push(emptyRow);
-        });
-    data3.sort(function(a, b) { return d3.ascending(a.date, b.date); });
-
-  var extent4= d3.extent(data4, function(d) {  return parseDate(d.date); });
-  var dateHash4 = data4.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers4 = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash4[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers4.forEach(function(header) {
-                emptyRow[header] = null;
-            });
-            data4.push(emptyRow);
-        });
-    data4.sort(function(a, b) { return d3.ascending(a.date, b.date); });
-
- var extent5= d3.extent(data5, function(d) {  return parseDate(d.date); });
-  var dateHash5 = data5.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers5 = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash5[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers5.forEach(function(header) {
-                emptyRow[header] = null;
-            });
-            data5.push(emptyRow);
-        });
-    data5.sort(function(a, b) { return d3.ascending(a.date, b.date); }); 
-
-  var extent6= d3.extent(data6, function(d) {  return parseDate(d.date); });
-  var dateHash6 = data6.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers6 = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash6[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers6.forEach(function(header) {
-                emptyRow[header] = null;
-            });
-            data6.push(emptyRow);
-        });
-    data6.sort(function(a, b) { return d3.ascending(a.date, b.date); });
-
-  var extent7= d3.extent(data7, function(d) {  return parseDate(d.date); });
-  var dateHash7 = data7.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers7 = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash7[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers7.forEach(function(header) {
-                emptyRow[header] = null;
-            });
-            data7.push(emptyRow);
-        });
-    data7.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+console.log("this template")
+//   var extent = d3.extent(data, function(d) {  return parseDate(d.date); });
+//   var dateHash = data.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers.forEach(function(header) {
+//                 emptyRow[header] = null;
+//             });
+//             data.push(emptyRow);
+//         });
+//   data.sort(function(a, b) { return d3.ascending(a.date, b.date); });
 
 
-  var extent8= d3.extent(data8, function(d) {  return parseDate(d.date); });
-  var dateHash8 = data8.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers8 = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash8[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers8.forEach(function(header) {
-                emptyRow[header] = null;
-            });
-            data8.push(emptyRow);
-        });
-    data8.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+//   var extent2= d3.extent(data2, function(d) {  return parseDate(d.date); });
+//   var dateHash2 = data2.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers2 = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash2[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers2.forEach(function(header2) {
+//                 emptyRow[header2] = null;
+//             });
+//             data2.push(emptyRow);
+//         });
+//     data2.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+
+//   var extent3= d3.extent(data3, function(d) {  return parseDate(d.date); });
+//   var dateHash3 = data3.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers3 = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash3[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers3.forEach(function(header2) {
+//                 emptyRow[header2] = null;
+//             });
+//             data3.push(emptyRow);
+//         });
+//     data3.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+
+//   var extent4= d3.extent(data4, function(d) {  return parseDate(d.date); });
+//   var dateHash4 = data4.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers4 = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash4[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers4.forEach(function(header) {
+//                 emptyRow[header] = null;
+//             });
+//             data4.push(emptyRow);
+//         });
+//     data4.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+
+//  var extent5= d3.extent(data5, function(d) {  return parseDate(d.date); });
+//   var dateHash5 = data5.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers5 = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash5[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers5.forEach(function(header) {
+//                 emptyRow[header] = null;
+//             });
+//             data5.push(emptyRow);
+//         });
+//     data5.sort(function(a, b) { return d3.ascending(a.date, b.date); }); 
+
+//   var extent6= d3.extent(data6, function(d) {  return parseDate(d.date); });
+//   var dateHash6 = data6.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers6 = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash6[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers6.forEach(function(header) {
+//                 emptyRow[header] = null;
+//             });
+//             data6.push(emptyRow);
+//         });
+//     data6.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+
+//   var extent7= d3.extent(data7, function(d) {  return parseDate(d.date); });
+//   var dateHash7 = data7.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers7 = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash7[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers7.forEach(function(header) {
+//                 emptyRow[header] = null;
+//             });
+//             data7.push(emptyRow);
+//         });
+//     data7.sort(function(a, b) { return d3.ascending(a.date, b.date); });
 
 
-  var extent9= d3.extent(data9, function(d) {  return parseDate(d.date); });
-  var dateHash9 = data9.reduce(function(agg, d) {
-          agg[parseDate(d.date)] = true;
-          return agg;
-      }, {})
-  var  headers9 = x_data.domain();
-  d3.timeDays(min_date, Date.now())
-        .filter(function(date) { return !dateHash9[(date)]; })
-        .forEach(function(date) {
-            var emptyRow = { "date": format_date(date) , "number":0 };
-            headers9.forEach(function(header) {
-                emptyRow[header] = null;
-            });
-            data9.push(emptyRow);
-        });
-    data9.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+//   var extent8= d3.extent(data8, function(d) {  return parseDate(d.date); });
+//   var dateHash8 = data8.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers8 = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash8[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers8.forEach(function(header) {
+//                 emptyRow[header] = null;
+//             });
+//             data8.push(emptyRow);
+//         });
+//     data8.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+
+
+//   var extent9= d3.extent(data9, function(d) {  return parseDate(d.date); });
+//   var dateHash9 = data9.reduce(function(agg, d) {
+//           agg[parseDate(d.date)] = true;
+//           return agg;
+//       }, {})
+//   var  headers9 = x_data.domain();
+//   d3.timeDays(min_date, Date.now())
+//         .filter(function(date) { return !dateHash9[(date)]; })
+//         .forEach(function(date) {
+//             var emptyRow = { "date": format_date(date) , "number":0 };
+//             headers9.forEach(function(header) {
+//                 emptyRow[header] = null;
+//             });
+//             data9.push(emptyRow);
+//         });
+//     data9.sort(function(a, b) { return d3.ascending(a.date, b.date); });
 
     x_data.domain([min_date, Date.now()  ]);  
     y.domain([0, d3.max(data3, function (d) { return +d.number; })]);

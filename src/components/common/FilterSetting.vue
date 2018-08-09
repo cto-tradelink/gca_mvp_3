@@ -178,6 +178,16 @@ export default {
           $(".col_name").find(".filter:contains('출판')").addClass("filter_on")
         data_target.items.push({"name":"게임","id":""})
           $(".col_name").find(".filter:contains('게임')").addClass("filter_on")
+
+        this.filter_array["만화"]=true;
+        this.filter_array["출판"]=true;
+        this.filter_array["게임"]=true;
+     
+        
+        console.log(this)
+        console.log(this.filter_array)
+        console.log("M3")
+
         var vue_obj= this
         $(window).click(function(e) {
             console.log(e)
@@ -201,6 +211,7 @@ export default {
                                 if(data_target.items.find(function(obj){return obj.name == target_text}) == undefined){
                                     data_target.items.push({"name":$(this).text(),"id":""})
                                     $(this).addClass("filter_on")
+                                    this.filter_array[$(this).text()]= true
                                 }      
                                 else{
                                     var t_text = $(this).text().replace("#","").trim()
@@ -209,6 +220,7 @@ export default {
                                         ;return obj.name === t_text}))
                                     if(del_target > -1)  data_target.items.splice(del_target,1)
                                     $(this).removeClass("filter_on")
+                                    this.filter_array[$(this).text()]= false
                                     }                                                
                                
                             })

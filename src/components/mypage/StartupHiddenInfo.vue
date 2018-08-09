@@ -443,6 +443,8 @@ export default {
         $(document).ready(function(){
             console.log("hiddeninfo ready")
                 setTimeout(function(){
+
+                    
              $.ajax({
                 url: `/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
                 type:"get",

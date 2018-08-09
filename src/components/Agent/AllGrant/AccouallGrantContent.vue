@@ -108,7 +108,7 @@ export default {
     mounted:function(){
         var vue_obj = this        
         $(document).ready(function(){
-                vue_obj.$http.get(`${vue_obj.baseURI}/vue_get_grant_list/`)
+                vue_obj.$http.get(`/vue_get_grant_list/`)
                 .then((result) => {        
                     console.log(result)    
                     vue_obj.origin_data = result.data       
@@ -119,12 +119,7 @@ export default {
                     }
                     console.log(vue_obj)
                 })               
-                //  vue_obj.$http.post(`${vue_obj.baseURI}/vue_make_excel/`)
-                // .then((result) => {        
-                //     console.log(result)    
-                //     vue_obj.data = result.data                    
-                //     console.log(vue_obj)
-                // }) 
+       
                  $(document).off("keyup", "#input_text")
                   $(document).on("keyup", "#input_text", function(){
                     

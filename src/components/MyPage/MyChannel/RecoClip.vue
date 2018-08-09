@@ -18,7 +18,7 @@
         <div class="ttl" style="margin-top:26px;">추천 코스</div>
             <div id="course_con">
                 <div class="co">
-                    <router-link :to="'/course/'+an.id" v-for="an in another_course"> 
+                    <router-link :to="an.entry_point" v-for="an in another_course"> 
                         <div class="co_ttl" ><div class="course_ttl">{{an.title}}</div>
                             <div class="clip_sub_text">{{an.play}} | {{an.created}} &nbsp;|&nbsp; {{an.user}}</div>
                         </div>

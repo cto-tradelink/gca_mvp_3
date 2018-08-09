@@ -28,12 +28,11 @@ export default {
    "GrantDetail":GrantDetail,   
  },
  mounted:function(){
-   var target_id = this.$route.params
-   $(document).ready(function(){   
-      $("#back_canvas_1").css("height",$("#grant_detail_height").css("height")) 
-      $("#back_canvas_2").css("height",$("#grant_detail_height").css("height")) 
-      $("#header>ul>a:eq(0)>li:eq(0)").addClass("menu_on")
-   })
+    var target_id = this.$route.params
+    $("#back_canvas_1").css("height",$("#grant_detail_height").css("height")) 
+    $("#back_canvas_2").css("height",$("#grant_detail_height").css("height")) 
+    $("#header>ul>a:eq(0)>li:eq(0)").addClass("menu_on")
+
 }
 }
 </script>

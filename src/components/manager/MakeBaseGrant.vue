@@ -15,11 +15,7 @@ import LeftNavi from "./Common/LeftNavi.vue"
 import MakeBaseGrantInfo from "./MakeBaseGrantInfo.vue"
 import MakeGrantBottomControl from "./Common/MakeGrantBottomControl.vue"
 export default {
-         beforeRouteLeave (to, from, next) {
-        if(confirm("페이지를 벗어나시겠습니까?")){
-            next()
-        }
-  },
+  
     components:{
         Header, LeftNavi,MakeBaseGrantInfo,MakeGrantBottomControl
     }

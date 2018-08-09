@@ -163,19 +163,19 @@ export default {
                 })
             }
         },
- previewFile:function() {
-  var preview = document.getElementById('blank');
-  var file    = document.getElementById('service_img').files[0];
-  var reader  = new FileReader();
-  reader.addEventListener("load", function () {
-    preview.src = reader.result;
-  }, false);
+        previewFile:function() {
+        var preview = document.getElementById('blank');
+        var file    = document.getElementById('service_img').files[0];
+        var reader  = new FileReader();
+        reader.addEventListener("load", function () {
+            preview.src = reader.result;
+        }, false);
 
-  if (file) {
-    reader.readAsDataURL(file);
-  }
-},
-  complete_service:function(e){
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+        },
+        complete_service:function(e){
         var name = $(e.path[0]).parent().find(".service_name>input").val();
         var expUrl = /(((http(s)?:\/\/)\S+(\.[^(\n|\t|\s,)]+)+)|((http(s)?:\/\/)?(([a-zA-z\-_]+[0-9]*)|([0-9]*[a-zA-z\-_]+)){2,}(\.[^(\n|\t|\s,)]+)+))+/gi;
         var text = $("#target_text").text().replace(expUrl, '<a target="_blank" href="$&">$&</a>');
@@ -188,8 +188,6 @@ export default {
         for(var k=0; k < $(".img_file").length; k++){
             formData.append("file__"+k, $(".img_file:eq("+k+")")[0].files[0]);
         } 
-        
-
             formData.append('json_data', JSON.stringify(this.startup));                
             this.$http.post(`/vue_update_startup_detail/`, formData, {
                 headers: {
@@ -215,21 +213,11 @@ export default {
     },
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
-            setTimeout(function(){
-            $.ajax({
-                url: `/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),
-                type:"get",
-                success:function(res){               
-                    console.log("qwee")                   
-                    vue_obj.startup = res 
-                },
-            })
-            },400)         
-            $(document).on("click","#modi_btn", function(){            
-            })
-   console.log("service end")
-        })
+        vue_obj.$http.get( `/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),)
+        .then((res)=>{
+                vue_obj.startup = res.data
+        })      
+        console.log("service end")
     },
  
 }

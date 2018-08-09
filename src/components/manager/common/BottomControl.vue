@@ -1,4 +1,5 @@
 <template>
+
     <div id="bottom_control" style="width:100%; height:56px;position:fixed; bottom:0px;; background-color: #ced4da;margin-top:254px;" >
         <div style="width:1224px; margin:0px auto; height:56px;">
             <div id="apply_cancel" v-on:click="apply_cancel" style="  width: 119px;  height: 56px;  opacity: 0.7; font-size: 16px; font-weight: bold;  background-color: #4f5478;text-align:center; lien-height:56px;color:#fff; float:left;line-height:56px;">취소</div>
@@ -25,18 +26,15 @@ export default {
                 alert("올바른 작성계정이 아닙니다. 매니저 계정으로 작성해주세요.")
                 return false
             } 
-            $.ajax({
-                url: "vue_submit_application",
-                type:"post",
-                data:{
-                        "id":this.$route.params.id, 
+            this.$http.post("vue_submit_application", this.qs({
+                    "id":this.$route.params.id, 
                         "user_id":localStorage.getItem("id"), 
                         "user_kind" : localStorage.getItem("user"),
-                    },
-                success:function(res){
-                    console.log(res)
-                }
-            })
+                    
+                    })
+                    )
+
+         
         },
         apply_cancel:function(){
         var result = confirm("공고문 작성을 취소하시겠습니까")  

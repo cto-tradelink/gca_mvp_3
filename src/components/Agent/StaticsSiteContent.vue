@@ -1,7 +1,6 @@
 <template>
     <div id="static_content">
         <StaticNavigation></StaticNavigation>
-
     </div>    
 </template>
 
@@ -74,7 +73,4 @@ export default {
         top:48px;
         right: 71px;
     }
-
-
-
 </style>

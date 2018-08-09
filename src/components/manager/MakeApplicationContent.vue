@@ -140,7 +140,6 @@ export default {
             .then((res)=>{
                 vue_obj.grant_info = res.data
                     for(var k =0; k < vue_obj.grant_info.meta.split(",").length; k++){
-                        console.log("?")
                         $("input[data-name='"+ vue_obj.grant_info.meta.split(",")[k]+"']").each(function(){
                         $(this).click()
                     })

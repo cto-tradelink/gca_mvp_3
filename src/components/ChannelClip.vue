@@ -3,15 +3,15 @@
         <Header></Header>
         <div class="channel_con">
             <div id="filter_con">
-                <span class="filter"># 디자인 강의</span>
-                <span class="filter"># 개발</span>
-                    <span class="filter"># 기획 실무</span>
-                    <span class="filter"># 회계</span>
-                    <span class="filter"># 프론트 엔드</span>
-                    <span class="filter"># 법-인사</span>
-                    <span class="filter"># 세무</span>
-                    <span class="filter"># 데이터 사이언스</span>
-                    <span class="filter"># 법-노무</span>
+                <span @click="filter($event)" class="filter"># 디자인 강의</span>
+                <span @click="filter($event)"  class="filter"># 개발</span>
+                <span @click="filter($event)"  class="filter"># 기획 실무</span>
+                <span @click="filter($event)"  class="filter"># 회계</span>
+                <span @click="filter($event)"  class="filter"># 프론트 엔드</span>
+                <span @click="filter($event)"  class="filter"># 법-인사</span>
+                <span @click="filter($event)"  class="filter"># 세무</span>
+                <span @click="filter($event)"  class="filter"># 데이터 사이언스</span>
+                <span @click="filter($event)"  class="filter"># 법-노무</span>
                
             </div>
         </div>
@@ -20,7 +20,7 @@
      <div class="channel_con">
         <div class="title">강의</div>
         <div class="clip_con_ch">
-             <div class="clip_seg_main" :data-url="c.id" v-for="c in clip_on">
+             <div class="clip_seg_main" @click="go(c.id)" :data-url="c.id" v-for="c in clip_on">
              
                 <img class="thumb" :src="c.img">
                 <div class="text_con">
@@ -33,7 +33,7 @@
                         <span>{{c.dur}}</span>|
                         <span>{{c.date}}</span>
                     </div>
-                    <div class="heart_clip heart"  :data-id="c.id"><img src="/static/img/like_d.png"></div>   
+                    <div class="heart_clip heart"  @click="heart($event)" :data-id="c.id"><img src="/static/img/like_d.png"></div>   
                               </div>
               
             </div>
@@ -62,65 +62,45 @@ export default {
     components:{
         Header
     },
-    mounted:function(){
-        var vue_obj = this
-        $(document).ready(function(){
-            vue_obj.clip_on = vue_obj.clip.slice()
-            vue_obj.$http.get("/vue_get_clip_all/").then((res)=>{
-                for(var k = 0; k< res.data.length; k++){
-                    vue_obj.clip.push(res.data[k])
-                    vue_obj.clip_on.push(res.data[k])
-                }
-            })
-
-            $(".menu_top").removeClass("menu_on")
-            $(".menu_top:eq(2)").addClass("menu_on")
-
-            $(document).on("click",".filter", function(){
-                if($(this).hasClass("on"))  $(this).removeClass("on")
-                else $(this).addClass("on")
+    methods:{
+        go:function(url){
+            this.$router.push("/clip/" + url)
+        },
+        filter:function(e){
+              if($(e.target).hasClass("on"))  $(e.target).removeClass("on")
+                else $(e.target).addClass("on")
 
                 var filter_list = []
                 $(".filter.on").each(function(){
                     filter_list.push($(this).text().replace("# ",""))
                 })
-                vue_obj.clip_on=[]
-                for(var k = 0; k< vue_obj.clip.length; k++){
+                this.clip_on=[]
+                for(var k = 0; k< this.clip.length; k++){
                     for (var j=0; j < filter_list.length; j++){
-                    if ( vue_obj.clip[k].tag.indexOf(filter_list[j]) != -1 ){
-                        vue_obj.clip_on.push(vue_obj.clip[k])
+                    if ( this.clip[k].tag.indexOf(filter_list[j]) != -1 ){
+                        this.clip_on.push(this.clip[k])
                     }    
                      }
                 }
-              
-            })
-            $(document).off("click",".clip_seg_main")
-            $(document).on("click",".clip_seg_main", function(){
-                vue_obj.$router.push("/clip/"+$(this).attr("data-url"))
-            })
-
-
-              $(document).off("click",".heart_clip")
-           $(document).on("click",".heart_clip", function(e){
-                console.log("here")
-                e.stopPropagation();
-                e.preventDefault();
-                var target = this
+        },
+        heart:function(e){
+               // e.stopPropagation();
+               // e.preventDefault();
+                var target = e.target
                 if($(this).find("img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 패스에서 삭제하시겠습니까?")){
-                        vue_obj.$http.post("/toggle_int_clip/", vue_obj.qs({
+                        this.$http.post("/toggle_int_clip/", this.qs({
                                 "id":localStorage.getItem("id"),
                                 "val":$(target).attr("data-id")
                             })).then((res)=>{
                                  alert("성공적으로 삭제 되었습니다.")
                                  $(target).find("img").attr("src","/static/img/like_d.png")
                             })
-
                     }
                     }
                     else{
                         console.log("add")
-                        vue_obj.$http.post("/toggle_int_clip/", vue_obj.qs({
+                        this.$http.post("/toggle_int_clip/", this.qs({
                                 "id":localStorage.getItem("id"),
                                 "val":$(target).attr("data-id")
                             })).then((res)=>{
@@ -129,9 +109,20 @@ export default {
                             })
 
                     }
-                    return false;                
-            })
+                    return false; 
 
+        },
+    },
+    mounted:function(){
+        var vue_obj = this
+        vue_obj.clip_on = vue_obj.clip.slice()
+        vue_obj.$http.get("/vue_get_clip_all/").then((res)=>{
+            for(var k = 0; k< res.data.length; k++){
+                vue_obj.clip.push(res.data[k])
+                vue_obj.clip_on.push(res.data[k])
+            }
+        $(".menu_top").removeClass("menu_on")
+        $(".menu_top:eq(2)").addClass("menu_on")     
         })
     }
 }

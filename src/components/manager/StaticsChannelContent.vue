@@ -21,7 +21,6 @@
 	            <option v-for="p in clip_data"  v-bind:value="p.id">{{p.title}}</option>
             </select>
             
-          
             <div id="static_pdf_down" v-on:click="makePDF" style="right:100"  >통계 PDF 다운</div>
             <div style="    position: absolute;    width: 38px;    height: 86px;      z-index: 999999000;    top: 566px; background-color: #fff;"></div>
         </div>
@@ -387,84 +386,60 @@ $(document).ready(function(){
         vue_obj.path_data = res.data.path.slice()
     })
     
-       vue_obj.$http.get("/vue_get_channel_statics_path/?path_id=12", ).then((res)=>{
-        vue_obj.path_data = res.data.path.slice()
+    vue_obj.$http.get("/vue_get_channel_statics_path/?path_id=12", ).then((res)=>{
+        vue_obj.watch_static = res.data.line.watch_static
+        vue_obj.fav_static = res.data.line.fav_static
     })
-
-    $.ajax({
-        url:"/vue_get_channel_statics_path/?path_id=12",
-        type:"get",
-        success:function(res){
-            console.log(res)            
-            vue_obj.watch_static = res.line.watch_static
-            vue_obj.fav_static = res.line.fav_static
-        }
-    })
+    
+    
     $(document).on("change","#b_0", function(){
-        $.ajax({
-            url:"/vue_get_channel_statics_path/?path_id="+$("#b_0").val(),
-            type:"get",
-            success:function(res){
-                var result = dict_sort(res.path_local_tag)
-                vue_obj.watch_static = res.line.watch_static
-                vue_obj.fav_static = res.line.fav_static
-                vue_obj.utils.make_pie_graph("#pie_0", result.value , result.key)
-                var result2 = dict_sort(res.path_kind_tag)
+        vue_obj.$http.get("/vue_get_channel_statics_path/?path_id="+$("#b_0").val())
+        .then((res)=>{
+                var result = dict_sort(res.data.path_local_tag)
+                vue_obj.watch_static = res.data.line.watch_static
+                vue_obj.fav_static = res.data.line.fav_static
+                vue_obj.utils.make_pie_graph("#pie_0", result.data.value , result.key)
+                var result2 = dict_sort(res.data.path_kind_tag)
                 vue_obj.utils.make_pie_graph("#pie_1", result2.value , result2.key)
-                var result3 = dict_sort(res.path_em_tag)
+                var result3 = dict_sort(res.data.path_em_tag)
                 vue_obj.utils.make_pie_graph("#pie_2", result3.value , result3.key)
-                var result4 = dict_sort(res.path_field_tag)
+                var result4 = dict_sort(res.data.path_field_tag)
                 vue_obj.utils.make_pie_graph("#pie_3", result4.value , result4.key)
                 update_zoomable_line()
-            }        
         })
     })// 패스 셀렉
 
     $(document).on("change","#b_1", function(){
-  $.ajax({
-            url:"/vue_get_channel_statics_course/?course_id="+$("#b_1").val(),
-            type:"get",
-            success:function(res){
-                console.log(res)
-                 var result = dict_sort(res.path_local_tag)
-                 vue_obj.watch_static = res.line.watch_static
-                 vue_obj.fav_static = res.line.fav_static
-                vue_obj.utils.make_pie_graph("#pie_0", result.value , result.key)
-                var result2 = dict_sort(res.path_kind_tag)
-                vue_obj.utils.make_pie_graph("#pie_1", result2.value , result2.key)
-                var result3 = dict_sort(res.path_em_tag)
-                vue_obj.utils.make_pie_graph("#pie_2", result3.value , result3.key)
-                var result4 = dict_sort(res.path_field_tag)
-                vue_obj.utils.make_pie_graph("#pie_3", result4.value , result4.key)
-                update_zoomable_line()
-            }        
+    vue_obj.$http.get("/vue_get_channel_statics_course/?course_id="+$("#b_1").val(),)
+    .then((res)=>{
+        var result = dict_sort(res.data.path_local_tag)
+        vue_obj.watch_static = res.data.line.watch_static
+        vue_obj.fav_static = res.data.line.fav_static
+        vue_obj.utils.make_pie_graph("#pie_0", result.value , result.key)
+        var result2 = dict_sort(res.data.path_kind_tag)
+        vue_obj.utils.make_pie_graph("#pie_1", result2.value , result2.key)
+        var result3 = dict_sort(res.data.path_em_tag)
+        vue_obj.utils.make_pie_graph("#pie_2", result3.value , result3.key)
+        var result4 = dict_sort(res.data.path_field_tag)
+        vue_obj.utils.make_pie_graph("#pie_3", result4.value , result4.key)
+        update_zoomable_line()
         })
     })// 코스 셀렉
     $(document).on("change","#b_2", function(){
-        console.log("durldi")
-    $.ajax({
-            url:"/vue_get_channel_statics_clip/?clip_id="+$("#b_2").val(),
-            type:"get",
-            success:function(res){       
-                console.log(res)
-                var result = dict_sort(res.path_local_tag)
-                vue_obj.watch_static = res.line.watch_static
-                vue_obj.fav_static = res.line.fav_static
+        vue_obj.$http.get("/vue_get_channel_statics_clip/?clip_id="+$("#b_2").val(),)
+            .then((res)=>{
+                var result = dict_sort(res.data.path_local_tag)
+                vue_obj.watch_static = res.data.line.watch_static
+                vue_obj.fav_static = res.data.line.fav_static
                 vue_obj.utils.make_pie_graph("#pie_0", result.value , result.key)
-                var result2 = dict_sort(res.path_kind_tag)
+                var result2 = dict_sort(res.data.path_kind_tag)
                 vue_obj.utils.make_pie_graph("#pie_1", result2.value , result2.key)
-                var result3 = dict_sort(res.path_em_tag)
+                var result3 = dict_sort(res.data.path_em_tag)
                 vue_obj.utils.make_pie_graph("#pie_2", result3.value , result3.key)
-                var result4 = dict_sort(res.path_field_tag)
+                var result4 = dict_sort(res.data.path_field_tag)
                 vue_obj.utils.make_pie_graph("#pie_3", result4.value , result4.key)
                 update_zoomable_line()
-            },
- })
-
-
-
-
- 
+            })
     })// 패스 셀렉
 
 
@@ -478,8 +453,7 @@ $(document).ready(function(){
        location.href = ee.getXLSDataURI();
        })
  
-       
-   
+          
 
     $(document).off("change","#select_zone_2")
     $(document).on("change","#select_zone_2>.basic:eq(0)", function(){

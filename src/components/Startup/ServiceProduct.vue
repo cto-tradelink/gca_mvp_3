@@ -116,6 +116,8 @@ export default {
                     'id':localStorage.getItem("id"),
                     "service_id":$(e.path[0]).attr("data-id")
                 }
+    
+
                 $.ajax({
                     url: "/vue_remove_service_product/",
                     type:"post",

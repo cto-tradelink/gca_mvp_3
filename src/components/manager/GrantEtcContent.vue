@@ -93,15 +93,15 @@ export default {
         return{
             grant_info:{
 
+                }
             }
-        }
-    },
-         beforeRouteLeave (to, from, next) {
+        },
+    beforeRouteLeave (to, from, next) {
         if(confirm("페이지를 벗어나시겠습니까?")){
             next()
-        }
-  },
-     methods:{
+            }
+        },
+    methods:{
         go_link_0:function(){
             var result = confirm("현재 작성 내용을 저장후 이동하시겠습니까?")
             if (result == true){
@@ -122,16 +122,13 @@ export default {
                 save(this);
             }
                 this.$router.push("/manager/make/grant/"+this.$route.params.id+"/recruit_content")
-         
         },
         go_link_3:function(){
             var result = confirm("현재 작성 내용을 저장후 이동하시겠습니까?")
             if (result == true){
                 save(this);
-            }
-      
-      this.$router.push("/manager/make/grant/"+this.$route.params.id+"/select_method")
-        
+            }      
+        this.$router.push("/manager/make/grant/"+this.$route.params.id+"/select_method")
         },
         go_link_4:function(){
             var result = confirm("현재 작성 내용을 저장후 이동하시겠습니까?")
@@ -139,7 +136,7 @@ export default {
                 save(this);
             }
       
-      this.$router.push("/manager/make/grant/"+this.$route.params.id+"/attached_file")
+        this.$router.push("/manager/make/grant/"+this.$route.params.id+"/attached_file")
            
         },
         go_link_5:function(){
@@ -148,15 +145,14 @@ export default {
                 save(this);
             }
       
-      this.$router.push("/manager/make/grant/"+this.$route.params.id+"/etc")
+        this.$router.push("/manager/make/grant/"+this.$route.params.id+"/etc")
         },
         go_link_6:function(){
             var result = confirm("현재 작성 내용을 저장후 이동하시겠습니까?")
             if (result == true){
                 save(this);
-            }
-      
-        sthis.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
+            }      
+        this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
         },
         apply_save:function(){
             var formData = new FormData();
@@ -190,15 +186,13 @@ export default {
         }
     },  
     mounted:function(){
-        var vue_obj = this
-       
+        var vue_obj = this       
         vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id)
         .then((res)=>{
             vue_obj.grant_info = res.data
         })    
         $("#gca_content").css("background-color","#fdfeff")       
-     
-    }
+        }
 }
 </script>
 

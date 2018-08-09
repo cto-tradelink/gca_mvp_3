@@ -11,7 +11,7 @@
 </template>
 
 <script>
-export default {
+fptjexport default {
     methods:{
         apply_save:function(){
             alert("임시저장되었습니다")

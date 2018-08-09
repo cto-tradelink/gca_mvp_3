@@ -34,7 +34,7 @@
                 <ul>
                     <li style="border:none"><span class="label f4">
                         이름</span>
-                        <span class="lb_con"><input v-model="info.result.name" class="input_normal"></span>
+                        <span class="lb_con"><input v-model="info.result.name" class="labelㅍ"></span>
                     </li>
                     <li style="height:50px"><span class="label f4">
                         계정주소</span>
@@ -75,18 +75,11 @@ export default {
         var vue_obj = this
         $(document).ready(function(){
             // $(".check:checkbox").mSwitch();
-
-            $.ajax({
-                url:"/vue_get_user_info/",
-                type:"post",
-                data:{
+            vue_obj.$http.post("/vue_get_user_info/", vue_obj.qs({
                     "id":localStorage.getItem("id")
-                },
-                success:function(res){
-                    console.log(res)
-                    vue_obj.info = res;                
-                }
-            })
+                },)).then((res)=>{
+                     vue_obj.info = res.data;      
+                })       
             $(document).on("click", ".modi_btn", function () {
                 if(mode == "show"){
                     $("#account_con").addClass("hidden")
@@ -96,22 +89,20 @@ export default {
                 else{
                     $("#account_con").removeClass("hidden")
                     $("#modi_account").addClass("hidden")
-                    mode="show"                    
-            $.ajax({
-                url:"/vue_set_user_info/",
-                type:"post",
-                data:{
+                    mode="show"        
+                    
+            vue_obj.$http.post("/vue_set_user_info/",vue_obj.qs(
+                {
                     "id":localStorage.getItem("id"),
                     "phone" : vue_obj.info.result.phone,
                     "name": vue_obj.info.result.name,
                     "agreement": vue_obj.info.result.agreement,
                     "email" : vue_obj.info.result.email,
                     "sns":  vue_obj.info.result.sns,
-                },
-                success:function(res){
-                    console.log(res)                 
                 }
-                })
+                )).then((res)=>{
+                 console.log(res)            
+                })                   
                }
             })
         })

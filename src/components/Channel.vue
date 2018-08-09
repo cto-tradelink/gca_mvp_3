@@ -3,15 +3,15 @@
         <Header></Header>
         <div class="channel_con">
             <div id="filter_con">
-                <span class="filter"># 디자인 강의</span>
-                <span class="filter"># 개발</span>
-                    <span class="filter"># 기획 실무</span>
-                    <span class="filter"># 회계</span>
-                    <span class="filter"># 프론트 엔드</span>
-                    <span class="filter"># 법-인사</span>
-                    <span class="filter"># 세무</span>
-                    <span class="filter"># 데이터 사이언스</span>
-                    <span class="filter"># 법-노무</span>
+                <span @click="filter($event)"  class="filter"># 디자인 강의</span>
+                <span @click="filter($event)"  class="filter"># 개발</span>
+                <span @click="filter($event)"  class="filter"># 기획 실무</span>
+                <span @click="filter($event)"  class="filter"># 회계</span>
+                <span @click="filter($event)"  class="filter"># 프론트 엔드</span>
+                <span @click="filter($event)"  class="filter"># 법-인사</span>
+                <span @click="filter($event)"  class="filter"># 세무</span>
+                <span @click="filter($event)"  class="filter"># 데이터 사이언스</span>
+                <span @click="filter($event)"  class="filter"># 법-노무</span>
                
             </div>
         </div>
@@ -91,7 +91,7 @@
                             <span>{{clip.user}}</span>|
                             <span>{{clip.date}}</span>7
                         </div>
-                         <div class="heart_path heart_con heart" data-target="path"  :data-id="clip.id"><img src="/static/img/like_d.png"></div>         
+                         <div class="heart_path heart_con heart" data-target="path" @click="heart($event)"  :data-id="clip.id"><img src="/static/img/like_d.png"></div>         
                      </div>           
                  </div>     
                  
@@ -139,6 +139,90 @@ export default {
     methods:{
         go_data_url(url){
             this.utils.go(url, this)
+        },
+        heart:function(e){
+              console.log("heh")
+                var target = e.target
+                 e.preventDefault();
+                 e.stopPropagation()
+                if(localStorage.getItem("user")!="u"){
+                   if( localStorage.getItem("user") == "m" ||localStorage.getItem("user")=="ma"){ alert("관심담기를 할수 없는 계정입니다."); return false; }
+                    else alert("로그인을 해주세요."); return false;    
+                }
+                var t = $(target).attr("data-target")
+                if( t == "path")  {var url = "/toggle_int_path/"; var text="패스";}
+                else if(t == "course") {var url = "/toggle_int_course/"; var text="코스";}
+                else if(t == "clip") {var url = "/toggle_int_clip/"; var text="강의";}
+                else if(t == "startup") {var url = "/vue_toggle_interest_st/"; var text="스타트업";}
+                else if(t == "sp") {var url = "/vue_toggle_interest_sb/"; var text="지원사업";}
+                
+                if($(target).find("img").attr("src").indexOf("_p") != -1){
+                    if(confirm("관심 "+text+"에서 삭제하시겠습니까?")){
+                        this.$http.post(url,this.qs({
+                                "id":localStorage.getItem("id"),
+                                "val":$(target).attr("data-id")
+                            })).then((res)=>{
+                                alert("성공적으로 삭제 되었습니다.")
+                                $(target).find("img").attr("src","/static/img/like_d.png")                                                             
+                            })
+                        }
+                    }
+                    else{
+                        this.$http.post(url,this.qs({
+                        "id":localStorage.getItem("id"),
+                        "val":$(target).attr("data-id")
+                        }))
+                        .then((res)=>{
+                            alert("성공적으로 등록 되었습니다.")
+                        $(target).find("img").attr("src","/static/img/like_p.png")                                                             
+                    })                   
+                }   
+        },
+        filter:function(e){
+                if($(e.target).hasClass("on"))  $(e.target).removeClass("on")
+                else $(e.target).addClass("on")
+
+                var filter_list = []
+                $(".filter.on").each(function(){
+                    filter_list.push($(this).text().replace("# ","").trim())
+                })
+                this.clip_on=[]
+                for(var k = 0; k< this.clip.length; k++){
+                    for (var j=0; j < filter_list.length; j++){
+                    try{
+                    if ( this.clip[k].tag.indexOf(filter_list[j]) != -1 ){
+                        this.clip_on.push(this.clip[k])
+                    }   }catch(e){console.log(e)}
+
+                     }
+                }
+                  this.course_on=[]
+                for(var k = 0; k< this.course.length; k++){
+                    for (var j=0; j < filter_list.length; j++){
+                    try{    
+                    if ( this.course[k].tag.indexOf(filter_list[j]) != -1 ){
+                        this.course_on.push(this.course[k])
+                    }   
+                    }catch(e){console.log(e)} 
+                     }
+                }
+                  this.path_on=[]
+                for(var k = 0; k< this.path.length; k++){
+                    for (var j=0; j < filter_list.length; j++){
+                    try{
+                    if ( this.path[k].tag.indexOf(filter_list[j]) != -1 ){
+                        this.path_on.push(this.path[k])
+                    }
+                    }catch(e){console.log(e)}    
+                     }
+                }
+               if(filter_list.length===0){
+                    this.path_on = this.path.slice(0)
+                    this.course_on = this.course.slice(0)
+                    this.clip_on = this.clip.slice(0)
+                   
+                }
+
         }
     },
     updated:function(){
@@ -157,106 +241,11 @@ export default {
     },
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
-
-
-           $(document).off("click",".heart")
-           $(document).on("click",".heart", function(e){
-               console.log("heh")
-                var target = this
-                 e.preventDefault();
-                 e.stopPropagation()
-                if(localStorage.getItem("user")!="u"){
-                   if( localStorage.getItem("user") == "m" ||localStorage.getItem("user")=="ma"){ alert("관심담기를 할수 없는 계정입니다."); return false; }
-                    else alert("로그인을 해주세요."); return false;    
-                }
-                var t = $(this).attr("data-target")
-                if( t == "path")  {var url = "/toggle_int_path/"; var text="패스";}
-                else if(t == "course") {var url = "/toggle_int_course/"; var text="코스";}
-                else if(t == "clip") {var url = "/toggle_int_clip/"; var text="강의";}
-                else if(t == "startup") {var url = "/vue_toggle_interest_st/"; var text="스타트업";}
-                else if(t == "sp") {var url = "/vue_toggle_interest_sb/"; var text="지원사업";}
-                
-                if($(this).find("img").attr("src").indexOf("_p") != -1){
-                    if(confirm("관심 "+text+"에서 삭제하시겠습니까?")){
-                        vue_obj.$http.post(url,vue_obj.qs({
-                                "id":localStorage.getItem("id"),
-                                "val":$(target).attr("data-id")
-                            })).then((res)=>{
-                                alert("성공적으로 삭제 되었습니다.")
-                                $(target).find("img").attr("src","/static/img/like_d.png")                                                             
-                            })
-                        }
-                    }
-                    else{
-                        vue_obj.$http.post(url,vue_obj.qs({
-                        "id":localStorage.getItem("id"),
-                        "val":$(target).attr("data-id")
-                        }))
-                        .then((res)=>{
-                            alert("성공적으로 등록 되었습니다.")
-                        $(target).find("img").attr("src","/static/img/like_p.png")                                                             
-                    })                   
-                }                
-            })
-
-
-
-            vue_obj.clip_on = vue_obj.clip.slice()
-            vue_obj.course_on = vue_obj.course.slice()
-            vue_obj.path_on = vue_obj.path.slice()
-            $(".menu_top").removeClass("menu_on")
-            $(".menu_top:eq(2)").addClass("menu_on")
-            $(document).off("click",".filter")
-            $(document).on("click",".filter", function(){
-                if($(this).hasClass("on"))  $(this).removeClass("on")
-                else $(this).addClass("on")
-
-                var filter_list = []
-                $(".filter.on").each(function(){
-                    filter_list.push($(this).text().replace("# ","").trim())
-                })
-                vue_obj.clip_on=[]
-                for(var k = 0; k< vue_obj.clip.length; k++){
-                    for (var j=0; j < filter_list.length; j++){
-                    try{
-                    if ( vue_obj.clip[k].tag.indexOf(filter_list[j]) != -1 ){
-                        vue_obj.clip_on.push(vue_obj.clip[k])
-                    }   }catch(e){console.log(e)}
-
-                     }
-                }
-                  vue_obj.course_on=[]
-                for(var k = 0; k< vue_obj.course.length; k++){
-                    for (var j=0; j < filter_list.length; j++){
-                    try{    
-                    if ( vue_obj.course[k].tag.indexOf(filter_list[j]) != -1 ){
-                        vue_obj.course_on.push(vue_obj.course[k])
-                    }   
-                    }catch(e){console.log(e)} 
-                     }
-                }
-                  vue_obj.path_on=[]
-                for(var k = 0; k< vue_obj.path.length; k++){
-                    for (var j=0; j < filter_list.length; j++){
-                    try{
-                    if ( vue_obj.path[k].tag.indexOf(filter_list[j]) != -1 ){
-                        vue_obj.path_on.push(vue_obj.path[k])
-                    }
-                    }catch(e){console.log(e)}    
-                     }
-                }
-               if(filter_list.length===0){
-                    vue_obj.path_on = vue_obj.path.slice(0)
-                    vue_obj.course_on = vue_obj.course.slice(0)
-                    vue_obj.clip_on = vue_obj.clip.slice(0)
-                   
-                }
-
-       
-
-            })
-        })
+        vue_obj.clip_on = vue_obj.clip.slice()
+        vue_obj.course_on = vue_obj.course.slice()
+        vue_obj.path_on = vue_obj.path.slice()
+        $(".menu_top").removeClass("menu_on")
+        $(".menu_top:eq(2)").addClass("menu_on")
     }
 }
 </script>

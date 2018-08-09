@@ -5,7 +5,7 @@
             <div id="intro_reg_con" style="width:1224px;height: 347px; margin:0px auto;">
                 <div class="big" style="">컨텐츠 스타트업에게 필요한<br >지원사업, 기업정보, 교육을 한 곳에 모았다.</div>
                 <div class="small">지원사업에 간단하게 지원하고 쉽게 관리해보세요.</div>
-                <div id="reg_btn" :click="go_login" v-if="is_not_logined">가입하기</div>
+                <div id="reg_btn" @click="go_login" v-if="is_not_logined">가입하기</div>
             </div>
             
         </div>
@@ -22,7 +22,7 @@
                 </div>
                    <div style="line-height:24px;color:#fff"><img style="float:left; margin-right:8px; margin-right:5px;" src="/static/img/pluse.png">
                    <span style="float:left; display:inline-block"> 필터 등록을 통해 나에게 맞는 지원사업을 추천받아 보세요.</span></div>
-                   <div id="add_filter_btn" :click="go_filter_add" class="add_filter_btn">필터등록하러가기 <img style="margin-left:16px;" src="/static/img/arrow_R.png"></div>
+                   <div id="add_filter_btn" @click="go_filter_add" class="add_filter_btn">필터등록하러가기 <img style="margin-left:16px;" src="/static/img/arrow_R.png"></div>
             </div>    
         </div>
         <div id="startup" style="height:430px;">

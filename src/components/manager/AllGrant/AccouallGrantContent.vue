@@ -120,12 +120,7 @@ export default {
                     }
                     console.log(vue_obj)
                 })               
-                //  vue_obj.$http.post(`/vue_make_excel/`)
-                // .then((result) => {        
-                //     console.log(result)    
-                //     vue_obj.data = result.data                    
-                //     console.log(vue_obj)
-                // }) 
+   
                  $(document).off("keyup", "#input_text")
                   $(document).on("keyup", "#input_text", function(){
                     

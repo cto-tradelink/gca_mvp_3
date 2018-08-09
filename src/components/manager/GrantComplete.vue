@@ -78,25 +78,18 @@ methods:{
         go_link_4:function(){
          this.$router.push("/manager/make/grant/"+this.$route.params.id+"/attached_file")
         },
-        go_link_5:function(){
-          
-      
+        go_link_5:function(){         
       this.$router.push("/manager/make/grant/"+this.$route.params.id+"/etc")
         },
-        go_link_6:function(){
-     
-      
+        go_link_6:function(){     
       this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
         }
     },  
     components:{
         Header, LeftNavi,GrantCompleteContent,BottomControl
     },
-    mounted:function(){
-        $(document).ready(function(){
-            $("#apply_next").text("지원서 양식 >")
-            
-        })
+    mounted:function(){      
+            $("#apply_next").text("지원서 양식 >")   
     }
 }
 </script>

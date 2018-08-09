@@ -12,8 +12,8 @@
            
         </div>     
         <div id="bottom_btn_con" class="fixed">
-            <div id="int_btn"><img  style="display: inline-block; vertical-align: sub; width:24px; margin-bottom: -3px;" src="/static/img/like_w.png"> 관심담기</div>
-            <div id="apply_btn" >지원하기</div>
+            <div @click="add_interest" id="int_btn"><img  style="display: inline-block; vertical-align: sub; width:24px; margin-bottom: -3px;" src="/static/img/like_w.png"> 관심담기</div>
+            <div @click="apply" id="apply_btn" >지원하기</div>
         </div>
         <SimilarGrant v-if="similar_list !== null" :similar_list="similar_list"></SimilarGrant>
     </div>
@@ -38,81 +38,71 @@ export default {
     }
 },
  components:{
-  SideBanner, GrantDetailCard,GrantDetailInfo,LeftNavi,GrantMoreDetailInfo, SimilarGrant
+    SideBanner, GrantDetailCard,GrantDetailInfo,LeftNavi,GrantMoreDetailInfo, SimilarGrant
  },
- mounted:function(){
-     var vue_obj=this
-   this.$http.get(`/get_grant_detail/?id=`+this.$route.params.id)
-        .then((result) => {          
-            this.grant_info = result.data               
-        })
-    this.$http.get(`/similar_grant/?q=`+this.$route.params.id)
-        .then((result) => {
-            
-            this.similar_list = result.data.data            
-        })
-        $(document).ready(function(){
-            if( $("#d_day_con").text().indexOf("마감") == -1 ){
-                $("#apply_btn").css("background-color","#a8a8a8")
-                $("#int_btn").css("color","#fff")
-            }
-            try{
-            $.ajax({
-                url:"/vue_fav_sb_list/?id="+localStorage.getItem("id"),
-                success:function(res){
-                    if( res.indexOf( parseInt(vue_obj.$route.params.id)) != -1  ){
-                          $("#int_btn>img").attr("src","/static/img/like_p.png")
-                    }
-                }
-            })
-            }
-            catch(e){}
-
-            $(document).on("click","#apply_btn", function(){
-                if( $("#d_day_con").text().indexOf("마감") == -1 ){
-                    vue_obj.$router.push("/apply/"+vue_obj.$route.params.id+"/base_info/")
+ methods:{
+     apply:function(){
+          if( $("#d_day_con").text().indexOf("마감") == -1 ){
+                    this.$router.push("/apply/"+this.$route.params.id+"/base_info/")
                 }else{
                     alert("마감된 공고입니다.")
                 }
+     },
+    add_interest:function(){
+        if(localStorage.getItem("user")=="u") {
+            console.log(this.$route.params.id)
+            var data={
+                    "id":localStorage.getItem("id"),
+                    "val":this.$route.params.id
+                }
+            this.$http.post(`/vue_toggle_interest_sb/`,this.qs(data)).then((res)=>{
+                    if(res.data=="ok-add"){alert("관심 사업에 추가되었습니다.")
+                        $("#int_btn>img").attr("src","/static/img/like_p.png")
+                    }else{
+                        alert("관심사업에서 삭제되었습니다.")
+                        $("#int_btn>img").attr("src","/static/img/like_w.png")
+                    }
             })
-                $(document).off("click","#int_btn")
-                $(document).on("click","#int_btn", function(){
 
-                     if(localStorage.getItem("user")=="u") {
-                    console.log(vue_obj.$route.params.id)
-                      var data={
-                            "id":localStorage.getItem("id"),
-                            "val":vue_obj.$route.params.id
-                        }
-                    $.ajax({
-                        url:`/vue_toggle_interest_sb/`,
-                        method:"POST",
-                        data:data,
-                        success:function(res){console.log(res)
-                            if(res=="ok-add"){alert("관심 사업에 추가되었습니다.")
-                                $("#int_btn>img").attr("src","/static/img/like_p.png")
-                            }else{
-                                alert("관심사업에서 삭제되었습니다.")
-                             $("#int_btn>img").attr("src","/static/img/like_w.png")
-                            }
-                        },
-                        error:function(e){console.log(e)                       
-                        }
-                     })
-                     }
-                     else if(localStorage.getItem("user")=="m" ||
-                     localStorage.getItem("user")=="ma"
-                     ){
-                         alert("매니저나 기관 관리자는 관심 담기를 할수 없습니다. ")
-                     }
-                     else{
-                         alert("로그인을 진행해 주세요.")
-                     }
-                      
+        }
+        else if(localStorage.getItem("user")=="m" || localStorage.getItem("user")=="ma"){
+                    alert("매니저나 기관 관리자는 관심 담기를 할수 없습니다. ")
+                }
+                else{
+                    alert("로그인을 진행해 주세요.")
+                }
+    }
+ },
+ mounted:function(){
+    var vue_obj=this
+    this.$http.get(`/get_grant_detail/?id=`+this.$route.params.id)
+        .then((result) => {          
+            console.log(result.data)
+            vue_obj.grant_info = result.data            
+        })
+    this.$http.get(`/similar_grant/?q=`+this.$route.params.id)
+        .then((result) => {
+            this.similar_list = result.data.data            
+        })
+    $(document).ready(function(){
 
-
-
+        if( vue_obj.apply_end > new Date().now() ){
+                $("#apply_btn").css("background-color","#a8a8a8")
+                $("#int_btn").css("color","#fff")
+        }else{
+            $(document).on("click","#apply_btn",function(){
+                vue_obj.apply();
+            })
+        }
+            try{
+                vue_obj.$http.get("/vue_fav_sb_list/?id="+localStorage.getItem("id"),)
+                .then((res)=>{
+                    if( res.data.indexOf( parseInt(vue_obj.$route.params.id)) != -1  ){
+                        $("#int_btn>img").attr("src","/static/img/like_p.png")
+                    }
                 })
+            }
+            catch(e){}
         })
 
  },

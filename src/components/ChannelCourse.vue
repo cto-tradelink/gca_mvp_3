@@ -3,15 +3,15 @@
         <Header></Header>
         <div class="channel_con">
             <div id="filter_con">
-                <span class="filter"># 디자인 강의</span>
-                <span class="filter"># 개발</span>
-                    <span class="filter"># 기획 실무</span>
-                    <span class="filter"># 회계</span>
-                    <span class="filter"># 프론트 엔드</span>
-                    <span class="filter"># 법-인사</span>
-                    <span class="filter"># 세무</span>
-                    <span class="filter"># 데이터 사이언스</span>
-                    <span class="filter"># 법-노무</span>
+                <span @click="filter($event)"  class="filter"># 디자인 강의</span>
+                <span @click="filter($event)"  class="filter"># 개발</span>
+                <span @click="filter($event)"  class="filter"># 기획 실무</span>
+                <span @click="filter($event)"  class="filter"># 회계</span>
+                <span @click="filter($event)"  class="filter"># 프론트 엔드</span>
+                <span @click="filter($event)"  class="filter"># 법-인사</span>
+                <span @click="filter($event)"  class="filter"># 세무</span>
+                <span @click="filter($event)"  class="filter"># 데이터 사이언스</span>
+                <span @click="filter($event)"  class="filter"># 법-노무</span>
                
             </div>
         </div>
@@ -19,7 +19,7 @@
      <div class="channel_con">
         <div class="title">코스</div>
         <div class="clip_con_ch">
-             <div class="clip_seg_main"  :data-url="c.entry_point" v-for="c in course_on">                
+             <div class="clip_seg_main" @click="go(c.entry_point)"  :data-url="c.entry_point" v-for="c in course_on">                
                 <img class="thumb" :src="+'/'+c.img">
                 <div class="text_con">
                     <div class="seg_ttl">{{c.title}}</div>
@@ -60,49 +60,42 @@ export default {
     components:{
         Header
     },
-    mounted:function(){
-        var vue_obj = this
-        $(document).ready(function(){
-            vue_obj.course_on = vue_obj.course.slice()
-            $.ajax({
-                url:"/vue_get_course_all/",
-                success:function(res){
-                    console.log(res)
-                    for(var k = 0; k< res.length; k++){
-                        vue_obj.course.push(res[k])
-                        vue_obj.course_on.push(res[k])
-                    }
-                }
-            })            
-            $(document).off("click",".clip_seg_main")
-           $(document).on("click",".clip_seg_main", function(){
-                vue_obj.$router.push($(this).attr("data-url"))
-            })
-
-
-
-            $(".menu_top").removeClass("menu_on")
-            $(".menu_top:eq(2)").addClass("menu_on")
-
-            $(document).on("click",".filter", function(){
-                if($(this).hasClass("on"))  $(this).removeClass("on")
-                else $(this).addClass("on")
+    methods:{
+        go:function(url){
+            this.$router.push(url)
+        },
+        filter:function(e){
+              if($(e.target).hasClass("on"))  $(e.target).removeClass("on")
+                else $(e.target).addClass("on")
 
                 var filter_list = []
                 $(".filter.on").each(function(){
                     filter_list.push($(this).text().replace("# ",""))
                 })
-                vue_obj.course_on=[]
-                for(var k = 0; k< vue_obj.course.length; k++){
+                this.course_on=[]
+                for(var k = 0; k< this.course.length; k++){
                     for (var j=0; j < filter_list.length; j++){
-                    if ( vue_obj.course[k].tag.indexOf(filter_list[j]) != -1 ){
-                        vue_obj.course_on.push(vue_obj.course[k])
+                    if ( this.course[k].tag.indexOf(filter_list[j]) != -1 ){
+                        this.course_on.push(this.course[k])
                     }    
                      }
                 }
-              
-            })
-        })
+        }
+
+    },
+    mounted:function(){
+        var vue_obj = this
+        vue_obj.course_on = vue_obj.course.slice()
+        vue_obj.$http.get(`/vue_get_course_all/`).then((res)=>{
+            console.log(res)
+            for(var k = 0; k< res.data.length; k++){
+                vue_obj.course.push(res.data[k])
+                vue_obj.course_on.push(res.data[k])
+            }
+        })             
+        $(".menu_top").removeClass("menu_on")
+        $(".menu_top:eq(2)").addClass("menu_on")
+
     }
 }
 </script>

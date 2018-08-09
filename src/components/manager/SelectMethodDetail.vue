@@ -167,7 +167,47 @@ export default {
             }
       
       this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
-        }
+        },
+        apply_next:function(){
+            var formData = new FormData();
+            var grant_info ={}
+                grant_info["id"]=this.$route.params.id
+                grant_info["pro_0_choose"] = this.grant_info.pro_0_choose
+                grant_info["pro_0_start"] = this.grant_info.pro_0_start
+                grant_info["pro_0_end"] = this.grant_info.pro_0_end
+                grant_info["pro_0_open"] = this.grant_info.pro_0_open
+                grant_info["pro_0_criterion"] = this.grant_info.pro_0_criterion
+                grant_info["pro_1_choose"] = this.grant_info.pro_1_choose
+                grant_info["pro_2_choose"] = this.grant_info.pro_1_choose
+                grant_info["open_method"] = this.grant_info.open_method
+                console.log(grant_info)
+                formData.append('json_data', JSON.stringify(grant_info));    
+                this.$http.post(`/vue_set_grant_4/`, formData)
+                .then((result) => {            
+                     this.$router.push("/manager/make/grant/"+ this.$route.params.id +"/attached_file")
+                })    
+        },
+        apply_save:function(){
+                var formData = new FormData();
+                var grant_info ={}
+                grant_info["id"]=this.$route.params.id
+                grant_info["pro_0_choose"] = this.grant_info.pro_0_choose
+                grant_info["pro_0_start"] = this.grant_info.pro_0_start
+                grant_info["pro_0_end"] = this.grant_info.pro_0_end
+                grant_info["pro_0_open"] = this.grant_info.pro_0_open
+                grant_info["pro_0_criterion"] = this.grant_info.pro_0_criterion
+                grant_info["pro_1_choose"] = this.grant_info.pro_1_choose
+                grant_info["pro_2_choose"] = this.grant_info.pro_1_choose
+                grant_info["open_method"] = this.grant_info.open_method
+
+                console.log(grant_info)
+
+                formData.append('json_data', JSON.stringify(grant_info));    
+                this.$http.post(`/vue_set_grant_4/`, formData)
+                .then((result) => {            
+                    alert("저장되었습니다.")
+                })    
+        },
     },  
     data:function(){
         return {
@@ -188,15 +228,10 @@ export default {
         var vue_obj = this
         $(document).ready(function(){
 
-   $.ajax({
-                    url:vue_obj.baseURI+"/vue_get_grant_information?id="+vue_obj.$route.params.id,
-                    success:function(res){
-                        console.log("asdfasdf")
-                        console.log(res)
-                        vue_obj.grant_info = res
-                    }
-                })
-
+           vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id)
+           .then((res)=>{
+                vue_obj.grant_info = res.data
+           })                                   
             $(document).off("click","input[type='checkbox']")
             $(document).on("click","input[type='checkbox']",function(){
                 if( $(this).is(":checked") ){
@@ -206,57 +241,7 @@ export default {
                 }
             })
 
-
             $("#gca_content").css("background-color","#fdfeff")
-            $(document).off("click","#apply_next")
-            $(document).on("click","#apply_next", function(){
-                
-                var formData = new FormData();
-                var grant_info ={}
-                grant_info["id"]=vue_obj.$route.params.id
-                grant_info["pro_0_choose"] = vue_obj.grant_info.pro_0_choose
-                grant_info["pro_0_start"] = vue_obj.grant_info.pro_0_start
-                grant_info["pro_0_end"] = vue_obj.grant_info.pro_0_end
-                grant_info["pro_0_open"] = vue_obj.grant_info.pro_0_open
-                grant_info["pro_0_criterion"] = vue_obj.grant_info.pro_0_criterion
-                grant_info["pro_1_choose"] = vue_obj.grant_info.pro_1_choose
-                grant_info["pro_2_choose"] = vue_obj.grant_info.pro_1_choose
-                grant_info["open_method"] = vue_obj.grant_info.open_method
-
-                console.log(grant_info)
-
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_4/`, formData)
-                .then((result) => {            
-                     vue_obj.$router.push("/manager/make/grant/"+ vue_obj.$route.params.id +"/attached_file")
-                })    
-            })
-            
-             $(document).off("click","#apply_save")
-            $(document).on("click","#apply_save", function(){
-                
-                var formData = new FormData();
-                var grant_info ={}
-                grant_info["id"]=vue_obj.$route.params.id
-                grant_info["pro_0_choose"] = vue_obj.grant_info.pro_0_choose
-                grant_info["pro_0_start"] = vue_obj.grant_info.pro_0_start
-                grant_info["pro_0_end"] = vue_obj.grant_info.pro_0_end
-                grant_info["pro_0_open"] = vue_obj.grant_info.pro_0_open
-                grant_info["pro_0_criterion"] = vue_obj.grant_info.pro_0_criterion
-                grant_info["pro_1_choose"] = vue_obj.grant_info.pro_1_choose
-                grant_info["pro_2_choose"] = vue_obj.grant_info.pro_1_choose
-                grant_info["open_method"] = vue_obj.grant_info.open_method
-
-                console.log(grant_info)
-
-                formData.append('json_data', JSON.stringify(grant_info));    
-                vue_obj.$http.post(`/vue_set_grant_4/`, formData)
-                .then((result) => {            
-                    alert("저장되었습니다.")
-                })    
-            })
-            
-            
             
             })
     }

@@ -52,29 +52,21 @@ export default {
                 localStorage.setItem("first_grant_src",localStorage.getItem("second_grant_src") )        
                 localStorage.setItem("second_grant_src",data_target.$route.params.id )
             }
-                
            
         })
     },
     mounted:function(){
         try{
             if(localStorage.getItem("user")=="u"){
-            $.ajax({
-            url:`/hit_sb/`,
-            type:"post",
-            data:{
+                this.$http.post(`/hit_sb/`, this.qs({
                 "target" : this.$route.params.id,
                 "id" : localStorage.getItem("id")
-            },
-            success:function(res){
-                console.log(res);
-            }
+            })).then((res)=>{
+                 console.log(res);
             })
             }
-       
         }
         catch(e){}
-
        if($("#grant_poster").attr("src") == "" ||$("#grant_poster").attr("src") == undefined){
            $("#grant_poster").remove()
            $("#grant_info_con").css("margin-left","0px")

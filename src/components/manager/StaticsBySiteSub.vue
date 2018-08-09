@@ -9,12 +9,11 @@ import Header from "./Common/Header.vue"
 import LeftNavi from "./Common/LeftNavi.vue"
 
 export default {
-
      beforeRouteLeave (to, from, next) {
         if(confirm("페이지를 벗어나시겠습니까?")){
             next()
         }
-  },
+    },
     mounted:function(){
 var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 110, left: 40},

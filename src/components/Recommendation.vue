@@ -65,6 +65,7 @@ var order_num=0;
         return 0;
         }
      function compare_by_due(a,b){
+            try{
             var a_date = new Date(a.due.split("-")[0], a.due.split("-")[1], a.due.split("-")[2])
             var b_date = new Date(b.due.split("-")[0], b.due.split("-")[1], b.due.split("-")[2])
             if (a_date > b_date) {
@@ -74,6 +75,8 @@ var order_num=0;
                 return -1;
             }
             // a must be equal to b
+            }
+            catch(e){}
         return 0;
         }
 
@@ -163,6 +166,26 @@ export default {
         before_change:function(){
             console.log("dddd")
         },
+        save_filter:function(){
+            var tag_list=[]
+            for(var k=0; k< $(".top_tag_con:eq(0)>li").length; k++){
+               console.log($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
+                tag_list.push($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
+            }
+           for(var k=0; k< $(".top_tag_con:eq(0)>li").length; k++){
+               console.log($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
+          
+            }
+            this.$http.get(`/vue_home_grant/?q=`+ tag_list.join(","))
+            .then((result) => {
+                this.grant=[]
+                for(var k=0; k< result.data.data.length; k++){
+                    this.grant.push(result.data.data[k])                
+                }           
+            }).then((result=>{
+                order_arr(order_num, this) 
+            }))        
+        }
        
     },
     data:function(){return{
@@ -182,14 +205,24 @@ export default {
     mounted:function(){
 
         var vue_obj = this
-        $(document).ready(function(){
-
-        var tag_list=[]
-        for(var k=0; k< $(".top_tag_con:eq(0)>li").length; k++){
-            console.log($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
-            tag_list.push($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
+        //$(document).ready(function(){
+         
+         
+        //var tag_list=[]
+        //for(var k=0; k< $(".top_tag_con:eq(0)>li").length; k++){
+        //    console.log($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
+        //    tag_list.push($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
+        //}
+        var my_filter_array=[];
+        var keys= Object.keys(this.filter_array);
+        for(var i=0; i<keys.length; i++) {
+            if(this.filter_array[keys[i]]==true) {
+                my_filter_array.push(keys[i]);
+            }
         }
-        vue_obj.$http.get(`/vue_home_grant/?q=`+ tag_list.join(","))
+        console.log("KEYS "+ my_filter_array.join(","));
+
+        vue_obj.$http.get(`/vue_home_grant/?q=`+ my_filter_array.join(","))
         .then((result) => {
             vue_obj.grant=[]
             for(var k=0; k< result.data.data.length; k++){
@@ -198,7 +231,7 @@ export default {
         }).then((result=>{
              order_arr(order_num, vue_obj) 
         }))        
-        })
+        //})
 
         masonry = new Macy({
             container: '.masonry',
@@ -207,37 +240,15 @@ export default {
             breakAt: {
                 3000: {
                      margin: {
-        x: 24,
-        y: 24,
-      },
-      columns: 3
+                        x: 24,
+                        y: 24,
+                    },
+            columns: 3
                 },
             }
         });
-
-        
-        $(document).on("click","#save_btn",function() {                
-        var tag_list=[]
-        for(var k=0; k< $(".top_tag_con:eq(0)>li").length; k++){
-            console.log($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
-            tag_list.push($(".top_tag_con:eq(0)>li:eq("+k+")").text().replace("#","").trim())
-        }
-        vue_obj.$http.get(`/vue_home_grant/?q=`+ tag_list.join(","))
-        .then((result) => {
-            vue_obj.grant=[]
-            for(var k=0; k< result.data.data.length; k++){
-                vue_obj.grant.push(result.data.data[k])                
-            }           
-        }).then((result=>{
-             order_arr(order_num, vue_obj) 
-        }))        
-        })
-
-        
-     
     },
     created:function(){
-        
     }
 }
 </script>

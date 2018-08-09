@@ -72,7 +72,7 @@
                     <div class="info_ttl">소재지</div>
                     <span style="font-size:14px;display:block; margin-top:16px;"><img src="/static/img/Address.png" style="float:left;margin-top:3px;margin-right:8px;"></span>
             </div>
-        <div id="modi_btn" v-if="is_manage_page">수정하기</div>
+        <div id="modi_btn" @click="modify" v-if="is_manage_page">수정하기</div>
         </div>
         <div  id="startup_modi" class="hidden" v-if="is_manage_page">
         <div class="info_con">
@@ -134,16 +134,16 @@
                 <div class="filter_ttl"><div></div>기본장르</div>
                 <span  v-for="sp in filter_table_item.base" class="filter_a">{{sp}}</span>
                 <div class="filter_ttl" style="margin-top:16px;"><div></div>영역</div>
-                <div  style="display:inline-block">창작 &nbsp;&nbsp;<span  v-for="sp in filter_table_item.create" :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div style="display:inline-block" >&nbsp;&nbsp;&nbsp;IT관련&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.it"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div  style="display:inline-block">창업&nbsp;&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.startup"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div  style="display:inline-block">제조/융합 <span  v-for="sp in filter_table_item.manufacture"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div style="display:inline-block" >신규사업 &nbsp;&nbsp;&nbsp;&nbsp;<span  v-for="sp in filter_table_item.new"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">창작 &nbsp;&nbsp;<span  v-for="sp in filter_table_item.create" @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div style="display:inline-block" >&nbsp;&nbsp;&nbsp;IT관련&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.it"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">창업&nbsp;&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.startup"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">제조/융합 <span  v-for="sp in filter_table_item.manufacture"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div style="display:inline-block" >신규사업 &nbsp;&nbsp;&nbsp;&nbsp;<span  v-for="sp in filter_table_item.new"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
                 <div class="filter_ttl"  style="margin-top:16px;"><div></div>조건</div>
-                <div  style="display:inline-block">업력&nbsp;&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.year"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div style="display:inline-block" >기업형태&nbsp;&nbsp;&nbsp;<span  v-for="sp in filter_table_item.kind"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div  style="display:inline-block">기업단계 &nbsp;&nbsp;<span   v-for="sp in filter_table_item.step" :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div style="display:inline-block" >소재지 <span  v-for="sp in filter_table_item.local"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">업력&nbsp;&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.year"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div style="display:inline-block" >기업형태&nbsp;&nbsp;&nbsp;<span  v-for="sp in filter_table_item.kind"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">기업단계 &nbsp;&nbsp;<span   v-for="sp in filter_table_item.step" @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div style="display:inline-block" >소재지 <span  v-for="sp in filter_table_item.local"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
                 <div > <div style="display:inline-block">구성원</div> 
                         <div style="display: inline-block; width: 454px; margin-left:30px; ">
                         <input type="text" id="range_01" name="example_name" value=""/>
@@ -226,6 +226,10 @@ export default {
         }
     },
     methods:{
+        modify:function(){
+            $("#startup_info").addClass("hidden")
+            $("#startup_modi").removeClass("hidden")
+        },
         insert_map:function(){
            
         },
@@ -282,13 +286,13 @@ export default {
 
     
         getNumbers:function(start,stop,step = 1){
-             var result=[]
+            var result=[]
             for(var k = start ; k <= stop ; k = k + step){
                 result.push(k)
             }
-        return result.reverse();
-      },
-    add_history_2:function(){
+            return result.reverse();
+        },
+        add_history_2:function(){
                 this.sta.history.unshift({
                     "year": $("#year").val(),"month": $("#month").val(),
                     "content" : $("#history_content").text()
@@ -371,9 +375,6 @@ export default {
                 },
              })
         vue_obj=this
-
-             vue_obj = this;
-         
     },
     mounted: function(){
         var vue_obj = this
@@ -384,8 +385,7 @@ export default {
                     this.sta = res      
                 },
              })
-     
-        $(document).ready(function(){
+       $(document).ready(function(){
          
   var values = ["제한없음"]
                             for (var k = 1; k < 100; k++) {
@@ -417,22 +417,12 @@ export default {
             })
 
              console.log("intro ready")
-              $.ajax({
-                url: `/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id"),
-                type:"get",
-                success:function(res){
-                    vue_obj.sta = res           
-                },
-             })
-                       
-            $(document).off("click","#modi_btn")
-            $(document).on("click","#modi_btn", function(){
-                $("#startup_info").addClass("hidden")
-                $("#startup_modi").removeClass("hidden")
-            })
+                vue_obj.$http.get( `/vue_get_startup_detail_manager_base/?id=`+localStorage.getItem("id")).then((res)=>{
+                    vue_obj.sta = res.data      
+                })
+         
              $(document).off("click","#modi_btn2")
-             $(document).on("click","#modi_btn2", function(){
-              
+             $(document).on("click","#modi_btn2", function(){              
                   
             var formData = new FormData();
             vue_obj.sta.select_tag=vue_obj.select_tag
@@ -560,7 +550,6 @@ export default {
 
 </style>
 
-1
 <style scoped>
 
 .year{

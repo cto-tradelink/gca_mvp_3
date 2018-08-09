@@ -1,4 +1,4 @@
-<template>
+`<template>
     <div class="app_seg">
         <img class="app_logo">
         <div class="text_con">

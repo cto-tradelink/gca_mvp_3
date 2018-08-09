@@ -41,50 +41,73 @@
             </div>
                 <div id="grant_info_con">
                <div id="page_title">사업개요</div>
-                <div class="grant_info_con">
-                    <div class="grant_info_title">지원사업명 <span>지원사업의 타이틀 영역에 보여집니다.</span></div>
+                <div class="grant_info_con"  style="height:172px;padding-top:32px;padding-bottom:32px;">
+                    <div class="input_con">
+                    <div class="grant_info_title" style="height:64px;">지원사업명</div>
                     <input type="text"  v-model="grant_info.title" id="title_input" class="input_normal" maxlength="80" placeholder="기업이 참여하게 되는 사업명을 입력해 주세요. ex)넥스트 스타트업 어워드">
-                </div>
-                <div class="grant_info_con">
-                    <div class="grant_info_title">태그추가 <span>지원사업을 쉽게 검색할 수 있게 도와줍니다.</span></div>
-                    <input type="text"  v-model="grant_info.title_tag" id="tag_input" class="input_normal" value="#" placeholder="#">
-                </div>
-               
-                <div class="grant_info_con">
-                    <div class="grant_info_title">지원사업 한줄소개 <span>카드에 위치하게 됩니다.&nbsp;&nbsp;<i style="cursor:pointer;font-size:17px;" class="fas fa-question-circle"></i></span></div>
-                    <input type="text" id="short_desc_input"  v-model="grant_info.short_desc"  class="input_normal" placeholder="지원사업 한줄소개를 입력하세요.">
+                    </div>
+                    <div class="input_con">
+                    <div class="grant_info_title" style="height:64px;">태그추가</div>
+                    <input type="text" v-on:keyup="make_hash($event)" v-model="grant_info.title_tag" id="tag_input" class="input_normal" value="#" placeholder="#해시태그 #입력 #해주세요 #띄어쓰기로구분">
+                    </div>
+                    <div class="input_con">
+                    <div class="grant_info_title" style="height:64px;">지원사업 한줄소개 </div>
+                    <input type="text" id="short_desc_input"  v-model="grant_info.short_desc"  class="input_normal" placeholder="띄어쓰기포함 22 글자">
+                    </div>
+                    
                 </div>
 
-                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox"  checked> 포스터 <span>대규모 사업(행사)중 하위사업(행사)가 특정된 경우</span></div>
-                    <div id="poster_file_con">
-                        <div id="file_ttl">포스터 이미지를 업로드 해주세요.<span>파일 용량 1MB이내, jpeg, jpg, png 파일 가능.</span></div>
+
+
+                <div class="grant_info_con"  style="height:30px;padding-top:32px;padding-bottom:32px; margin-top:16px;">
+                    <div class="input_con">
+                    <div class="grant_info_title" id="select_info" style="line-height:32px;; display:inline-block; float:left;">선택입력사항</div>
+                        <div id="checkbox_con"  style="display:inline-block">
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="0" type="checkbox">포스터</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="1" type="checkbox">지원사업명(하위)</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="2" type="checkbox">진행기간</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="3" type="checkbox">사업목적</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="4" type="checkbox">사업내용</div>                     
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="grant_info_con hidden opt" style="height:134px;">
+                    <div class="grant_info_title" style="display:inline-block;float:left;margin-top:33px;">포스터 </div>
+                    <div style="display:inline-block;  margin-top: 29px;">
+                    <div id="poster_file_con">                     
                         <input id="input_file" type="file">
                     </div> 
+                    <span class="file_cap">파일 용량 1MB이내, jpeg, jpg, png 파일 가능.</span>
+                    </div>
                 </div>
 
-                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox"  checked> 지원사업 명(하위) <span>대규모 사업(행사)중 하위사업(행사)가 특정된 경우</span></div>
-                    <input type="text" id="sub_title_input"  v-model="grant_info.title_sub"  class="input_normal" placeholder="지원사업명(하위)를 입력하세요.">
+                 <div class="grant_info_con hidden opt" style="padding-top:32px; padding-bottom:22px">
+                    <div class="grant_info_title" style="float:left;">지원사업 명(하위)</div>
+                    <div style="display:inline-block">
+                    <input type="text" id="sub_title_input"  v-model="grant_info.title_sub"  class="input_normal" placeholder="기업이 참여하게 되는 사업명을 입력해 주세요. ex)넥스트 스타트업 어워드">
+                 <br><span class="file_cap">파일 용량 1MB이내, jpeg, jpg, png 파일 가능.</span>
+                 </div>
                 </div>
 
-                 <div class="grant_info_con">
-                    <div class="grant_info_title" style="margin-bottom:24px;"> 진행기간 <span>사업(행사) 진행기간</span></div>
-                    <i class="fas fa-calendar"></i>
-                    <datetime v-model="grant_info.business_period_start"></datetime>
-                     에서  <i class="fas fa-calendar"></i>  <datetime v-model="grant_info.business_period_end"></datetime> 까지
+                 <div class="grant_info_con hidden opt">
+                    <div class="grant_info_title" style="margin-bottom:24px;padding-top:32px ;float:left;">진행기간</div>
+                    <div style="display:inline-block;     margin-top: 18px;  margin-bottom: 18px;">                    
+                    <div> 
+                        <datetime class="make_grant" v-model="grant_info.business_period_start"></datetime>
+                     에서    <datetime class="make_grant" v-model="grant_info.business_period_end"></datetime> 까지
+                     </div>
+                     <span class="file_cap">사업(행사) 진행기간</span></div>
+                </div>              
+                 <div class="grant_info_con hidden opt" style="clear:both;  height:432px; padding-top:32px">
+                    <div class="grant_info_title" style="float:left">사업목적 </div>
+                    <tinymce type="text" :other_options="options" id="subject" style="height:272px;width: 968px;float:left" v-model="grant_info.subject"  placeholder="사업목적을 입력하세요"></tinymce>
+               
                 </div>
-                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox"  checked> 진행장소 </div>
-                    <input type="text" id="location" v-model="grant_info.place" class="input_normal" placeholder="진행장소를 입력하세요">
-                </div>
-                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox"  checked> 사업목적 </div>
-                    <textarea type="text" id="subject" v-model="grant_info.subject" class="input_normal" placeholder="사업목적을 입력하세요"></textarea>
-                </div>
-                 <div class="grant_info_con" style="">
-                    <div class="grant_info_title"><input type="checkbox"  checked> 사업내용 </div>
-                    <textarea type="text" id="business_detail" v-model="grant_info.business_detail" class="input_normal" placeholder="사업내용을 입력하세요"></textarea>
+                <div class="grant_info_con hidden opt" style="height:432px; padding-top:32px">
+                    <div class="grant_info_title" style="float:left">사업내용</div>
+                    <tinymce type="text" :other_options="options" id="business_detail" style="height:272px;width: 968px;float:left" v-model="grant_info.business_detail"  placeholder="사업내용을 입력하세요"></tinymce>
                 </div>
             </div>
     </div>
@@ -144,7 +167,7 @@ export default {
             }
         },
         apply_save:function(){
-                meta_val=[]
+              
                 var formData = new FormData();
                 var file = document.querySelector('#input_file');
                 formData.append("file", file.files[0]);
@@ -172,7 +195,7 @@ export default {
                 })   
         },
         apply_next:function(){
-             meta_val=[]
+           
                 var formData = new FormData();
                 var file = document.querySelector('#input_file');
                 formData.append("file", file.files[0]);
@@ -202,12 +225,19 @@ export default {
                     this.$router.push("/manager/make/grant/"+id+"/support_content")
                 }) 
         },
-        
-
+        make_hash:function(e){
+            console.log("sdf")
+            this.grant_info.title_tag = ("#"+this.grant_info.title_tag.substring(1,this.grant_info.title_tag.length)).replace("##","#").replace(/\s/g,"#")
+            this.grant_info.title_tag =  this.grant_info.title_tag.replace("##","#")
+            
+        }
     },
     data:function(){
         return{
-grant_info:{},
+            options:{
+                height:308,
+            },
+        grant_info:{},
     
             test:"",
             test2:""
@@ -216,20 +246,21 @@ grant_info:{},
     mounted:function(){
         var vue_obj = this
         $(document).ready(function(){
-            $(document).on("keyup","#tag_input", function(){                
-                $(this).val("#"+$(this).val().slice(1,$(this).val().length).replace("##","#").replace(/\s/g,"#"));
-                $(this).val($(this).val().replace("##","#"));                
-            })           
+
+              $(document).on("click","#apply_next",function(){
+                  vue_obj.apply_next();
+              })
             $(document).off("click","input[type='checkbox']")
             $(document).on("click","input[type='checkbox']",function(){
                 if( $(this).is(":checked") ){
-                    $(this).parent().parent().children("*").not(".grant_info_title").removeClass("hidden")
+                   $(".opt").eq($(this).attr("data-index")).removeClass("hidden")
                 }else{
-                    $(this).parent().parent().children("*").not(".grant_info_title").addClass("hidden")
+                  $(".opt").eq($(this).attr("data-index")).addClass("hidden")
                 }
             })
             $("#gca_content").css("background-color","#fdfeff")
-            var meta_val = []
+         
+
             if (vue_obj.$route.params.id != "new"){
                 //아이디가 있다면 어디까지 썻는지에 대한 데이터가 있을것..  
               vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id,)
@@ -259,7 +290,7 @@ grant_info:{},
     display: inline-block;
 }
 </style>
-<style scoped>
+<style lang="scss" scoped>
 
 ul{
     -webkit-margin-before:0em;
@@ -282,11 +313,10 @@ ul{
     font-size:14px;
 }
 #input_file{
-    border: none;
-    position: absolute;
-    top:64px;
-    right:16px;
+border:none;
+margin:10px
 }
+   
 #file_ttl{
     position: absolute;
     top:15px;
@@ -299,34 +329,35 @@ ul{
 }
 
 #poster_file_con{
-    margin-top: 24px;
-    width: 1016px;
-    height: 101px;
-    background-color: #ffffff;
-    border: solid 1px #ced4da;
-    position: relative;
+      width: 496px;
+  height: 40px;
+  background-color: #ffffff;
+  border: solid 1px #c1d1f7;
 }
 .input_normal{
-    width:1224px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    color: #1a2f53;
-    margin-top: 24px;
-    background-color: transparent
+    width: 476px;
+  height: 36px;
+  font-size: 14px;
+  line-height: 1.86;
+  letter-spacing: -0.1px;
+  color: rgba(26, 42, 83, 0.5);
+  padding-left: 20px;
    
 }
 .grant_info_con{
-    width: 1224px;  
+    width: 1144px;
+    padding-left: 40px;
     margin-left:52px;
-    margin-top:48px;
+    margin-top:8px;
+    background-color:#fff;
 }
 .grant_info_title{
-    width:100%;
-    border-bottom:1px solid #ced4da;
-    font-size: 16px;
-    color: #243d68;
-    height: 44px;
+    width:162px;
+    display:inline-block;    
+    font-size: 17px;
+    color: #1a2f53;
+  
+    height: 56px;
     line-height: 44px;
 }
 .grant_info_title>span{
@@ -387,5 +418,39 @@ ul{
     float: left;
     margin-right: 24px;
     line-height: 48px;
+}
+.ch{
+    margin-right: 121px;
+}
+.ch:last-child{
+    margin-right: 0px;
+}
+
+.file_cap{
+     width: 230px;
+  height: 22px;
+  font-family: NotoSansCJKkr;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.83;
+  letter-spacing: normal;
+  color: rgba(26, 42, 83, 0.5);
+}
+
+#select_info{
+  height: 28px;
+  opacity: 0.5;
+  font-size: 17px;
+  line-height: 1.65;
+  letter-spacing: -0.3px;
+  color: #1a2f53;
+    opacity: 0.8;
+}
+</style>
+<style>
+.make_grant>.vdatetime-input{
+    width:124px;
 }
 </style>

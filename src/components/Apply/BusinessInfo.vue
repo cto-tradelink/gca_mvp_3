@@ -38,7 +38,7 @@
             
         </table>
             <div style="width:968px; height:1px; border-bottom:1px solid #e7edfc"></div>
-            <div :click="add_genre"  id="add_genre">추가하기</div>
+            <div @:click="add_genre"  id="add_genre">추가하기</div>
 
             </div>
             <div id="wr_con_3">
@@ -68,7 +68,7 @@
         <div id="filter_panel">
             <div id="filter_panel_hd" style="width:100%; height:40px;line-height:40px; background-color: #e7edfc;">
                 <span style="display:inline-block;line-height:40px;margin-left:16px;font-size:12px;">필터선택</span>
-                <span id="x_btn" :click="close" style="float:right; margin-right:10px;cursor:pointer">X</span></div>
+                <span id="x_btn" @click="close" style="float:right; margin-right:10px;cursor:pointer">X</span></div>
         <table style="border-collapse:collapse; width:890px">
             <tr>
                 <td id="f_col" class="col_name sel_0" style="height:121px; padding-left: 58px;  padding-top: 18px;">
@@ -76,7 +76,7 @@
                         <div></div>
                         기본장르
                     </div><br>                
-                    <span class="filter filter_up" :click="filter_up($event)" v-for="t in filter_table_item.base">{{t}}</span>
+                    <span class="filter filter_up" @click="filter_up($event)" v-for="t in filter_table_item.base">{{t}}</span>
                 </td>
             </tr>
             <tr>
@@ -86,12 +86,12 @@
                         영역
                     </div>                                 
                     <ul id="f_li">
-                        <li><span class="filter_ttl">창작</span> <span class="filter filter_do"  :click="filter_do($event)" v-for="t in filter_table_item.create">{{t}}</span></li>
-                        <li><span class="filter_ttl">IT 관련</span> <span class="filter filter_do" :click="filter_do($event)"  v-for="t in filter_table_item.it">{{t}}</span></li>
-                        <li><span class="filter_ttl">창업</span> <span class="filter filter_do" :click="filter_do($event)"  v-for="t in filter_table_item.startup">{{t}}</span></li>
-                        <li><span class="filter_ttl">제조/융합</span> <span class="filter filter_do" :click="filter_do($event)"  v-for="t in filter_table_item.manufacture">{{t}}</span></li>
-                        <li  style="clear:left"><span class="filter_ttl">신규산업</span> <span class="filter filter_do"  :click="filter_do($event)" v-for="t in filter_table_item.new">{{t}}</span></li>
-                        <li><span class="filter_ttl">기타</span> <span class="filter filter_do" :click="filter_do($event)"  v-for="t in filter_table_item.etc">{{t}}</span></li>
+                        <li><span class="filter_ttl">창작</span> <span class="filter filter_do"  @click="filter_do($event)" v-for="t in filter_table_item.create">{{t}}</span></li>
+                        <li><span class="filter_ttl">IT 관련</span> <span class="filter filter_do" @click="filter_do($event)"  v-for="t in filter_table_item.it">{{t}}</span></li>
+                        <li><span class="filter_ttl">창업</span> <span class="filter filter_do" @click="filter_do($event)"  v-for="t in filter_table_item.startup">{{t}}</span></li>
+                        <li><span class="filter_ttl">제조/융합</span> <span class="filter filter_do" @click="filter_do($event)"  v-for="t in filter_table_item.manufacture">{{t}}</span></li>
+                        <li  style="clear:left"><span class="filter_ttl">신규산업</span> <span class="filter filter_do"  @click="filter_do($event)" v-for="t in filter_table_item.new">{{t}}</span></li>
+                        <li><span class="filter_ttl">기타</span> <span class="filter filter_do" @click="filter_do($event)"  v-for="t in filter_table_item.etc">{{t}}</span></li>
                     </ul>
                 </td>
             </tr>

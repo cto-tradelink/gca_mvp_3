@@ -2,12 +2,12 @@
     <div class="course-segment" >
         <img :src="clip.img">
             <div class="text_con" style="position:relative">
-                <div class="clip_ttl">{{clip.title}}</div>
-                <div class="clip_sub">{{clip.sub}}</div>
-                <div class="hr"></div>
-                <span class="clip_user"></span>
-                <div class="bottom_text"> {{clip.dur}} | {{clip.date}}</div>
-                <div data-target="course" class="heart_course heart heart_con"  :data-id="clip.id"><img src="/static/img/like_d.png"></div>         
+            <div class="clip_ttl">{{clip.title}}</div>
+            <div class="clip_sub">{{clip.sub}}</div>
+            <div class="hr"></div>
+            <span class="clip_user"></span>
+            <div class="bottom_text"> {{clip.dur}} | {{clip.date}}</div>
+            <div data-target="course" class="heart_course heart heart_con"  :data-id="clip.id"><img src="/static/img/like_d.png"></div>         
         </div>
                   
     </div>
@@ -61,6 +61,8 @@ export default {
     height:181px;
     float: left;
     width:390px;
+    
+}     
 
 .clip_ttl{
     font-size: 17px;
@@ -94,15 +96,6 @@ export default {
 .heart{
     position: absolute;
 }
-
-.heart_con{
-    position: absolute;
-    right: 23px;
-    bottom:49px;
-}
-
-}     
-
 }
 
 </style>

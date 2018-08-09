@@ -46,19 +46,13 @@ export default {
                   "id":localStorage.getItem("id")
               }
               console.log(`/vue_my_interest_set/`)
-                 $.ajax({
-                        url:`/vue_my_interest_set/`,
-                        method:"POST",
-                        data:data,
-                        success:function(res){console.log(res)
-                           for(var k=0; k < res.length; k++){
-                            console.log($("#heart[data-id='"+res[k].id+"']"))
-                            $("#heart[data-id='"+res[k].id+"']").css("color","#ff0000")
-                           }
-                        },
-                        error:function(e){console.log(e)
-                        }
-                        })
+                vur_obj.$http.post(`/vue_my_interest_set/`).then((res)=>{
+                    for(var k=0; k < res.data.length; k++){
+                            console.log($("#heart[data-id='"+res.data[k].id+"']"))
+                            $("#heart[data-id='"+res.data[k].id+"']").css("color","#ff0000")
+                    }
+                })
+
                     }, 1000)
 
 

@@ -102,46 +102,24 @@ export default {
         }
 
         function watch_clip_history(){
-            this.$http.post("/vue_watch_clip_history/",{
+            this.$http.post("/vue_watch_clip_history/",this.qs({
                     "id":localStorage.getItem("id"),
                     "val" : vue_obj.$route.params.id,                    
-                } ).then((res)=>{
+                }) ).then((res)=>{
 
                 })
 
-            // $.ajax({
-            //     url: "/vue_watch_clip_history/",
-            //     type:"post",
-            //     data:{
-            //         "id":localStorage.getItem("id"),
-            //         "val" : vue_obj.$route.params.id,                    
-            //     },
-            //     success:function(res){
-            //         // 강의 수강 기록
-                    
-            //     }
-            // })
         }
 
         $(document).ready(function(){
 
-            vue_obj.$http.post("/vue_hit_clip_log/",{
+            vue_obj.$http.post("/vue_hit_clip_log/",vue_obj.qs({
                     "id":localStorage.getItem("id"),
                     "val" : vue_obj.$route.params.id,                    
-                } ).then((res)=>{
+                }) ).then((res)=>{
 
                 })
-            // $.ajax({
-            //     url: "/vue_hit_clip_log/",
-            //     type:"post",
-            //     data:{
-            //         "id":localStorage.getItem("id"),
-            //         "val" : vue_obj.$route.params.id,                    
-            //     },
-            //     success:function(res){
-            //         // 강의 수강 기록
-            //     }
-            // })
+        
             
             $(document).off("click","#heart_con")
             $(document).on("click","#heart_con", function(){
@@ -149,28 +127,15 @@ export default {
                 if($("#heart_con>img").attr("src").indexOf("_p") != -1){
                     if(confirm("관심 강의에서 삭제하시겠습니까?")){
                         
-                        vue_obj.$http.post("/toggle_int_clip/",{
+                        vue_obj.$http.post("/toggle_int_clip/",vue_obj.qs({
                                 "id":localStorage.getItem("id"),
                                 "val":vue_obj.$route.params.id
-                            } ).then((res)=>{
+                            }) ).then((res)=>{
                                            alert("성공적으로 삭제 되었습니다.")
                                 $("#heart_con>img").attr("src","/static/img/like_d.png")
                                 vue_obj.con.int =  parseInt(vue_obj.con.int)  - 1
                             })
 
-                        // $.ajax({
-                        //     url:"/toggle_int_clip/",
-                        //     type:"post", 
-                        //     data:{
-                        //         "id":localStorage.getItem("id"),
-                        //         "val":vue_obj.$route.params.id
-                        //     },
-                        //     success:function(res){
-                        //         alert("성공적으로 삭제 되었습니다.")
-                        //         $("#heart_con>img").attr("src","/static/img/like_d.png")
-                        //         vue_obj.con.int =  parseInt(vue_obj.con.int)  - 1
-                        //     }
-                        // })
                     
                     
 
@@ -178,33 +143,20 @@ export default {
                 } else {
                     console.log("add")
 
-                        vue_obj.$http.post("/toggle_int_clip/",{
+                        vue_obj.$http.post("/toggle_int_clip/",vue_obj.qs({
                                 "id":localStorage.getItem("id"),
                                 "val":vue_obj.$route.params.id
-                            } ).then((res)=>{
+                            }) ).then((res)=>{
                                            alert("성공적으로 등록 되었습니다.")
                                 $("#heart_con>img").attr("src","/static/img/like_p.png")
                                 vue_obj.con.int =  parseInt(vue_obj.con.int)  + 1
                             })
 
 
-                    // $.ajax({
-                    //     url:"/toggle_int_clip/",
-                    //     type:"post", 
-                    //     data:{
-                    //         "id":localStorage.getItem("id"),
-                    //         "val":vue_obj.$route.params.id
-                    //     },
-                    //     success:function(res){
-                    //         alert("성공적으로 등록 되었습니다.")
-                    //         $("#heart_con>img").attr("src","/static/img/like_p.png")
-                    //         vue_obj.con.int =  parseInt(vue_obj.con.int)  + 1
-                    //     }
-                    // })
                 }                
             })
 
-            vue_obj.$http.post("/vue_get_clip/", {"id":vue_obj.$route.params.id, "user":localStorage.getItem("id")} )
+            vue_obj.$http.post("/vue_get_clip/", vue_obj.qs({"id":vue_obj.$route.params.id, "user":localStorage.getItem("id")}) )
             .then((res)=>{
                   console.log(res)
                   console.log(res)
@@ -215,20 +167,7 @@ export default {
                     // Replace the 'ytplayer' element with an <iframe> and
                     // YouTube player after the API code downloads.
             })
-            // $.ajax({
-            //     url:"/vue_get_clip/",
-            //     type:"POST",
-            //     data:{"id":vue_obj.$route.params.id, "user":localStorage.getItem("id")},
-            //     success:function(res){
-            //         console.log(res)
-            //         vue_obj.con = res
-            //         // Load the IFrame Player API code asynchronously.
-            //         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-            //         onYouTubePlayerAPIReady(res.youtube)
-            //         // Replace the 'ytplayer' element with an <iframe> and
-            //         // YouTube player after the API code downloads.
-            //     }
-            // })
+
         })
     }
 }

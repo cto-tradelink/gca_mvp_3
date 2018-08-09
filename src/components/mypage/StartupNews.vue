@@ -10,7 +10,7 @@
             <textarea class="news_text" id="add_news" style=" outline:none;resize:none; display:inline-block; border:1px solid #ddd; border-bottom:none; padding:10px;;margin-left:24px;width:823px;;height:80px; float:left" placeholder="최근 활동 / 뉴스를 공유하세요!"></textarea>
             <div id="fake_bottom" style="clear:both;width:843px;height:40px; border:1px solid #ddd; border-top:none;margin-left:24px; ">
                 <div id="add_image_btn" class="f5" v-on:click="click_img_input" style="margin-left:10px;vertical-align:top;display:inline-block"><img src="/static/img/pic.png" style="float:left;margin-top:6px;margin-left:10px;margin-right:5px;">이미지업로드</div><img id="pre_img" class="hidden" style="width:30px;height:30px;display:inline-block" >
-                <div id="add_youtube_btn"  class="f5 link_up" style="margin-left:10px;vertical-align:top;display:inline-block"><img src="/static/img/pic.png" style="float:left;margin-top:6px;margin-left:10px;margin-right:5px;">동영상업로드</div><img id="pre_img2" class="hidden" style="width:30px;height:30px;display:inline-block" >
+                <div id="add_youtube_btn" @click="link_up"  class="f5 link_up" style="margin-left:10px;vertical-align:top;display:inline-block"><img src="/static/img/pic.png" style="float:left;margin-top:6px;margin-left:10px;margin-right:5px;">동영상업로드</div><img id="pre_img2" class="hidden" style="width:30px;height:30px;display:inline-block" >
                 <input type="hidden" id="youtube_id">
             </div>     
             <div v-on:click="add_activity($event)" class="add_news f4" style="margin-left:25px; margin-top:10px;cursor:pointer">게시하기</div>            
@@ -65,11 +65,11 @@
         <div id="up_link" style="z-index:999" class="hidden">
             <div id="pop_hd">
                 <span id="pop_ttl">링크 등록</span>
-                <span id="x_btn">X</span>
+                <span @click="close" id="x_btn">X</span>
             </div>
             <div id="link_con">
                 <input class="in"  id="link_input" type="text">
-                <div id="pop_submit">확인</div>
+                <div @click="pop_submit" id="pop_submit">확인</div>
             </div>
         </div>
     </div>
@@ -279,92 +279,10 @@ export default {
                 }
             }    
             }           
-        }
-    },
-    updated:function(){
-        var vue_obj = this
-      if(this.$route.fullPath.indexOf("mypage")==-1){
-                $(".more").each(function(){
-                    $(this).remove()
-                })               
-            }
-            setTimeout(function(){
-                 if(vue_obj.$route.fullPath.indexOf("mypage")==-1){
-                               $("#make_news").remove()
-            }
-            },1000)
-    },
-    mounted: function(){
-        var vue_obj = this
-
-      
-             console.log("news ready")
-          
-         
-        setTimeout(function(){
-            vue_obj.$http.get(`/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),).
-                then((res)=>{
-                    console.log(res)
-                    console.log("qwee")
-                    console.log(vue_obj)
-                    vue_obj.st = res.data 
-             })
-            },100)
-         
-            $(document).on("keyup","#add_news", function(e){
-                console.log("dasd")
-                console.log(e.keycode)
-            if ( e.keycode == 13 ){
-                console.log("sdf")
-                e.preventDefault();
-                //add a <br>
-                $("#add_news").html($("#add_news").html()+"<br>")
-               
-                }
-            })
-
-
-        $(document).off("click",".link_up")
-         $(document).on("click",".link_up",function(){
-             if($("#up_link").hasClass("hidden")){
-                 $("#up_link").removeClass("hidden")          
-                 $("#back_layer").removeClass("hidden")
-                 $("#back_layer").css("position","fixed!important")
-                 $("#back_layer").css("width",$(window).width())
-                 $("#back_layer").css("height",$(window).height())
-                 $("#back_layer").css("top","0px")
-                 $("#back_layer").css("left","0px")
-             }
-             else{
-                $("#up_link").addClass("hidden")
-                var url_id = youtubeId($("#link_input").val())
-                 $("#back_layer").addClass("hidden")
-                 $("#back_layer").css("position","fixed!important")
-                 $("#back_layer").css("width",0)
-                 $("#back_layer").css("height",0)
-                 $("#back_layer").css("top","0px")
-                 $("#back_layer").css("left","0px")
-             }
-         })
-           $(document).off("click","#x_btn")
-          $(document).on("click","#x_btn",function(){
-             if($("#up_link").hasClass("hidden")){
-                 $("#up_link").removeClass("hidden")
-             }
-             else{
-                $("#up_link").addClass("hidden")
-                    $("#back_layer").addClass("hidden")
-                 $("#back_layer").css("position","fixed!important")
-                 $("#back_layer").css("width",0)
-                 $("#back_layer").css("height",0)
-                 $("#back_layer").css("top","0px")
-                 $("#back_layer").css("left","0px")
-             }
-         })
-    
-          $(document).on("click","#pop_submit", function(){
-                var url_id = youtubeId($("#link_input").val())
-                $("#youtube_id").val(url_id);
+        },
+        pop_submit:function(){
+            var url_id = youtubeId($("#link_input").val())
+            $("#youtube_id").val(url_id);
                  $.ajax({
             url:'https://www.googleapis.com/youtube/v3/videos?id='+url_id+'&part=contentDetails&key=AIzaSyDQt1e_0DUVFiR8288ALtZWyVRlad45-Rc',
             type:"get",
@@ -384,7 +302,63 @@ export default {
                  $("#back_layer").css("left","0px")
                 }
         })
-    })
+        },
+        link_up:function(){
+            if($("#up_link").hasClass("hidden")){
+                 $("#up_link").removeClass("hidden")          
+                 $("#back_layer").removeClass("hidden")
+                 $("#back_layer").css("position","fixed!important")
+                 $("#back_layer").css("width",$(window).width())
+                 $("#back_layer").css("height",$(window).height())
+                 $("#back_layer").css("top","0px")
+                 $("#back_layer").css("left","0px")
+             }
+             else{
+                $("#up_link").addClass("hidden")
+                var url_id = youtubeId($("#link_input").val())
+                 $("#back_layer").addClass("hidden")
+                 $("#back_layer").css("position","fixed!important")
+                 $("#back_layer").css("width",0)
+                 $("#back_layer").css("height",0)
+                 $("#back_layer").css("top","0px")
+                 $("#back_layer").css("left","0px")
+             }
+        },
+        close:function(){
+                $("#up_link").addClass("hidden")
+                    $("#back_layer").addClass("hidden")
+                 $("#back_layer").css("position","fixed!important")
+                 $("#back_layer").css("width",0)
+                 $("#back_layer").css("height",0)
+                 $("#back_layer").css("top","0px")
+                 $("#back_layer").css("left","0px")
+
+        }
+        
+        },
+    updated:function(){
+        var vue_obj = this
+      if(this.$route.fullPath.indexOf("mypage")==-1){
+                $(".more").each(function(){
+                    $(this).remove()
+                })               
+            }
+            setTimeout(function(){
+                if(vue_obj.$route.fullPath.indexOf("mypage")==-1){
+                    $("#make_news").remove()
+                }
+                },1000)
+    },
+    mounted: function(){
+          var vue_obj = this
+         
+        setTimeout(function(){
+            vue_obj.$http.get(`/vue_get_startup_detail_manager/?id=`+localStorage.getItem("id"),).
+                then((res)=>{
+                    vue_obj.st = res.data 
+             })
+            },100)
+   
             $(document).on("click",".rep_con", function(){
                 $(this).parent().parent().find(".reply_con").addClass("show")
                 $(this).parent().parent().find(".wr_con").addClass("show")

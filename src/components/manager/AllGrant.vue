@@ -57,7 +57,7 @@ export default {
         sort:function(key){
             console.log("sort")
             this.show_set.sort_by(key).reverse()
-    },
+        },
         tab_0(num){
             if(num==0){
                 try{

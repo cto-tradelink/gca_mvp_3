@@ -66,31 +66,31 @@ export default {
         TodayViewed
     },
     mounted:function(){
-        $(document).ready(function(){         
-            // 스크롤 이벤트 바인딩
-            $(window).scroll(function() {
-                $(".navi").removeClass("on");
-                if($(".gr_seg_ttl:eq(1)").offset().top >= $(this).scrollTop() && $(this).scrollTop() >= $(".gr_seg_ttl:eq(0)").offset().top) { $("#grant_left_navi>li.navi:eq(0)").addClass("on");  }
-                else if($(".gr_seg_ttl:eq(2)").offset().top >= $(this).scrollTop() && $(this).scrollTop() >= $(".gr_seg_ttl:eq(1)").offset().top) {$("#grant_left_navi>li.navi:eq(1)").addClass("on"); }
-                else if($(".gr_seg_ttl:eq(3)").offset().top >= $(this).scrollTop() && $(this).scrollTop() >= $(".gr_seg_ttl:eq(2)").offset().top) {  $("#grant_left_navi>li.navi:eq(2)").addClass("on"); }
-                else if($(".gr_seg_ttl:eq(4)").offset().top >= $(this).scrollTop() && $(this).scrollTop() >= $(".gr_seg_ttl:eq(3)").offset().top) {  $("#grant_left_navi>li.navi:eq(3)").addClass("on");}
-                else if($(this).scrollTop() >= $(".gr_seg_ttl:eq(4)").offset().top) {  $("#grant_left_navi>li.navi:eq(4)").addClass("on");}
                 
-                if(parseInt($("#grant_detail_height").css("height").replace("px")) < $(this).scrollTop()+window.innerHeight -100 ) {
-                    $("#bottom_btn_con").css("position","relative")
-                    $("#grant_left_navi").parent().css("position","absolute")
-                    console.log(parseInt($("#grant_detail_height").css("height").replace("px","")) - 820)
-                    $("#grant_left_navi").parent().css("top", parseInt($("#grant_detail_height").css("height").replace("px","")) - 820)
-                } else {
-                    $("#grant_left_navi").parent().css("position","fixed")
-                    $("#grant_left_navi").parent().css("top","104px")
-                    $("#bottom_btn_con").css("position","fixed")
-                    // if(parseInt($("#grant_detail_height").css("height").replace("px")) < $(this).scrollTop()+window.innerWidth){
-                    //$("#grant_left_navi").parent().css("position","rel")
-                    // }
-                }
-            });
-        })           
+        // 스크롤 이벤트 바인딩
+        $(window).scroll(function() {
+            $(".navi").removeClass("on");
+            if($(".gr_seg_ttl:eq(1)").offset().top >= $(this).scrollTop() && $(this).scrollTop() >= $(".gr_seg_ttl:eq(0)").offset().top) { $("#grant_left_navi>li.navi:eq(0)").addClass("on");  }
+            else if($(".gr_seg_ttl:eq(2)").offset().top >= $(this).scrollTop() && $(this).scrollTop() >= $(".gr_seg_ttl:eq(1)").offset().top) {$("#grant_left_navi>li.navi:eq(1)").addClass("on"); }
+            else if($(".gr_seg_ttl:eq(3)").offset().top >= $(this).scrollTop() && $(this).scrollTop() >= $(".gr_seg_ttl:eq(2)").offset().top) {  $("#grant_left_navi>li.navi:eq(2)").addClass("on"); }
+            else if($(".gr_seg_ttl:eq(4)").offset().top >= $(this).scrollTop() && $(this).scrollTop() >= $(".gr_seg_ttl:eq(3)").offset().top) {  $("#grant_left_navi>li.navi:eq(3)").addClass("on");}
+            else if($(this).scrollTop() >= $(".gr_seg_ttl:eq(4)").offset().top) {  $("#grant_left_navi>li.navi:eq(4)").addClass("on");}
+            
+            if(parseInt($("#grant_detail_height").css("height").replace("px")) < $(this).scrollTop()+window.innerHeight -100 ) {
+                $("#bottom_btn_con").css("position","relative")
+                $("#grant_left_navi").parent().css("position","absolute")
+                console.log(parseInt($("#grant_detail_height").css("height").replace("px","")) - 820)
+                $("#grant_left_navi").parent().css("top", parseInt($("#grant_detail_height").css("height").replace("px","")) - 820)
+            } else {
+                $("#grant_left_navi").parent().css("position","fixed")
+                $("#grant_left_navi").parent().css("top","104px")
+                $("#bottom_btn_con").css("position","fixed")
+                // if(parseInt($("#grant_detail_height").css("height").replace("px")) < $(this).scrollTop()+window.innerWidth){
+                //$("#grant_left_navi").parent().css("position","rel")
+                // }
+            }
+        });
+                  
     }
 }
 </script>

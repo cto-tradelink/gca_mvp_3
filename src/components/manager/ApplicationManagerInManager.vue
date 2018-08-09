@@ -32,7 +32,7 @@ export default {
     mounted:function(){
         var vue_obj = this
         $(document).ready(function(){
-            
+            //TODO: 물어보기
             $(document).off("click",".app_seg[data-id='"+vue_obj.$props.s.id+"']",) 
             $(document).on("click",".app_seg[data-id='"+vue_obj.$props.s.id+"']", function(){
                 if(vue_obj.$props.s.status!="작성중" && vue_obj.$props.s.status!="블라인드"){

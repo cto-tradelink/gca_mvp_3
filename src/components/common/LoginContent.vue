@@ -97,12 +97,14 @@ export default {
         check_alarm:function(){
              this.$http.get(`/get_unread_alarm/?id=`+localStorage.getItem("id"), )
              .then((res)=>{
-                   console.log("test")
+                   console.log("test 1")
                         console.log(res.data)
                         if (res.data.length.alarm_set ==0){
+                             console.log("test 2")
                             return false;
                         }
                         else{
+                             console.log("test 3")
                             return true
                         }
              })
@@ -181,7 +183,10 @@ export default {
     },
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
+        console.log("TEST M0",localStorage.getItem("login"))
+        //$(document).ready(function(){
+
+             console.log("TEST0",localStorage.getItem("login"))
             try{  
                 var url_string = window.location.href;
                 var url = new URL(url_string)
@@ -218,6 +223,7 @@ export default {
 
                 }
             })
+            console.log("TEST1",localStorage.getItem("login"))
             if( localStorage.getItem("login") == false ||localStorage.getItem("login") == undefined){
                 $("#login_processed").addClass("hidden")
                 $("#no_login").removeClass("hidden")
@@ -262,7 +268,7 @@ export default {
                 $("#back_layer").css("left","0px")                
                 $("#login_view").add("hidden")
             })
-        })
+        //})
     }
 }
 </script>

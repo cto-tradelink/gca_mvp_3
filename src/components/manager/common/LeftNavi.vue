@@ -63,12 +63,6 @@ export default {
                   $("#navi_con>ul>li:eq(4)").addClass("hover")}
 
 
-            // $(document).on("mouseenter",".navi_icon", function(){
-            //     $(this).attr("src",$(this).attr("data-src"))
-            // })
-            // $(document).on("mouseleave",".navi_icon", function(){
-            //     $(this).attr("src",$(this).attr("data-src").replace("_hover",""))
-            // })
             }
             catch(e){console.log(e)}
         })

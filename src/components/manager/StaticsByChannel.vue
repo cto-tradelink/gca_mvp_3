@@ -18,7 +18,7 @@ export default {
     mounted:function(){
          $(document).ready(function(){
             $("#static_navigation>ul>li").removeClass("hover")
-                $("#static_navigation>ul>li:eq(3)").addClass("hover")
+            $("#static_navigation>ul>li:eq(3)").addClass("hover")
         })
     }
 }

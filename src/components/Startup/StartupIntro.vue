@@ -1,3 +1,6 @@
+
+
+
 <template>
     <div id="startup_intro_con" class="startup_detail panel_1 hidden">
         <div id="startup_info" class="">
@@ -136,16 +139,16 @@
                 <div class="filter_ttl"><div></div>기본장르</div>
                 <span  v-for="sp in filter_table_item.base" class="filter_a">{{sp}}</span>
                 <div class="filter_ttl" style="margin-top:16px;"><div></div>영역</div>
-                <div  style="display:inline-block">창작 &nbsp;&nbsp;<span  v-for="sp in filter_table_item.create" :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div style="display:inline-block" >&nbsp;&nbsp;&nbsp;IT관련&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.it"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div  style="display:inline-block">창업&nbsp;&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.startup"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div  style="display:inline-block">제조/융합 <span  v-for="sp in filter_table_item.manufacture"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div style="display:inline-block" >신규사업 &nbsp;&nbsp;&nbsp;&nbsp;<span  v-for="sp in filter_table_item.new"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">창작 &nbsp;&nbsp;<span  v-for="sp in filter_table_item.create" @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div style="display:inline-block" >&nbsp;&nbsp;&nbsp;IT관련&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.it"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">창업&nbsp;&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.startup"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">제조/융합 <span  v-for="sp in filter_table_item.manufacture"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div style="display:inline-block" >신규사업 &nbsp;&nbsp;&nbsp;&nbsp;<span  v-for="sp in filter_table_item.new"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
                 <div class="filter_ttl"  style="margin-top:16px;"><div></div>조건</div>
-                <div  style="display:inline-block">업력&nbsp;&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.year"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div style="display:inline-block" >기업형태&nbsp;&nbsp;&nbsp;<span  v-for="sp in filter_table_item.kind"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div  style="display:inline-block">기업단계 &nbsp;&nbsp;<span   v-for="sp in filter_table_item.step" :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
-                <div style="display:inline-block" >소재지 <span  v-for="sp in filter_table_item.local"  :click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">업력&nbsp;&nbsp;&nbsp;&nbsp; <span  v-for="sp in filter_table_item.year"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div style="display:inline-block" >기업형태&nbsp;&nbsp;&nbsp;<span  v-for="sp in filter_table_item.kind"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div  style="display:inline-block">기업단계 &nbsp;&nbsp;<span   v-for="sp in filter_table_item.step" @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
+                <div style="display:inline-block" >소재지 <span  v-for="sp in filter_table_item.local"  @click="add_filter(sp)"  class="filter_a">{{sp}}</span></div>
                 <div > <div style="display:inline-block">구성원</div> 
                         <div style="display: inline-block; width: 454px; margin-left:30px; ">
                         <input type="text" id="range_01" name="example_name" value=""/>

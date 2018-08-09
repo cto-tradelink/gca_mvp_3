@@ -202,8 +202,7 @@ export default {
   },
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
-  
+      
             $(document).on("click","#nav>ul>li", function(){
                 $("#nav>ul>li").removeClass("hover")
                 $(this).addClass("hover")
@@ -232,7 +231,7 @@ export default {
                     vue_obj.view = (res.data.view)
                     vue_obj.ap = (res.data.ap)
             })  
-        })
+   
     }
     
 }

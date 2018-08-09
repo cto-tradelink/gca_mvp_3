@@ -217,7 +217,7 @@ export default {
             for(var k=0; k < this.st.news.length ; k++){
                 if( this.st.news[k].id == parseInt($(e.path[0]).attr("data-id")) ){ 
                     target = this.st.news[k].id    
-                   
+                    
                     $.ajax({
                         url: "/vue_set_activity_like/",
                         type:"POST",
@@ -229,6 +229,7 @@ export default {
                             console.log(res)
                         }
                     })
+
                      var formData = new FormData();
             formData.append('json_data', JSON.stringify(this.st));    
             this.$http.post(`/vue_update_startup_detail/`, formData, {

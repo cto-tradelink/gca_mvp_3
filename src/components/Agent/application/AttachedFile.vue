@@ -50,7 +50,7 @@ export default {
 
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -71,7 +71,7 @@ export default {
                     formData.append("file_8", file4.files[0]);
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -83,7 +83,7 @@ export default {
                 var formData = new FormData();
                 formData.append('json_data', JSON.stringify(vue_obj.$props.startup)); 
                 console.log(vue_obj.$props.startup)
-                vue_obj.$http.post(`${vue_obj.baseURI}/vue_update_application/`, formData, {
+                vue_obj.$http.post(`/vue_update_application/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

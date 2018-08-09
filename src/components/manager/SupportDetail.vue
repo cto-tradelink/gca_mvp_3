@@ -38,10 +38,10 @@
                 </li>
             </ul>
             </div>
-            <div id="grant_info_con">
-                <div id="page_title">지원내용</div>
+            <div id="grant_info_con" style="background-color:#f4f7fa;">
+                <div id="page_title" style="padding-top:20px">지원내용</div>
                 <div class="grant_info_con">
-                    <div class="grant_info_title">지원 항목 선택</div>
+                    <div class="grant_info_title">지원 항목</div>
                     <table id="tbl1">
                         <tr>
                             <td>자금지원</td>
@@ -50,19 +50,22 @@
                                 <li>R&D지원</li>
                                 </ul>
                             </td>
-                            <td>자금지원</td>
+                            <td>투자연계</td>
                             <td><ul>
                                 <li>엑셀러레이팅 프로그램</li>
                                 <li>데모데이 프로그램(투자연계)</li>
                                 </ul>
                             </td>
+                        </tr>
+                        <tr>
                             <td>교육</td>
                             <td><ul>
                                 <li>교육 프로그램</li>
                                 <li>전문가 양성 프로그램</li>
                                 </ul>
                             </td>
-                             <tr>
+
+                           
                             <td>판로</td>
                             <td><ul>
                                 <li>해외 진출 지원</li>
@@ -70,30 +73,34 @@
                                 <li>유통지원</li>
                                 </ul>
                             </td>
-                            <td>자금지원</td>
+                        </tr>
+                        <tr>
+
+                            <td>네트워킹</td>
                             <td><ul>
                              <li>네트워킹 프로그램 </li>
                                 <li>데모데이 프로그램(네트워킹) </li>
                                 <li>전문가 컨설팅&멘토링</li>
                                 </ul>
                             </td>
-                            <td>기타지원</td>
-                            <td><ul>
-                                <li>마케팅지원</li>
-                                <li>퍼블리싱 지원</li>
-                                <li>B2B 상담</li>
-                                <li>번역지원</li>                               
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                           
+                             <td>
                                 공간지원
                             </td>
                             <td>
                                 <ul>
                                 <li>스타트업 오피스 지원</li>
                                 <li>가상오피스</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>기타지원</td>
+                            <td><ul>
+                                <li>마케팅지원</li>
+                                <li>퍼블리싱 지원</li>
+                                <li>B2B 상담</li>
+                                <li>번역지원</li>                               
                                 </ul>
                             </td>
                              <td>
@@ -108,9 +115,9 @@
                     </table>
                 </div>
          
-                <div class="grant_info_con">
-                    <div class="grant_info_title">지원내용<span>선정시 기업이 받게되는 지원내용</span></div>
-                    <tinymce id="d1"  v-model="grant_info.supply_content" style="margin-top:">
+                <div class="grant_info_con" style=" height:432px;">
+                    <div class="grant_info_title">지원내용</div>
+                    <tinymce id="d1"  style=""  :other_options="options"   v-model="grant_info.supply_content" style="width: 968px;float:left">
                         ex. 상금 1등 2000만원, 입주 6개월(연장평가를 통해 최대 2년), 공동 홍보물 제작
                     </tinymce>
 
@@ -199,7 +206,7 @@ export default {
                 save(this);
             }
       
-      this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete")
+      this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete", sesions)
         },
         apply_save:function(){
             meta_val=[]
@@ -242,7 +249,10 @@ export default {
         return{
             grant_info:{
                 supply_content:"",
-            }
+            },
+            options:{
+                height:308,
+            },
         }
     },
     mounted:function(){
@@ -282,6 +292,12 @@ export default {
 </script>
 
 <style scoped>
+.ch{
+    margin-right: 121px;
+}
+.ch:last-child{
+    margin-right: 0px;
+}
 td>ul>li{
     cursor: pointer;
 }
@@ -290,7 +306,7 @@ td>ul>li{
 }
 #tbl1{
     border-collapse: collapse;
-    margin-top:27px;
+    
     margin-left:156px;
 }
 #tbl1>tr>td{
@@ -299,16 +315,36 @@ td>ul>li{
 td>ul>li{
     display: block;
     margin-bottom: 27px;
+    float: left;
+    margin-right: 6px;
+    cursor: pointer;
+    border-radius: 100px;
+       padding-right: 17px;
+    padding-left: 17px;
+    padding-top:11px;
+    padding-bottom:11px;
+    display: inline-block;
+    background-color: #f5f8ff;
+    height: 18px;
+    line-height: 18px;
+    opacity: 0.7;
+    font-size: 14px;
+    letter-spacing: -0.1px;
+    text-align: center;
+    color: #1a2a53;
+    margin-bottom:12px;
+
 }
 #tbl1>tr>td:nth-child(2n+1){
-    width: 100px;
+    width: 65px;
     font-size: 14px;
     color: #243d68;
      font-weight: bold;
+     line-height: 40px;
 }
 
 #tbl1>tr>td:nth-child(2n){
-    width: 200px;
+    width: 449px;
     font-size: 14px;
     color: #1b66f4;
 }
@@ -351,27 +387,32 @@ td>ul>li{
     position: relative;
 }
 .input_normal{
-    width:1224px;
+
     border: none;
     outline: none;
     font-size: 14px;
     color: #1a2f53;
     margin-top: 24px;
-    background-color: transparent
+    background-color: transparent;
    
 }
 .grant_info_con{
-    width: 1224px;  
+    width: 1144px;
+    padding-left:40px;
+    padding-right:40px;
+    padding-top:20px;  
     margin-left:52px;
     margin-top:48px;
+    background-color:#fff;
 }
 .grant_info_title{
-    width:100%;
-    border-bottom:1px solid #ced4da;
-    font-size: 16px;
-    color: #243d68;
+    width:162px;
+    font-size: 17px;
     height: 44px;
     line-height: 44px;
+    float:left;
+    opacity: 0.8;
+    color: #1a2f53;
 }
 .grant_info_title>span{
     font-size: 12px;
@@ -380,29 +421,30 @@ td>ul>li{
     margin-left: 24px;
 }
 
-#grant_info_con{
+    #grant_info_con{
     width:100%;
     margin-left: 64px; 
-}
-#page_title{
+    height:1000px;
+    }
+    #page_title{
     margin-left: 52px;
-    margin-top: 44px;
+  
     font-size: 20px;
     font-weight: 900;
     color: #1a2f53;
-}
+    }
+
 
   #make_application_page{
         overflow-x: hidden;
         padding-bottom:200px;
+        background-color: rgb(244, 247, 250);
     }
     #application_header_bottom{
         width: 100%;
         height: 48px;
-        background-color: rgba(206, 212, 218, 0.35);
-        margin-left: 64px;
-        padding-left: 52px;
-        line-height: 48px;
+         padding-left: 120px;
+      background-color: rgba(206,212,218,.35);
         font-size: 16px;
         color: #243d68;
     }
@@ -428,5 +470,8 @@ td>ul>li{
     float: left;
     margin-right: 24px;
     line-height: 48px;
+}
+td>li{
+
 }
 </style>
