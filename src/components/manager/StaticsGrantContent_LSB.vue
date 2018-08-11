@@ -361,48 +361,31 @@ export default {
     var parseDate = d3.timeParse("%Y-%m-%d");
     var x_data = d3.scaleTime().range([0, width]),
     x2 = d3.scaleTime().range([0, width]),
-    y = d3.scaleLinear().range([height, 0]),
+    y = d3.scaleLinear().range([height, 0]), // not used here
     y2 = d3.scaleLinear().range([height2, 0]),
     y3 = d3.scaleLinear().range([height, 0]),
     y4 = d3.scaleLinear().range([height, 0]);
 
-    y_right = d3.scaleLinear().range([height, 0]); //lsb1
+    y_left  = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (higher values)
+    y_right = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (lower values)
     
     var Line_chart;
-
-    var line1 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
-    var line2 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
-    var line3 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
-    var line4 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
-    var line5 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
-    var line6 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
-    var line7 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
-    var line8 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
-    var line9 = d3.line()
-        .x(function (d) { return x_data(parseDate(d.date)); })
-        .y(function (d) { return y(d.number); });
+    var line1;
+    var line2;
+    var line3;
+    var line4;
+    var line5;
+    var line6;
+    var line7;
+    var line8;
+    var line9;
 
     var xAxis = d3.axisBottom(x_data),
         xAxis2 = d3.axisBottom(x2),
-        yAxis = d3.axisLeft(y);
+        yAxisLeft = d3.axisLeft(y_left),
+        yAxisRight = d3.axisRight(y_right);
 
-     var focus = svg.append("g")
+    var focus = svg.append("g")
         .attr("class", "focus")
         .attr("fill","none")
         .attr("stroke-width","1px")
@@ -561,9 +544,6 @@ $(document).ready(function(){
 
   
 
-        
-
-   
 
          $(document).off("change","#select_zone_2")
     $(document).on("change","#select_zone_2>.basic:eq(0)", function(){
@@ -742,6 +722,8 @@ $(document).off("click","#top_banner>div:eq(1)")
                 $("#select_zone>.basic option[value='all']").prop("selected", true)
         })
     })
+
+
 
     function update_zoomable_line(){
         
@@ -958,16 +940,73 @@ $(document).off("click","#top_banner>div:eq(1)")
         });
     data9.sort(function(a, b) { return d3.ascending(a.date, b.date); });
 
+
+// common begin
+    var list_data_max=[];
+    var data_max=  d3.max(data , function (d) { return +d.number; }); list_data_max.push(data_max);
+    var data2_max= d3.max(data2, function (d) { return +d.number; }); list_data_max.push(data_max2);
+    var data3_max= d3.max(data3, function (d) { return +d.number; }); list_data_max.push(data_max3);
+    var data4_max= d3.max(data4, function (d) { return +d.number; }); list_data_max.push(data_max4);
+    var data5_max= d3.max(data5, function (d) { return +d.number; }); list_data_max.push(data_max5);
+    var data6_max= d3.max(data6, function (d) { return +d.number; }); list_data_max.push(data_max6);
+    var data7_max= d3.max(data7, function (d) { return +d.number; }); list_data_max.push(data_max7);
+    var data8_max= d3.max(data8, function (d) { return +d.number; }); list_data_max.push(data_max8);
+    var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data_max9);
+
+    var total_max_y= d3.max(list_data_max, function(n) { return n; } );
+    var list_lower_data_max=[];
+    var list_lower_data_n=[];
+    var list_upper_data_n=[];
+    var threshold=0.5;
+    for(var i=1; i<=list_data_max.length; i++) {
+       if(list_data_max[i-1] <  threshold * total_max_y ) {
+           list_lower_data_n.push(i);
+           list_lower_data_max.push( list_data_max[i-1]);
+
+if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==4) line4 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==5) line5 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+
+
+       } else {
+           list_upper_data_n.push(i);
+
+if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==4) line4 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==5) line5 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+
+       };
+    };
+    var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
+
     x_data.domain([min_date, Date.now()  ]);  
-    y.domain([0, d3.max(data3, function (d) { return +d.number; })]);
+    //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
+    y_left.domain([0, total_max_y]);
+    y_right.domain([0, lower_max_y]);
+
     x2.domain(x_data.domain());
-    y2.domain(y.domain());
-    
+    y2.domain(y_left.domain());
+   
+// common end 
+
     $(".focus:eq(1)").empty();
     $(".axis--y").remove();
-    focus.append("g")
-        .attr("class", "axis axis--y")
-        .call(yAxis)    
+
+    focus.append("g").attr("class", "axis axis--y") .call(yAxisLeft);
+    focus.append("g").attr("class", "axis axis--y") .call(yAxisRight);
+
     Line_chart.append("path")
         .datum(data)
         .attr("class", "line1")
@@ -1102,6 +1141,7 @@ $(document).off("click","#top_banner>div:eq(1)")
     brush = d3.brushX()
         .extent([[0, 0], [width, height2]])
         .on("brush end", brushed);
+
     zoom = d3.zoom()
         .scaleExtent([1, Infinity])
         .translateExtent([[0, 0], [width, height]])
@@ -1163,9 +1203,7 @@ $(document).off("click","#top_banner>div:eq(1)")
   var data8 = vue_obj.base_info.agency_hit_avg_data
   var data9 = vue_obj.base_info.agency_app_avg_data
 
-   for(var k=0; k < data.length; k++){
-        console.log(Object.values(data[k]))
-    }
+  //for(var k=0; k < data.length; k++){ console.log(Object.values(data[k])) }
 
   
   var extent = d3.extent(data, function(d) {  return parseDate(d.date); });
@@ -1202,6 +1240,7 @@ $(document).off("click","#top_banner>div:eq(1)")
             data2.push(emptyRow);
         });
     data2.sort(function(a, b) { return d3.ascending(a.date, b.date); });
+
 
   var extent3= d3.extent(data3, function(d) {  return parseDate(d.date); });
   var dateHash3 = data3.reduce(function(agg, d) {
@@ -1324,60 +1363,71 @@ $(document).off("click","#top_banner>div:eq(1)")
         });
     data9.sort(function(a, b) { return d3.ascending(a.date, b.date); });
 
-    x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
-    y.domain([0, d3.max(data3, function (d) { return +d.number; })]);
+
+// common begin
+    var list_data_max=[];
+    var data_max=  d3.max(data , function (d) { return +d.number; }); list_data_max.push(data_max);
+    var data2_max= d3.max(data2, function (d) { return +d.number; }); list_data_max.push(data_max2);
+    var data3_max= d3.max(data3, function (d) { return +d.number; }); list_data_max.push(data_max3);
+    var data4_max= d3.max(data4, function (d) { return +d.number; }); list_data_max.push(data_max4);
+    var data5_max= d3.max(data5, function (d) { return +d.number; }); list_data_max.push(data_max5);
+    var data6_max= d3.max(data6, function (d) { return +d.number; }); list_data_max.push(data_max6);
+    var data7_max= d3.max(data7, function (d) { return +d.number; }); list_data_max.push(data_max7);
+    var data8_max= d3.max(data8, function (d) { return +d.number; }); list_data_max.push(data_max8);
+    var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data_max9);
+
+    var total_max_y= d3.max(list_data_max, function(n) { return n; } );
+    var list_lower_data_max=[];
+    var list_lower_data_n=[];
+    var list_upper_data_n=[];
+    var threshold=0.5;
+    for(var i=1; i<=list_data_max.length; i++) {
+       if(list_data_max[i-1] <  threshold * total_max_y ) {
+           list_lower_data_n.push(i);
+           list_lower_data_max.push( list_data_max[i-1]);
+
+if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==4) line4 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==5) line5 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
+
+
+       } else {
+           list_upper_data_n.push(i);
+
+if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==4) line4 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==5) line5 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
+
+       };
+    };
+    var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
+
+    x_data.domain([min_date, Date.now()  ]);  
+    //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
+    y_left.domain([0, total_max_y]);
+    y_right.domain([0, lower_max_y]);
+
     x2.domain(x_data.domain());
-    y2.domain(y.domain());
+    y2.domain(y_left.domain());
+   
+// common end 
 
+    focus.append("g") .attr("class", "axis axis--x") .attr("transform", "translate(0," + height + ")") .call(xAxis);
+    focus.append("g") .attr("class", "axis axis--y") .call(yAxisLeft);
+    focus.append("g") .attr("class", "axis axis--y") .call(yAxisRight);
 
-    var OBJ={ A:1, B:1, C:2 , D:4}
-    var KEYS= Object.keys(OBJ);
-    var OUTPUT=[];
-    for(var i=0; i< KEYS.length; i++) {
-        if( OBJ[ KEYS[i] ] == 1 ) {
-            OUTPUT.push( KEYS[i] );
-        }
-    }
-    console.log("OUTPUT")
-    console.log(OUTPUT);
-
-/*
-.line1{
-        stroke: steelblue;
-    }
-    .line2{
-        stroke: red;
-    }
-    .line3{
-        stroke: black;
-    }
-    .line4{
-        stroke: green;
-    }
-    .line5{
-        stroke: yellow;
-    }
-    .line6{
-        stroke: brown;
-    }
-    .line7{
-        stroke: rosybrown;
-    }
-    .line8{
-        stroke: orangered;
-    }
-    .line9{
-        stroke: purple;
-    }
-
-*/
-    focus.append("g")
-        .attr("class", "axis axis--x")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-    focus.append("g")
-        .attr("class", "axis axis--y")
-        .call(yAxis)
     Line_chart.append("path")
         .datum(data)
         .attr("stroke", "steelblue")
