@@ -952,8 +952,10 @@ $(document).off("click","#top_banner>div:eq(1)")
     var data7_max= d3.max(data7, function (d) { return +d.number; }); list_data_max.push(data_max7);
     var data8_max= d3.max(data8, function (d) { return +d.number; }); list_data_max.push(data_max8);
     var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data_max9);
+    console.log("list_data_max"); console.log(list_data_max);
 
     var total_max_y= d3.max(list_data_max, function(n) { return n; } );
+    console.log("total_max_y"); console.log(total_max_y);
     var list_lower_data_max=[];
     var list_lower_data_n=[];
     var list_upper_data_n=[];
@@ -990,6 +992,10 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
        };
     };
     var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
+
+    console.log("upper right y"); console.log(list_upper_data_n);
+    console.log("lower right y"); console.log(list_lower_data_n);
+    console.log("lower_max_y"); console.log(lower_max_y);
 
     x_data.domain([min_date, Date.now()  ]);  
     //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
@@ -1375,8 +1381,10 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     var data7_max= d3.max(data7, function (d) { return +d.number; }); list_data_max.push(data_max7);
     var data8_max= d3.max(data8, function (d) { return +d.number; }); list_data_max.push(data_max8);
     var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data_max9);
+    console.log("list_data_max"); console.log(list_data_max);
 
     var total_max_y= d3.max(list_data_max, function(n) { return n; } );
+    console.log("total_max_y"); console.log(total_max_y);
     var list_lower_data_max=[];
     var list_lower_data_n=[];
     var list_upper_data_n=[];
@@ -1413,6 +1421,10 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
        };
     };
     var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
+
+    console.log("upper right y"); console.log(list_upper_data_n);
+    console.log("lower right y"); console.log(list_lower_data_n);
+    console.log("lower_max_y"); console.log(lower_max_y);
 
     x_data.domain([min_date, Date.now()  ]);  
     //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
