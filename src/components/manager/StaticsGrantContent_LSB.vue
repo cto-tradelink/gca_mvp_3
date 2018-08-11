@@ -365,6 +365,8 @@ export default {
     y2 = d3.scaleLinear().range([height2, 0]),
     y3 = d3.scaleLinear().range([height, 0]),
     y4 = d3.scaleLinear().range([height, 0]);
+
+    y_right = d3.scaleLinear().range([height, 0]); //lsb1
     
     var Line_chart;
 
@@ -404,20 +406,24 @@ export default {
         .attr("class", "focus")
         .attr("fill","none")
         .attr("stroke-width","1px")
-        .attr("stroke","#00ff00")
+        .attr("stroke","#000000")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
     var brush
     var zoom
     var context = svg.append("g")
-    .attr("class", "context")
+     .attr("class", "context")
      .attr("stroke","#000")
         .attr("strok-width","1px")
         .attr("fill","none")
-    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+        .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+
+
 
 $(document).ready(function(){
-     $("#loading").removeClass("hidden")
-     $("#loading").css("position","fixed")
+    $("#loading").removeClass("hidden")
+    $("#loading").css("position","fixed")
     $("#loading").css("top","400px")
     $("#loading").css("left","50%")
     $("#loading").css("margin-left","-200px")
@@ -435,13 +441,15 @@ $(document).ready(function(){
 
     $(document).off("change","#grant_select")
     $(document).on("change","#grant_select",function(){
-                    $("#loading").removeClass("hidden")
-     $("#loading").css("position","fixed")
+
+    $("#loading").removeClass("hidden")
+    $("#loading").css("position","fixed")
     $("#loading").css("top","400px")
     $("#loading").css("left","50%")
     $("#loading").css("margin-left","-200px")
-        var url = `/get_grant_static_detail/?id=`+localStorage.getItem("id")+"&sb_id="+ $("#grant_select").find("option:selected").attr("data-id")
-        vue_obj.$http.get(url)
+
+    var url = `/get_grant_static_detail/?id=`+localStorage.getItem("id")+"&sb_id="+ $("#grant_select").find("option:selected").attr("data-id")
+    vue_obj.$http.get(url)
             .then((result) => {
                 console.log(result.data.title)
                 $("#select_zone>.basic").find("option:contains('"+ result.data.title +"')").prop("selected",true)
@@ -472,10 +480,10 @@ $(document).ready(function(){
                 $(".list_btn").removeClass("bold")
                 $(".list_btn:eq(0)").addClass("bold")
 
-                  $("#loading").addClass("hidden")
+                $("#loading").addClass("hidden")
 
         })
-    })
+    }) // end of on change : lsb
 
 
     $(document).on("click",".title", function(){
@@ -486,11 +494,11 @@ $(document).ready(function(){
     $(document).on("click","#excel_down", function(){     
         var ee = excelExport("list_tbl").parseToCSV().parseToXLS("excelexport sheet");
             location.href = ee.getXLSDataURI();
-        })
+    })
        
-        vue_obj.$http.get(`/get_static_info/?id=`+localStorage.getItem("id"))
+    vue_obj.$http.get(`/get_static_info/?id=`+localStorage.getItem("id"))
         .then((result) => {
-                   $("#loading").addClass("hidden")
+                $("#loading").addClass("hidden")
                 vue_obj.base_info = result.data
                 console.log(vue_obj.base_info)
                 vue_obj.all_startup_list = result.data.all_startup_list
@@ -512,10 +520,10 @@ $(document).ready(function(){
                 $(".list_btn:eq(0)").addClass("bold")     
 
 
-                    if( vue_obj.$route.params.id != undefined){
+                if( vue_obj.$route.params.id != undefined){
 
-            vue_obj.$http.get(`/get_grant_static_detail/?id=`+localStorage.getItem("id")+"&sb_id="+ vue_obj.$route.params.id)
-            .then((result) => {
+                vue_obj.$http.get(`/get_grant_static_detail/?id=`+localStorage.getItem("id")+"&sb_id="+ vue_obj.$route.params.id)
+                .then((result) => {
                 console.log(result.data.title)
                 $("#select_zone>.basic").find("option:contains('"+ result.data.title +"')").prop("selected",true)
 
@@ -737,9 +745,10 @@ $(document).off("click","#top_banner>div:eq(1)")
 
     function update_zoomable_line(){
         
-     brush = d3.brushX()
+    brush = d3.brushX()
         .extent([[0, 0], [width, height2]])
         .on("brush end", brushed);
+
     zoom = d3.zoom()
         .scaleExtent([1, Infinity])
         .translateExtent([[0, 0], [width, height]])
