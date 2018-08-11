@@ -122,8 +122,127 @@
         </div>
         </div>
         <img id="loading" class="hidden" src="/static/img/loading.gif">
+<div id='tooltip' style='position:absolute;background-color:lightgray;padding:5px'></div>
     </div>
 </template>
+
+<script>
+// d3.legend_left.js 
+// (C) 2012 ziggy.jonsson.nyc@gmail.com
+// MIT licence
+
+(function() {
+d3.legend_left = function(g) {
+  g.each(function() {
+    var g= d3.select(this),
+        items = {},
+        svg = d3.select(g.property("nearestViewportElement")),
+        legendPadding = g.attr("data-style-padding") || 5,
+        lb = g.selectAll(".legend-box").data([true]),
+        li = g.selectAll(".legend-items").data([true])
+
+    lb.enter().append("rect").classed("legend-box",true)
+    li.enter().append("g").classed("legend-items",true)
+
+    svg.selectAll("[data-legend-left]").each(function() {
+        var self = d3.select(this)
+        items[self.attr("data-legend-left")] = {
+          pos : self.attr("data-legend-pos") || this.getBBox().y,
+          color : self.attr("data-legend-color") != undefined ? self.attr("data-legend-color") : self.style("fill") != 'none' ? self.style("fill") : self.style("stroke") 
+        }
+      })
+
+    items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
+
+    
+    li.selectAll("text")
+        .data(items,function(d) { return d.key})
+        .call(function(d) { d.enter().append("text")})
+        .call(function(d) { d.exit().remove()})
+        .attr("y",function(d,i) { return i+"em"})
+        .attr("x","1em")
+        .text(function(d) { ;return d.key})
+    
+    li.selectAll("circle")
+        .data(items,function(d) { return d.key})
+        .call(function(d) { d.enter().append("circle")})
+        .call(function(d) { d.exit().remove()})
+        .attr("cy",function(d,i) { return i-0.25+"em"})
+        .attr("cx",0)
+        .attr("r","0.4em")
+        .style("fill",function(d) { console.log(d.value.color);return d.value.color})  
+    
+    // Reposition and resize the box
+    var lbbox = li[0][0].getBBox()  
+    lb.attr("x",(lbbox.x-legendPadding))
+        .attr("y",(lbbox.y-legendPadding))
+        .attr("height",(lbbox.height+2*legendPadding))
+        .attr("width",(lbbox.width+2*legendPadding))
+  })
+  return g
+}
+})()
+
+</script>
+
+<script>
+// d3.legend_right.js 
+// (C) 2012 ziggy.jonsson.nyc@gmail.com
+// MIT licence
+
+(function() {
+d3.legend_right = function(g) {
+  g.each(function() {
+    var g= d3.select(this),
+        items = {},
+        svg = d3.select(g.property("nearestViewportElement")),
+        legendPadding = g.attr("data-style-padding") || 5,
+        lb = g.selectAll(".legend-box").data([true]),
+        li = g.selectAll(".legend-items").data([true])
+
+    lb.enter().append("rect").classed("legend-box",true)
+    li.enter().append("g").classed("legend-items",true)
+
+    svg.selectAll("[data-legend-right]").each(function() {
+        var self = d3.select(this)
+        items[self.attr("data-legend-right")] = {
+          pos : self.attr("data-legend-pos") || this.getBBox().y,
+          color : self.attr("data-legend-color") != undefined ? self.attr("data-legend-color") : self.style("fill") != 'none' ? self.style("fill") : self.style("stroke") 
+        }
+      })
+
+    items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
+
+    
+    li.selectAll("text")
+        .data(items,function(d) { return d.key})
+        .call(function(d) { d.enter().append("text")})
+        .call(function(d) { d.exit().remove()})
+        .attr("y",function(d,i) { return i+"em"})
+        .attr("x","1em")
+        .text(function(d) { ;return d.key})
+    
+    li.selectAll("circle")
+        .data(items,function(d) { return d.key})
+        .call(function(d) { d.enter().append("circle")})
+        .call(function(d) { d.exit().remove()})
+        .attr("cy",function(d,i) { return i-0.25+"em"})
+        .attr("cx",0)
+        .attr("r","0.4em")
+        .style("fill",function(d) { console.log(d.value.color);return d.value.color})  
+    
+    // Reposition and resize the box
+    var lbbox = li[0][0].getBBox()  
+    lb.attr("x",(lbbox.x-legendPadding))
+        .attr("y",(lbbox.y-legendPadding))
+        .attr("height",(lbbox.height+2*legendPadding))
+        .attr("width",(lbbox.width+2*legendPadding))
+  })
+  return g
+}
+})()
+
+</script>
 
 <script>
 import StaticNavigation from "./StaticNavigation.vue"
@@ -368,7 +487,9 @@ export default {
 
     var y_left  = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (higher values)
     var y_right = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (lower values)
-    
+   
+    var tooltip = d3.select('#tooltip'); 
+
     var Line_chart;
     var line1;
     var line2;
@@ -385,21 +506,167 @@ export default {
         yAxisLeft = d3.axisLeft(y_left),
         yAxisRight = d3.axisRight(y_right);
 
+    var list_lower_data_n=[];
+    var list_upper_data_n=[];
+    var list_data=[];
+    var data_legend_LR=[];
+
+    var data_legend_names=[
+      "",
+      "DATA1",
+      "DATA2",
+      "DATA3",
+      "DATA4",
+      "DATA5",
+      "DATA6",
+      "DATA7",
+      "DATA8",
+      "DATA9" 
+    ];
+    var data_line_color=[
+        "",
+        "steelblue",
+        "red",
+        "black",
+        "green",
+        "yellow",
+        "brown",
+        "rosybrown",
+        "orangered",
+        "purple" 
+    ];
+
+    function mousemove() {
+      var x0 = x_data.invert(d3.mouse(this)[0]),
+          yl = y_left.invert(d3.mouse(this)[1]),
+          yr = y_right.invert(d3.mouse(this)[1]);
+      var i = bisectDate(data, x0, 1);
+      var d0 = data[i - 1];
+      var d1 = data[i];
+      var d;
+      if( x0 - d0.date > d1.date - x0 ) {
+         d= d1; 
+      } else {
+         d= d0;   i= i - 1;
+      };
+
+      var which_data;
+      var which_data_n;
+      var which_yr_data_n= -1;
+      for(var j=0; j<list_lower_data_n.length; j++) {
+         if( Math.abs( list_data[ list_lower_data_n[j] ][i].value - yr ) < 1) {
+	     which_data= list_data[ list_lower_data_n[j] ][i]; 
+	     which_data_n= list_lower_data_n[j];
+	     which_yr_data_n= list_lower_data_n[j]; break;
+         };
+      };
+      var which_yl_data_n= -1;
+      for(var j=0; j<list_upper_data_n.length; j++) {
+         if( Math.abs( list_data[ list_upper_data_n[j] ][i].value - yr ) < 1) {
+	     which_data= list_data[ list_upper_data_n[j] ][i]; 
+	     which_data_n= list_upper_data_n[j];
+	     which_yl_data_n= list_upper_data_n[j]; break;
+         };
+      };
+      if(which_yl_data_n > -1) { 
+        var my_y= y_left(which_data.value);
+        var my_x= x_data(which_data.date);
+        mousefocus.attr("transform", "translate(" + my_x + "," + my_y + ")");
+	//vertical line
+        mousefocus.select(".x-hover-line").attr("y1", height);
+        mousefocus.select(".x-hover-line").attr("y2", height - my_y);
+        mousefocus.select(".x-hover-line").attr("x1", my_x);
+        mousefocus.select(".x-hover-line").attr("x2", my_x);
+
+	//horizontal line
+        mousefocus.select(".y-hover-line").attr("y1", my_y);
+        mousefocus.select(".y-hover-line").attr("y2", my_y);
+        mousefocus.select(".y-hover-line").attr("x1", 0);
+        mousefocus.select(".y-hover-line").attr("x2", my_x);
+
+        var txt= data_names[which_data_n]+" "+which_data.value + " at "+my_x; 
+        mousefocus.select("text").text(txt);
+        tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
+      };
+      if(which_yr_data_n > -1) { 
+        var my_y= y_right(which_data.value);
+        var my_x= x_data(which_data.date);
+        mousefocus.attr("transform", "translate(" + my_x + "," + my_y + ")");
+	//vertical line
+        mousefocus.select(".x-hover-line").attr("y1", height);
+        mousefocus.select(".x-hover-line").attr("y2", height - my_y);
+        mousefocus.select(".x-hover-line").attr("x1", my_x);
+        mousefocus.select(".x-hover-line").attr("x2", my_x);
+
+	//horizontal line
+        mousefocus.select(".y-hover-line").attr("y1", my_y);
+        mousefocus.select(".y-hover-line").attr("y2", my_y);
+        mousefocus.select(".y-hover-line").attr("x1", 0);
+        mousefocus.select(".y-hover-line").attr("x2", my_x);
+
+        var txt= data_names[which_data_n]+" "+which_data.value + " at "+my_x; 
+        mousefocus.select("text").text(txt);
+        tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
+      };
+    }
+
     var focus = svg.append("g")
         .attr("class", "focus")
-        .attr("fill","none")
         .attr("stroke-width","1px")
         .attr("stroke","#000000")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("fill","none")
+        .attr("pointer-events":"all")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .on("mouseover", function() { mousefocus.style("display", null); tooltip.style("display", null);})
+        .on("mouseout", function() { mousefocus.style("display", "none"); tooltip.style("display", "none");})
+        .on("mousemove", mousemove);
 
     var brush
     var zoom
     var context = svg.append("g")
-     .attr("class", "context")
-     .attr("stroke","#000")
+        .attr("class", "context")
+        .attr("stroke","#000")
         .attr("strok-width","1px")
         .attr("fill","none")
         .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+
+
+    var mousefocus = g.append("g")
+        .attr("class", "mousefocus")
+        .style("display", "none");
+
+    mousefocus.append("line")
+        .attr("class", "x-hover-line hover-line")
+        .attr("x1", 0)
+        .attr("x2", 0)
+        .attr("y1", 0)
+        .attr("y2", 0) 
+  	.attr("stroke","#6F257F") 
+  	.attr("stroke-width","2px") 
+  	.attr("stroke-dasharray","3,3");
+
+    mousefocus.append("line")
+        .attr("class", "y-hover-line hover-line")
+        .attr("x1", 0)
+        .attr("x2", 0) 
+        .attr("y1", 0)
+        .attr("y2", 0)
+  	.attr("stroke","#6F257F") 
+  	.attr("stroke-width","2px") 
+  	.attr("stroke-dasharray","3,3");
+
+    mousefocus.append("circle")
+        .attr("r", 7.5) 
+  	.attr("fill","#F1F3F3") 
+  	.attr("stroke","#F1F3F3") 
+  	.attr("stroke-width","5px");
+
+    mousefocus.append("text")
+        .attr("x", 15)
+      	.attr("dy", ".31em");
+
+
 
 
 
@@ -964,8 +1231,10 @@ $(document).off("click","#top_banner>div:eq(1)")
        if(list_data_max[i-1] <  threshold * total_max_y ) {
            list_lower_data_n.push(i);
            list_lower_data_max.push( list_data_max[i-1]);
+	   data_legend_LR[i]="data-legend-right";
        } else {
            list_upper_data_n.push(i);
+	   data_legend_LR[i]="data-legend-left";
        };
     };
     var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
@@ -974,7 +1243,7 @@ $(document).off("click","#top_banner>div:eq(1)")
     console.log("lower right y"); console.log(list_lower_data_n);
     console.log("lower_max_y"); console.log(lower_max_y);
 
-    x_data.domain([vue_obj.base_info.min_date, Date.now()  ]);  
+    x_data.domain([new Date(vue_obj.base_info.min_date), Date.now()  ]);  
     //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
     y_left.domain([0, total_max_y]);
     y_right.domain([0, lower_max_y]);
@@ -1012,42 +1281,62 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     $(".focus:eq(1)").empty();
     $(".axis--y").remove();
 
-    focus.append("g").attr("class", "axis axis--y") .call(yAxisLeft);
-    focus.append("g").attr("class", "axis axis--y") .call(yAxisRight)
+
+
+    focus.append("g") .attr("class", "axis axis--x") .attr("transform", "translate(0," + height + ")") .call(xAxis);
+    focus.append("g")
+      .attr("class", "axis axis--y")
+      .attr("stroke","#000000") 
+      .attr("stroke-width","1px") 
+      .attr("shape-rendering","crispEdges") 
+      .call(yAxisLeft);
+    focus.append("g")
+      .attr("class", "axis axis--y")
+      .attr("stroke","#ff0000") 
+      .attr("stroke-width","1px") 
+      .attr("shape-rendering","crispEdges") 
+      .call(yAxisRight)
       .attr("transform", "translate("+width+",0)");
+
 
     Line_chart.append("path")
         .datum(data)
         .attr("class", "line1")
         .attr("fill","none")
+        .attr(data_legend_LR[1], data_legend_names[1])
         .attr("d", line1);
     Line_chart.append("path")
         .datum(data2)
         .attr("class", "line2")
         .attr("fill","none")
+        .attr(data_legend_LR[2], data_legend_names[2])
         .attr("d", line2);
     Line_chart.append("path")
         .datum(data3)
         .attr("fill","none")
         .attr("class", "line3")
+        .attr(data_legend_LR[3], data_legend_names[3])
         .attr("d", line3);
     Line_chart.append("path")
         .datum(data4)
         .attr("class", "line4")
         .attr("fill","none")
         .style("stroke-dasharray", ("3, 3"))
+        .attr(data_legend_LR[4], data_legend_names[4])
         .attr("d", line4);
     Line_chart.append("path")
         .datum(data5)
         .attr("class", "line5")
         .attr("fill","none")
         .style("stroke-dasharray", ("3, 3"))
+        .attr(data_legend_LR[5], data_legend_names[5])
         .attr("d", line5);
     Line_chart.append("path")
         .datum(data6)
         .attr("fill","none")
         .attr("class", "line6")
         .style("stroke-dasharray", ("3, 3"))
+        .attr(data_legend_LR[6], data_legend_names[6])
         .attr("d", line6);
 
     Line_chart.append("path")
@@ -1055,12 +1344,14 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
         .attr("class", "line7")
         .attr("fill","none")
         .style("stroke-dasharray", ("3,1,1,1,3"))
+        .attr(data_legend_LR[7], data_legend_names[7])
         .attr("d", line7);
     Line_chart.append("path")
         .datum(data8)
         .attr("class", "line8")
         .attr("fill","none")
         .style("stroke-dasharray", ("3,1,1,1,3"))
+        .attr(data_legend_LR[8], data_legend_names[8])
         .attr("d", line8);
 
     Line_chart.append("path")
@@ -1068,33 +1359,39 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
         .attr("class", "line9")
         .attr("fill","none")
         .style("stroke-dasharray", ("3,1,1,1,3"))
+        .attr(data_legend_LR[9], data_legend_names[9])
         .attr("d", line9);
         
     $(".context").empty()
     context.append("path")
         .datum(data)
         .attr("class", "line1")
+        .attr("stroke", data_line_color[1])
         .attr("fill", "none")        
         .attr("d", line_sub_1);
     context.append("path")
         .datum(data2)
         .attr("class", "line2")
+        .attr("stroke", data_line_color[2])
         .attr("fill", "none")  
         .attr("d", line_sub_2);
     context.append("path")
         .datum(data3)
         .attr("class", "line3")
+        .attr("stroke", data_line_color[3])
         .attr("fill", "none")  
         .attr("d", line_sub_3);
     context.append("path")
         .datum(data4)
         .attr("class", "line4")
+        .attr("stroke", data_line_color[4])
         .attr("fill", "none")  
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line_sub_4);
     context.append("path")
         .datum(data5)
         .attr("class", "line5")
+        .attr("stroke", data_line_color[5])
         .attr("fill", "none")  
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line_sub_5);
@@ -1103,24 +1400,28 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
         .style("stroke-dasharray", ("3, 3"))
         .attr("fill", "none")  
         .attr("class", "line6")
+        .attr("stroke", data_line_color[6])
         .attr("d", line_sub_6);
     context.append("path")
         .datum(data7)
         .style("stroke-dasharray", ("3, 1"))
         .attr("fill", "none")  
         .attr("class", "line7")
+        .attr("stroke", data_line_color[7])
         .attr("d", line_sub_7);
     context.append("path")
         .datum(data8)
         .style("stroke-dasharray", ("3, 1"))
         .attr("fill", "none")  
         .attr("class", "line8")
+        .attr("stroke", data_line_color[8])
         .attr("d", line_sub_8);
     context.append("path")
         .datum(data9)
         .style("stroke-dasharray", ("3, 1"))
         .attr("fill", "none")  
         .attr("class", "line9")
+        .attr("stroke", data_line_color[9])
         .attr("d", line_sub_9);
         
 
@@ -1143,8 +1444,43 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .call(zoom);
 
+
+     
+
+  var legend1 = focus.append("g")
+    .attr("class","legend")
+    .attr("transform","translate(50,30)")
+    .style("font-size","16px")
+    .call(d3.legend_left)
+
+  setTimeout(function() { 
+    legend1
+      .style("font-size","20px")
+      .attr("data-style-padding",10)
+      .call(d3.legend_left)
+  },1000)
+
+  var legend2 = focus.append("g")
+    .attr("class","legend")
+    .attr("transform","translate(550,30)")
+    .style("font-size","16px")
+    .call(d3.legend_right)
+
+  setTimeout(function() { 
+    legend2
+      .style("font-size","20px")
+      .attr("data-style-padding",10)
+      .call(d3.legend_right)
+  },1000)
+
+
+
+
     }
-    
+   
+
+
+ 
     function init_zoomable_line(){
 
     brush = d3.brushX()
@@ -1396,8 +1732,10 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
        if(list_data_max[i-1] <  threshold * total_max_y ) {
            list_lower_data_n.push(i);
            list_lower_data_max.push( list_data_max[i-1]);
+	   data_legend_LR[i]="data-legend-right";
        } else {
            list_upper_data_n.push(i);
+	   data_legend_LR[i]="data-legend-left";
        };
     };
     var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
@@ -1406,7 +1744,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     console.log("lower right y"); console.log(list_lower_data_n);
     console.log("lower_max_y"); console.log(lower_max_y);
 
-    x_data.domain([vue_obj.base_info.min_date, Date.now()  ]);  
+    x_data.domain([new Date(vue_obj.base_info.min_date), Date.now()  ]);  
     //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
     y_left.domain([0, total_max_y]);
     y_right.domain([0, lower_max_y]);
@@ -1442,95 +1780,123 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 // common end 
 
     focus.append("g") .attr("class", "axis axis--x") .attr("transform", "translate(0," + height + ")") .call(xAxis);
-    focus.append("g").attr("class", "axis axis--y") .call(yAxisLeft);
-    focus.append("g").attr("class", "axis axis--y") .call(yAxisRight)
+    focus.append("g")
+      .attr("class", "axis axis--y")
+      .attr("stroke","#000000") 
+      .attr("stroke-width","1px") 
+      .attr("shape-rendering","crispEdges") 
+      .call(yAxisLeft);
+    focus.append("g")
+      .attr("class", "axis axis--y")
+      .attr("stroke","#ff0000") 
+      .attr("stroke-width","1px") 
+      .attr("shape-rendering","crispEdges") 
+      .call(yAxisRight)
       .attr("transform", "translate("+width+",0)");
 
     Line_chart.append("path")
         .datum(data)
-        .attr("stroke", "steelblue")
+        .attr("stroke", data_line_color[1])
+        .attr(data_legend_LR[1], data_legend_names[1])
         .attr("d", line1);
     Line_chart.append("path")
         .datum(data2)
-        .attr("stroke", "red")
+        .attr("stroke", data_line_color[2])
+        .attr(data_legend_LR[2], data_legend_names[2])
         .attr("d", line2);
     Line_chart.append("path")
         .datum(data3)
-        .attr("stroke", "black")
+        .attr("stroke", data_line_color[3])
+        .attr(data_legend_LR[3], data_legend_names[3])
         .attr("d", line3);
     Line_chart.append("path")
         .datum(data4)
-        .attr("stroke", "green")
+        .attr("stroke", data_line_color[4])
         .style("stroke-dasharray", ("3, 3"))
+        .attr(data_legend_LR[4], data_legend_names[4])
         .attr("d", line4);
     Line_chart.append("path")
         .datum(data5)
-        .attr("stroke", "yellow")
+        .attr("stroke", data_line_color[5])
         .style("stroke-dasharray", ("3, 3"))
+        .attr(data_legend_LR[5], data_legend_names[5])
         .attr("d", line5);
     Line_chart.append("path")
         .datum(data6)
-        .attr("stroke", "brown")
+        .attr("stroke", data_line_color[6])
         .style("stroke-dasharray", ("3, 3"))
+        .attr(data_legend_LR[6], data_legend_names[6])
         .attr("d", line6);
     Line_chart.append("path")
         .datum(data7)
-        .attr("stroke", "rosybrown")
+        .attr("stroke", data_line_color[7])
         .style("stroke-dasharray", ("3,1,1,1,3"))
+        .attr(data_legend_LR[7], data_legend_names[7])
         .attr("d", line7);
     Line_chart.append("path")
         .datum(data8)
-        .attr("stroke", "orangered")
+        .attr("stroke", data_line_color[8])
         .style("stroke-dasharray", ("3,1,1,1,3"))
+        .attr(data_legend_LR[8], data_legend_names[8])
         .attr("d", line8);
     Line_chart.append("path")
         .datum(data9)
-        .attr("stroke", "purple")
+        .attr("stroke", data_line_color[9])
         .style("stroke-dasharray", ("3,1,1,1,3"))
+        .attr(data_legend_LR[9], data_legend_names[9])
         .attr("d", line9);
 
 
     context.append("path")
         .datum(data)
         .attr("class", "line1")
+        .attr("stroke", data_line_color[1])
         .attr("d", line_sub_1);
     context.append("path")
         .datum(data2)
         .attr("class", "line2")
+        .attr("stroke", data_line_color[2])
         .attr("d", line_sub_2);
     context.append("path")
         .datum(data3)
         .attr("class", "line3")
+        .attr("stroke", data_line_color[3])
         .attr("d", line_sub_3);
     context.append("path")
         .datum(data4)
         .attr("class", "line4")
+        .attr("stroke", data_line_color[4])
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line_sub_4);
     context.append("path")
         .datum(data5)
         .attr("class", "line5")
+        .attr("stroke", data_line_color[5])
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line_sub_5);
     context.append("path")
         .datum(data6)
         .style("stroke-dasharray", ("3, 3"))
         .attr("class", "line6")
+        .attr("stroke", data_line_color[6])
         .attr("d", line_sub_6);
     context.append("path")
         .datum(data7)
         .style("stroke-dasharray", ("3, 1"))
         .attr("class", "line7")
+        .attr("stroke", data_line_color[7])
         .attr("d", line_sub_7);
     context.append("path")
         .datum(data8)
         .style("stroke-dasharray", ("3, 1"))
         .attr("class", "line8")
+        .attr("stroke", data_line_color[8])
         .attr("d", line_sub_8);
     context.append("path")
         .datum(data9)
         .style("stroke-dasharray", ("3, 1"))
         .attr("class", "line9")
+        .attr("stroke", data_line_color[9])
         .attr("d", line_sub_9);
         
 
@@ -1548,6 +1914,39 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
       .attr("height", height)
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .call(zoom);
+
+
+
+  var legend1 = focus.append("g")
+    .attr("class","legend")
+    .attr("transform","translate(50,30)")
+    .style("font-size","12px")
+    .call(d3.legend_left)
+
+  setTimeout(function() { 
+    legend1
+      .style("font-size","20px")
+      .attr("data-style-padding",10)
+      .call(d3.legend_left)
+  },1000)
+
+  var legend2 = focus.append("g")
+    .attr("class","legend")
+    .attr("transform","translate(550,30)")
+    .style("font-size","12px")
+    .call(d3.legend_right)
+
+  setTimeout(function() { 
+    legend2
+      .style("font-size","20px")
+      .attr("data-style-padding",10)
+      .call(d3.legend_right)
+  },1000)
+
+
+
+
+
     }
     
 function brushed() {
@@ -1976,4 +2375,7 @@ td>i{
     #select_zone_2{
         margin-top: 140px;
     }
+
+
+
 </style>
