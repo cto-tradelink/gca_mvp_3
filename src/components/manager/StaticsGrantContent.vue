@@ -3,7 +3,7 @@
         <StaticNavigation></StaticNavigation>
         <div id="top_banner">
             <div class="on"> 
-                <span class="title">진행중 사업</span>
+                <span class="title">진행중 사업 LSB</span>
              
             </div>
             <div>
