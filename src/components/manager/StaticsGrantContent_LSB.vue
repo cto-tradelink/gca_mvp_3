@@ -366,8 +366,8 @@ export default {
     y3 = d3.scaleLinear().range([height, 0]),
     y4 = d3.scaleLinear().range([height, 0]);
 
-    y_left  = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (higher values)
-    y_right = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (lower values)
+    var y_left  = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (higher values)
+    var y_right = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (lower values)
     
     var Line_chart;
     var line1;
@@ -944,14 +944,14 @@ $(document).off("click","#top_banner>div:eq(1)")
 // common begin
     var list_data_max=[];
     var data_max=  d3.max(data , function (d) { return +d.number; }); list_data_max.push(data_max);
-    var data2_max= d3.max(data2, function (d) { return +d.number; }); list_data_max.push(data_max2);
-    var data3_max= d3.max(data3, function (d) { return +d.number; }); list_data_max.push(data_max3);
-    var data4_max= d3.max(data4, function (d) { return +d.number; }); list_data_max.push(data_max4);
-    var data5_max= d3.max(data5, function (d) { return +d.number; }); list_data_max.push(data_max5);
-    var data6_max= d3.max(data6, function (d) { return +d.number; }); list_data_max.push(data_max6);
-    var data7_max= d3.max(data7, function (d) { return +d.number; }); list_data_max.push(data_max7);
-    var data8_max= d3.max(data8, function (d) { return +d.number; }); list_data_max.push(data_max8);
-    var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data_max9);
+    var data2_max= d3.max(data2, function (d) { return +d.number; }); list_data_max.push(data2_max);
+    var data3_max= d3.max(data3, function (d) { return +d.number; }); list_data_max.push(data3_max);
+    var data4_max= d3.max(data4, function (d) { return +d.number; }); list_data_max.push(data4_max);
+    var data5_max= d3.max(data5, function (d) { return +d.number; }); list_data_max.push(data5_max);
+    var data6_max= d3.max(data6, function (d) { return +d.number; }); list_data_max.push(data6_max);
+    var data7_max= d3.max(data7, function (d) { return +d.number; }); list_data_max.push(data7_max);
+    var data8_max= d3.max(data8, function (d) { return +d.number; }); list_data_max.push(data8_max);
+    var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data9_max);
     console.log("list_data_max"); console.log(list_data_max);
 
     var total_max_y= d3.max(list_data_max, function(n) { return n; } );
@@ -964,7 +964,27 @@ $(document).off("click","#top_banner>div:eq(1)")
        if(list_data_max[i-1] <  threshold * total_max_y ) {
            list_lower_data_n.push(i);
            list_lower_data_max.push( list_data_max[i-1]);
+       } else {
+           list_upper_data_n.push(i);
+       };
+    };
+    var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
 
+    console.log("upper right y"); console.log(list_upper_data_n);
+    console.log("lower right y"); console.log(list_lower_data_n);
+    console.log("lower_max_y"); console.log(lower_max_y);
+
+    x_data.domain([vue_obj.base_info.min_date, Date.now()  ]);  
+    //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
+    y_left.domain([0, total_max_y]);
+    y_right.domain([0, lower_max_y]);
+
+    x2.domain(x_data.domain());
+    y2.domain(y_left.domain());
+  
+
+    for(var i=1; i<=list_data_max.length; i++) {
+       if(list_data_max[i-1] <  threshold * total_max_y ) {
 if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
@@ -974,11 +994,7 @@ if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
-
-
        } else {
-           list_upper_data_n.push(i);
-
 if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
@@ -988,30 +1004,17 @@ if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
-
        };
     };
-    var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
-
-    console.log("upper right y"); console.log(list_upper_data_n);
-    console.log("lower right y"); console.log(list_lower_data_n);
-    console.log("lower_max_y"); console.log(lower_max_y);
-
-    x_data.domain([min_date, Date.now()  ]);  
-    //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
-    y_left.domain([0, total_max_y]);
-    y_right.domain([0, lower_max_y]);
-
-    x2.domain(x_data.domain());
-    y2.domain(y_left.domain());
-   
+ 
 // common end 
 
     $(".focus:eq(1)").empty();
     $(".axis--y").remove();
 
     focus.append("g").attr("class", "axis axis--y") .call(yAxisLeft);
-    focus.append("g").attr("class", "axis axis--y") .call(yAxisRight);
+    focus.append("g").attr("class", "axis axis--y") .call(yAxisRight)
+      .attr("transform", "translate("+width+",0)");
 
     Line_chart.append("path")
         .datum(data)
@@ -1373,14 +1376,14 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 // common begin
     var list_data_max=[];
     var data_max=  d3.max(data , function (d) { return +d.number; }); list_data_max.push(data_max);
-    var data2_max= d3.max(data2, function (d) { return +d.number; }); list_data_max.push(data_max2);
-    var data3_max= d3.max(data3, function (d) { return +d.number; }); list_data_max.push(data_max3);
-    var data4_max= d3.max(data4, function (d) { return +d.number; }); list_data_max.push(data_max4);
-    var data5_max= d3.max(data5, function (d) { return +d.number; }); list_data_max.push(data_max5);
-    var data6_max= d3.max(data6, function (d) { return +d.number; }); list_data_max.push(data_max6);
-    var data7_max= d3.max(data7, function (d) { return +d.number; }); list_data_max.push(data_max7);
-    var data8_max= d3.max(data8, function (d) { return +d.number; }); list_data_max.push(data_max8);
-    var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data_max9);
+    var data2_max= d3.max(data2, function (d) { return +d.number; }); list_data_max.push(data2_max);
+    var data3_max= d3.max(data3, function (d) { return +d.number; }); list_data_max.push(data3_max);
+    var data4_max= d3.max(data4, function (d) { return +d.number; }); list_data_max.push(data4_max);
+    var data5_max= d3.max(data5, function (d) { return +d.number; }); list_data_max.push(data5_max);
+    var data6_max= d3.max(data6, function (d) { return +d.number; }); list_data_max.push(data6_max);
+    var data7_max= d3.max(data7, function (d) { return +d.number; }); list_data_max.push(data7_max);
+    var data8_max= d3.max(data8, function (d) { return +d.number; }); list_data_max.push(data8_max);
+    var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data9_max);
     console.log("list_data_max"); console.log(list_data_max);
 
     var total_max_y= d3.max(list_data_max, function(n) { return n; } );
@@ -1393,7 +1396,27 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
        if(list_data_max[i-1] <  threshold * total_max_y ) {
            list_lower_data_n.push(i);
            list_lower_data_max.push( list_data_max[i-1]);
+       } else {
+           list_upper_data_n.push(i);
+       };
+    };
+    var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
 
+    console.log("upper right y"); console.log(list_upper_data_n);
+    console.log("lower right y"); console.log(list_lower_data_n);
+    console.log("lower_max_y"); console.log(lower_max_y);
+
+    x_data.domain([vue_obj.base_info.min_date, Date.now()  ]);  
+    //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
+    y_left.domain([0, total_max_y]);
+    y_right.domain([0, lower_max_y]);
+
+    x2.domain(x_data.domain());
+    y2.domain(y_left.domain());
+  
+
+    for(var i=1; i<=list_data_max.length; i++) {
+       if(list_data_max[i-1] <  threshold * total_max_y ) {
 if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
@@ -1403,11 +1426,7 @@ if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
-
-
        } else {
-           list_upper_data_n.push(i);
-
 if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
@@ -1417,28 +1436,15 @@ if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
-
        };
     };
-    var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
-
-    console.log("upper right y"); console.log(list_upper_data_n);
-    console.log("lower right y"); console.log(list_lower_data_n);
-    console.log("lower_max_y"); console.log(lower_max_y);
-
-    x_data.domain([min_date, Date.now()  ]);  
-    //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
-    y_left.domain([0, total_max_y]);
-    y_right.domain([0, lower_max_y]);
-
-    x2.domain(x_data.domain());
-    y2.domain(y_left.domain());
-   
+ 
 // common end 
 
     focus.append("g") .attr("class", "axis axis--x") .attr("transform", "translate(0," + height + ")") .call(xAxis);
-    focus.append("g") .attr("class", "axis axis--y") .call(yAxisLeft);
-    focus.append("g") .attr("class", "axis axis--y") .call(yAxisRight);
+    focus.append("g").attr("class", "axis axis--y") .call(yAxisLeft);
+    focus.append("g").attr("class", "axis axis--y") .call(yAxisRight)
+      .attr("transform", "translate("+width+",0)");
 
     Line_chart.append("path")
         .datum(data)
