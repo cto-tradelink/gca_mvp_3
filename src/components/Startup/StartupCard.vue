@@ -14,7 +14,7 @@
             <!-- <div class="tag_con" v-show=startup.filter.length <= 5 > -->
                 <span v-for="t in startup.filter.slice(0,4)" class="tag">{{t}}</span>
             </div>
-            <div class="heart_icon heart" v-on:click.stop="fav_action($event,'startup',startup.id)" data-target="startup" :data-id="startup.id" ><img src="/static/img/like_d.png"></div>
+            <div class="heart_icon heart"  id="heart_abcd"  v-on:click.stop="fav_action($event,'startup',startup.id)" data-target="startup" :data-id="startup.id" ><img  id="heart_abcd"  src="/static/img/like_d.png"></div>
         </div>
     </div>
 </template>

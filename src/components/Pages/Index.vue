@@ -50,9 +50,9 @@
                          <div class="hr"></div>
                          <span class="clip_user"></span>
                          <div class="bottom_text"> {{clip.dur}} | {{clip.date}}</div>
-                         <div data-target="clip" class="heart_clip heart_con heart"  :data-id="clip.id"><img src="/static/img/like_d.png"></div>
-         
-                     </div>
+                         <div data-target="clip" class="heart_clip heart_con heart" :data-id="clip.id">
+                             <img :data-id="clip.id" src="/static/img/like_d.png"></div>
+                         </div>
            
                  </div>
             </div>

@@ -1,4 +1,5 @@
 <template>
+
     <div id="make_application_page" style=" padding-bottom:200px;">
              <div id="application_header">
                 <div id="title"><i style="font-size=20px;"  onclick="history.back();" class="fas fa-chevron-left"></i> &nbsp;&nbsp;&nbsp;공고문 작성중</div>
@@ -43,8 +44,8 @@
             <div id="grant_info_con">
                 <div id="page_title">모집개요</div>               
                  <div class="grant_info_con" style="background-color:#fff; ">
-                    <div class="grant_info_title" style="padding-bottom:24px; padding:15px;padding-left:40px;"> 모집기간</div>
-                    <div style="padding-top:10px;padding-bottom:10px;">
+                    <div class="grant_info_title" style="padding-bottom:24px; padding:32px;  15px;padding-left:40px;"> 모집기간</div>
+                    <div style="padding-top:27px;padding-bottom:10px;">
                         <div>
                             <datetime class="recruit" v-model="grant_info.apply_start"></datetime>  부터  <datetime class="recruit" v-model="grant_info.apply_end"  type="datetime"  :minute-step="30" ></datetime> 까지
                         </div>
@@ -69,7 +70,7 @@
                         <span class="filter">경기도 거주 임직원</span><span class="filter">경기도 외 기업</span>
                         </li>
                     </ul>
-                    <div id="ch1"><input type="checkbox">기타 장르<input style="margin-left:75px;width:470px;height:40px; padding-left:20px; border: solid 1px #e7edfc;" class="input_normal" type="text"> 
+                    <div id="ch1"><input @click="toggle_ch1" type="checkbox">기타 장르<input id="ch1_input"  style="margin-left:75px;width:470px;height:40px; padding-left:20px; border: solid 1px #e7edfc;" class="input_normal hidden" type="text"> 
                         </div>
                  </div>
                  <div class="grant_info_con"  style="background-color:#fff; ; padding:40px; width:1154px; ">
@@ -84,7 +85,7 @@
                     </div>
                 </td>
                 <td>
-                    <span v-on:click="add_tag($event)" class="filter" v-for="t in filter_table_item.base">{{t}}</span>
+                    <span v-on:click="add_tag($event)" class="filter base" v-for="t in filter_table_item.base">{{t}}</span>
                 </td>
             </tr>
             <tr>
@@ -100,74 +101,73 @@
                             <div>
                                 <span class="filter_ttl">창작</span> 
                                 <ul class="filter_ul">
-                                    <li class="filter"  v-for="t in filter_table_item.create">{{t}}</li>
+                                    <li class="filter special"  v-for="t in filter_table_item.create">{{t}}</li>
                                 </ul> 
                             </div>                                            
                         <li>
                             <div>
                                 <span class="filter_ttl">IT 관련</span> 
                                 <ul class="filter_ul">
-                                    <li class="filter"  v-for="t in filter_table_item.it">{{t}}</li>
+                                    <li class="filter special"  v-for="t in filter_table_item.it">{{t}}</li>
                                 </ul>
                             </div>                        
                         <li>
                             <div>
                                 <span class="filter_ttl">창업</span>
                                 <ul class="filter_ul">
-                                    <li class="filter"  v-for="t in filter_table_item.startup">{{t}}</li>
+                                    <li class="filter special"  v-for="t in filter_table_item.startup">{{t}}</li>
                                 </ul>
                             </div>  
                         <li >
                             <div>
                                 <span class="filter_ttl">제조/융합</span>
                                 <ul class="filter_ul">
-                                    <li class="filter"   v-for="t in filter_table_item.manufacture">{{t}}</li>
+                                    <li class="filter special"   v-for="t in filter_table_item.manufacture">{{t}}</li>
                                 </ul>  
                             </div>
                         <li>
                             <div>
                                 <span class="filter_ttl">신규산업</span>
                                 <ul class="filter_ul">
-                                    <li class="filter"  v-for="t in filter_table_item.new">{{t}}</li>
+                                    <li class="filter special"  v-for="t in filter_table_item.new">{{t}}</li>
                                 </ul>  
                             </div>
                         <li >
                             <div>
                                 <span class="filter_ttl">기타</span>
                                 <ul class="filter_ul">
-                                    <li class="filter"  v-for="t in filter_table_item.etc">{{t}}</li>
+                                    <li class="filter special"  v-for="t in filter_table_item.etc">{{t}}</li>
                                 </ul>  
                             </div>
                         </li>
                     </ul>
                 </td>
             </tr>
-        </table>
-        <div id="ch2"><input type="checkbox">기타 장르<input style="margin-left:75px;width:470px;height:40px; padding-left:20px; border: solid 1px #e7edfc;" class="input_normal" type="text"> 
-        </div>
-        </div>
-            <div class="grant_info_con"  style="height:30px;padding-top:32px;padding-bottom:32px; margin-top:16px;">
-                <div class="input_con">
-                <div class="grant_info_title" id="select_info" style="line-height:32px;; display:inline-block; float:left;">선택입력사항</div>
-                    <div id="checkbox_con"  style="display:inline-block">
-                        <div class="ch" style="float:left; padding-top:4px;"><input data-index="0" type="checkbox">우대사항</div>
-                        <div class="ch" style="float:left; padding-top:4px;"><input data-index="1" type="checkbox">제한사항</div>
-                    </div>
-                </div>
-            </div>
 
-                <div class="grant_info_con">
-                <div class="grant_info_title" style="margin-bottom:24px;"> 모집규모 </div>
+        </table>
+        <div id="ch2" class=""><input @click="toggle_ch2" type="checkbox">기타 장르<input id="ch2_input" style="margin-left:75px;width:470px;height:40px; padding-left:20px; border: solid 1px #e7edfc;" class="input_normal hidden" type="text"> 
+        </div>
+        </div>
+        <div class="grant_info_con" style="background-color:#fff; line-height:92px; margin-top:16px; width:1224px; height:92px;">
+                <div class="grant_info_title" style="margin-left:40px;line-height:92px;"> 모집규모 </div>
                 <input id="recruit_size" type="number" v-model="grant_info.recruit_size" placeholder="00" style="text-align:center; width: 95px;  height: 38px;  background-color: #ffffff;  border: solid 1px #ced4da;"> 팀 내외
                 </div>
-                <div class="grant_info_con">
-                <div class="grant_info_title"> 우대사항 </div>
-                   
+            <div class="grant_info_con"  style="background-color:#fff; margin-top:16px; width:1224px; height:92px;">
+                <div class="input_con">
+                <div class="grant_info_title" id="select_info" style="line-height:92px;margin-left:40px;; display:inline-block; float:left;">선택입력사항</div>
+                    <div id="checkbox_con"  style="display:inline-block">
+                        <div class="ch" style="float:left; line-height:92px;"><input data-index="0" type="checkbox">우대사항</div>
+                        <div class="ch" style="float:left; line-height:92px;margin-left:30px;"><input data-index="1" type="checkbox">제한사항</div>
+                    </div>
+                </div>
+            </div>                
+            <div class="grant_info_con" style="clear:both;  height:432px; padding-top:32px; background-color:#fff;">
+                <div class="grant_info_title" style="float:left; margin-left:40px"> 우대사항 </div>                   
                 <tinymce id="d1"   :other_options="options"  placeholder="ex)우대사항" v-model="grant_info.prefer" style="width: 968px;float:left">
                 </tinymce>
-                </div>
-                <div class="grant_info_con">
-                <div class="grant_info_title">제한사항</div>
+            </div>
+                <div class="grant_info_con" style="clear:both;  height:432px; padding-top:32px; background-color:#fff;">
+                <div class="grant_info_title"  style="float:left; margin-left:40px">제한사항</div>
                 <tinymce id="d2"  :other_options="options"  placeholder="ex)제한사항" v-model="grant_info.constraint" style="width: 968px;float:left">
                 </tinymce>
                    
@@ -184,6 +184,16 @@ function save(obj){
                 $(".filter.hover").each(function(){
                     tag_list.push($(this).text())
                 })
+                var base = []
+                $(".filter.base").each(function(){
+                    base.push($(this).text().trim())
+                })
+                $(".filter.special").each(function(){
+                    base.push($(this).text().trim())
+                })
+
+
+
                 var formData = new FormData();
                 var grant_info ={}
                 grant_info["id"]=obj.$route.params.id
@@ -192,6 +202,10 @@ function save(obj){
                 grant_info["apply_start"] = obj.grant_info.apply_start
                 grant_info["apply_end"] =  obj.grant_info.apply_end
                 grant_info["object"] = obj.grant_info.object
+
+                grant_info["recruit_option"] = obj.grant_info.object
+                grant_info["recruit_span"] = obj.grant_info.object
+                
                 grant_info["condition"] = obj.grant_info.condition
                 grant_info["recruit_size"]  = obj.grant_info.recruit_size
                 grant_info["prefer"]  =obj.grant_info.prefer
@@ -204,7 +218,25 @@ function save(obj){
 export default {
    
     methods:{
-       
+        
+       toggle_ch2:function(){
+           console.log("asd")
+           if($("#ch2_input").hasClass("hidden")){
+                $("#ch2_input").removeClass("hidden")
+           }
+           else{
+                $("#ch2_input").addClass("hidden")
+           }
+       } ,
+       toggle_ch1:function(){
+           console.log("asd")
+           if($("#ch1_input").hasClass("hidden")){
+                $("#ch1_input").removeClass("hidden")
+           }
+           else{
+                $("#ch1_input").addClass("hidden")
+           }
+       },
          
         go_link_0:function(){
             var result = confirm("현재 작성 내용을 저장후 이동하시겠습니까?")
@@ -341,24 +373,32 @@ export default {
     },
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
+
                 vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id,)
                     .then((res)=>{
-                     vue_obj.grant_info = res
-                      for(var k=0; k <  vue_obj.grant_info.tag.length;k++)
+                    vue_obj.grant_info = res.data
+                    console.log(vue_obj.grant_info.apply_start)
+                    console.log(vue_obj.grant_info.business_period_end)
+                    if (vue_obj.grant_info.apply_start ==null|| vue_obj.grant_info.apply_start =="" || vue_obj.grant_info.apply_start === undefined)
+                    {
+                        vue_obj.grant_info.apply_start = new Date().toISOString();                        
+                        console.log(res) 
+                    }  
+
+
+
+                     try{
+                        for(var k=0; k <  vue_obj.grant_info.tag.length;k++)
                         {
                           $(".filter:contains('"+vue_obj.grant_info.tag[k] + "')").addClass("hover");
                          }
+                     }
+                     catch(e){console.log(e)}
+                      
+
                     })
-          
-            $(document).off("click","input[type='checkbox']")
-            $(document).on("click","input[type='checkbox']",function(){
-                if( $(this).is(":checked") ){
-                    $(this).parent().parent().children("*").not(".grant_info_title").removeClass("hidden")
-                }else{
-                    $(this).parent().parent().children("*").not(".grant_info_title").addClass("hidden")
-                }
-            })
+        
+  
             $("#gca_content").css("background-color","#fdfeff")
             $(document).off("click",".filter")
             $(document).on("click",".filter",function(){
@@ -374,11 +414,9 @@ export default {
 
             $(document).off("click","#apply_save")
             $(document).on("click","#apply_save", function(){
-               
+               console.log("asdfasdf")
             })
 
-
-})
     }
 }
 </script>
@@ -406,7 +444,9 @@ export default {
     cursor:pointer
 }
 .filter.hover{
-    font-weight: bold
+
+    background-color:#c1d1f7
+
 }
 .tag_con{
     margin-top: 24px;

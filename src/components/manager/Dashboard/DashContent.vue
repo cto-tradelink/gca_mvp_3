@@ -15,12 +15,12 @@
                 </li>
                 <li>
                     <div data-panel="2">작성중인 공고 <i class="fas fa-chevron-right"></i>
-                        <div class="num">{{dashboard_list.writing_set .length}}</div>
+                        <div class="num">{{dashboard_list.writing_set.length}}</div>
                     </div>                
                 </li>
                 <li>
                     <div data-panel="3">공고중 <i class="fas fa-chevron-right"></i>
-                        <div class="num">{{dashboard_list.ing_set.length}}</div>
+                      <div class="num">{{dashboard_list.ing_set.length}}</div> 
                     </div>                
                 </li>
             </ul>
@@ -36,7 +36,7 @@
                         <td>지원자수</td>
                         <td>통계</td>                        
                     </tr>
-                    <tr style="cursor:pointer" v-for="sp in dashboard_list.due_set ">
+                    <tr style="cursor:pointer"  v-if="dashboard_list.due_set" v-for="sp in dashboard_list.due_set ">
                         <td v-on:click="go_detail(sp.id)" >{{sp.pick_date}}</td>
                         <td v-on:click="go_detail(sp.id)" ><img class="img">{{sp.title}}</td>
                         <td v-on:click="go_detail(sp.id)" >{{sp.start.split("T")[0]}}</td>
@@ -56,7 +56,7 @@
                         <td>지원자수</td>
                         <td>수정</td>                      
                     </tr>
-                  <tr style="cursor:pointer" v-for="sp in dashboard_list.blind_set ">
+                  <tr style="cursor:pointer" v-if="dashboard_list.blind_set" v-for="sp in dashboard_list.blind_set ">
                         <td v-on:click="go_write(sp.id)" >{{sp.up_data}}</td>
                         <td v-on:click="go_write(sp.id)" ><img class="img">{{sp.title}}</td>
                         <td v-on:click="go_write(sp.id)" >{{sp.start.split("T")[0]}}</td>
@@ -76,7 +76,7 @@
                         <td></td>
                                      
                     </tr>
-                    <tr  style="cursor:pointer" v-for="sp in dashboard_list.writing_set ">
+                    <tr  style="cursor:pointer" v-if="dashboard_list.writing_set" v-for="sp in dashboard_list.writing_set ">
                         <td  v-on:click="go_write(sp.id)" >{{sp.pick_date}}</td>
                         <td  v-on:click="go_write(sp.id)" ><img class="img">{{sp.title}}</td>
                         <td  v-on:click="go_write(sp.id)" ></td>
@@ -96,7 +96,7 @@
                         <td>지원자수</td>
                         <td>통계</td>                        
                     </tr>
-                <tr style="cursor:pointer" v-for="sp in dashboard_list.ing_set ">
+                <tr style="cursor:pointer" v-if="dashboard_list.ing_set" v-for="sp in dashboard_list.ing_set ">
                         <td  v-on:click="go_detail(sp.id)" >{{sp.pick_date}}</td>
                         <td  v-on:click="go_detail(sp.id)" ><img class="img">{{sp.title}}</td>
                         <td  v-on:click="go_detail(sp.id)" >{{sp.start.split("T")[0]}}</td>
@@ -114,20 +114,46 @@
 
 <script>
 export default {
+    created:function(){
+        document.removeEventListener('beforeunload', this.redirect);
+        document.addEventListener("beforeunload", this.redirect);
+
+        console.log("redirecr")
+        var vue_obj = this
+
+     console.log("initial load")   
+        this.$http.get(`/vue_get_dashboard/`)
+        .then((result) => {            
+            console.log(result)
+            this.dashboard_list = result.data     
+            console.log("ing set debug_pre")       ;
+          
+        })    
+    },
     methods:{
         go_detail:function(id){
             this.$router.push('/manager/grant/'+id)
         }, 
         go_write:function(id){
              this.$router.push('/manager/make/grant/'+id)
+        },  
+        redirect:function(){
+            
+               console.log("redirecrt")
         }
     },
     props:["dashboard_list"],
     mounted:function(){
-        $(document).ready(function(){
-                $("td>img").each(function(){
+             //document.removeEventListener('beforeunload', this.redirect);
+             //document.addEventListener("beforeunload", this.redirect);
+          
+
+             $("td>img").each(function(){
                     if( $(this).attr("src")==undefined ){$(this).remove()}
                 })
+
+
+console.log("redirecr2")
 
             $(document).on("click","ul>li", function(){
                 $("ul>li").removeClass("on")
@@ -135,12 +161,18 @@ export default {
                 $(".tbl").addClass("hidden")
                 $(".tbl[data-panel='"+$(this).find("div").attr("data-panel")+"']").removeClass("hidden")
             })
-        })
+console.log("redirecr3")   
+
+ 
+ 
+
     },
     updated:function(){
          $("td>img").each(function(){
                     if( $(this).attr("src")==undefined ){$(this).remove()}
                 })
+
+                console.log("redirecr4")
     }
 }
 </script>

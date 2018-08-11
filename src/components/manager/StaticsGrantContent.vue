@@ -404,7 +404,7 @@ export default {
         .attr("class", "focus")
         .attr("fill","none")
         .attr("stroke-width","1px")
-        .attr("stroke","#000")
+        .attr("stroke","#00ff00")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     var brush
     var zoom
@@ -1320,6 +1320,48 @@ $(document).off("click","#top_banner>div:eq(1)")
     x2.domain(x_data.domain());
     y2.domain(y.domain());
 
+
+    var OBJ={ A:1, B:1, C:2 , D:4}
+    var KEYS= Object.keys(OBJ);
+    var OUTPUT=[];
+    for(var i=0; i< KEYS.length; i++) {
+        if( OBJ[ KEYS[i] ] == 1 ) {
+            OUTPUT.push( KEYS[i] );
+        }
+    }
+    console.log("OUTPUT")
+    console.log(OUTPUT);
+
+/*
+.line1{
+        stroke: steelblue;
+    }
+    .line2{
+        stroke: red;
+    }
+    .line3{
+        stroke: black;
+    }
+    .line4{
+        stroke: green;
+    }
+    .line5{
+        stroke: yellow;
+    }
+    .line6{
+        stroke: brown;
+    }
+    .line7{
+        stroke: rosybrown;
+    }
+    .line8{
+        stroke: orangered;
+    }
+    .line9{
+        stroke: purple;
+    }
+
+*/
     focus.append("g")
         .attr("class", "axis axis--x")
         .attr("transform", "translate(0," + height + ")")
@@ -1329,44 +1371,44 @@ $(document).off("click","#top_banner>div:eq(1)")
         .call(yAxis)
     Line_chart.append("path")
         .datum(data)
-        .attr("class", "line1")
+        .attr("stroke", "steelblue")
         .attr("d", line1);
     Line_chart.append("path")
         .datum(data2)
-        .attr("class", "line2")
+        .attr("stroke", "red")
         .attr("d", line2);
     Line_chart.append("path")
         .datum(data3)
-        .attr("class", "line3")
+        .attr("stroke", "black")
         .attr("d", line3);
     Line_chart.append("path")
         .datum(data4)
-        .attr("class", "line4")
+        .attr("stroke", "green")
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line4);
     Line_chart.append("path")
         .datum(data5)
-        .attr("class", "line5")
+        .attr("stroke", "yellow")
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line5);
     Line_chart.append("path")
         .datum(data6)
-        .attr("class", "line6")
+        .attr("stroke", "brown")
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line6);
     Line_chart.append("path")
         .datum(data7)
-        .attr("class", "line7")
+        .attr("stroke", "rosybrown")
         .style("stroke-dasharray", ("3,1,1,1,3"))
         .attr("d", line7);
     Line_chart.append("path")
         .datum(data8)
-        .attr("class", "line8")
+        .attr("stroke", "orangered")
         .style("stroke-dasharray", ("3,1,1,1,3"))
         .attr("d", line8);
     Line_chart.append("path")
         .datum(data9)
-        .attr("class", "line9")
+        .attr("stroke", "purple")
         .style("stroke-dasharray", ("3,1,1,1,3"))
         .attr("d", line9);
 

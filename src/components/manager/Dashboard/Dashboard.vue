@@ -16,6 +16,16 @@ export default {
     components:{
         Header, LeftNavi,DashContent
     },
+    created:function(){
+        
+        this.$http.get(`/vue_get_dashboard/`)
+        .then((result) => {            
+            console.log(result)
+            this.dashboard_list = result.data     
+            console.log("ing set debug_pre")       ;
+          
+        })    
+    },
     data:function(){
         return{
             dashboard_list:"",
@@ -23,11 +33,13 @@ export default {
     }
     ,
     mounted:function(){
-        this.$http.get(`/vue_get_dashboard/`)
-        .then((result) => {            
-            console.log(result)
-            this.dashboard_list = result.data               
-        })    
+        // this.$http.get(`/vue_get_dashboard/`)
+        // .then((result) => {            
+        //     console.log(result)
+        //     this.dashboard_list = result.data     
+        //     console.log("ing set debug")       ;
+        //     console.log(result.data.ing_set.length)   ;
+        // })    
     }
 }
 </script>

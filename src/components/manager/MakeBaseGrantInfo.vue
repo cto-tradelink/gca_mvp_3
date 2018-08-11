@@ -63,11 +63,11 @@
                     <div class="input_con">
                     <div class="grant_info_title" id="select_info" style="line-height:32px;; display:inline-block; float:left;">선택입력사항</div>
                         <div id="checkbox_con"  style="display:inline-block">
-                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="0" type="checkbox">포스터</div>
-                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="1" type="checkbox">지원사업명(하위)</div>
-                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="2" type="checkbox">진행기간</div>
-                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="3" type="checkbox">사업목적</div>
-                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="4" type="checkbox">사업내용</div>                     
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_0" type="checkbox">포스터</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_1" type="checkbox">지원사업명(하위)</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_2" type="checkbox">진행기간</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_3" type="checkbox">사업목적</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_4" type="checkbox">사업내용</div>                     
                         </div>
                     </div>
                 </div>
@@ -167,7 +167,14 @@ export default {
             }
         },
         apply_save:function(){
-              
+                      var meta_val= []
+                
+                $("input:checked").each(function(){
+                    console.log($(this).attr("data-index"))
+                    meta_val.push($(this).attr("data-index"))
+                })
+
+
                 var formData = new FormData();
                 var file = document.querySelector('#input_file');
                 formData.append("file", file.files[0]);
@@ -180,8 +187,14 @@ export default {
                 grant_info["poster"] = $("#input_file").val().replace(/^.*[\\\/]/, '') 
                 grant_info["sub_title"] = $("#sub_title_input").val()
                 console.log(this.grant_info.business_period_start)
-                grant_info["start"] = this.grant_info.business_period_start
-                grant_info["end"] = this.grant_info.business_period_end
+                  grant_info["meta_1"] = meta_val
+                console.log(this.grant_info.business_period_start)
+                try{
+                grant_info["start"] = this.grant_info.business_period_start.split("T")[0]
+                }catch(e){}
+                try{
+                grant_info["end"] = this.grant_info.business_period_end.split("T")[0]
+                }catch(e){}
                 grant_info["location"] = $("#location").val()
                 grant_info["subject"] = $("#subject").text()
                 grant_info["business_detail"] = $("#business_detail").text()
@@ -194,8 +207,15 @@ export default {
                     this.id = result.data.result;
                 })   
         },
-        apply_next:function(){
-           
+        apply_next:function(){       
+                var meta_val= []
+                
+                $("input:checked").each(function(){
+                    console.log($(this).attr("data-index"))
+                    meta_val.push($(this).attr("data-index"))
+                })
+
+            
                 var formData = new FormData();
                 var file = document.querySelector('#input_file');
                 formData.append("file", file.files[0]);
@@ -208,9 +228,15 @@ export default {
                 grant_info["short_desc"] = $("#short_desc_input").val()
                 grant_info["poster"] = $("#input_file").val().replace(/^.*[\\\/]/, '') 
                 grant_info["sub_title"] = $("#sub_title_input").val()
+                grant_info["meta_1"] = meta_val
                 console.log(this.grant_info.business_period_start)
+                try{
                 grant_info["start"] = this.grant_info.business_period_start.split("T")[0]
+                }catch(e){}
+                try{
                 grant_info["end"] = this.grant_info.business_period_end.split("T")[0]
+                }catch(e){}
+
                 grant_info["location"] = $("#location").val()
                 grant_info["subject"] = this.grant_info.subject
                 grant_info["business_detail"] =  this.grant_info.business_detail
@@ -245,33 +271,46 @@ export default {
     },
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
 
-              $(document).on("click","#apply_next",function(){
+
+            $(document).on("click","#apply_next",function(){
                   vue_obj.apply_next();
-              })
+            })
             $(document).off("click","input[type='checkbox']")
             $(document).on("click","input[type='checkbox']",function(){
                 if( $(this).is(":checked") ){
-                   $(".opt").eq($(this).attr("data-index")).removeClass("hidden")
+                    $(".opt").eq($(this).attr("data-index").replace("opt_","")).removeClass("hidden")
                 }else{
-                  $(".opt").eq($(this).attr("data-index")).addClass("hidden")
+                    $(".opt").eq($(this).attr("data-index").replace("opt_","")).addClass("hidden")
                 }
             })
             $("#gca_content").css("background-color","#fdfeff")
          
-
+    
             if (vue_obj.$route.params.id != "new"){
+                console.log("this")
                 //아이디가 있다면 어디까지 썻는지에 대한 데이터가 있을것..  
               vue_obj.$http.get("/vue_get_grant_information?id="+vue_obj.$route.params.id,)
               .then((res)=>{
+                  console.log("here")
                   vue_obj.grant_info = res.data
+                  console.log(vue_obj.business_period_start)
+                  if (vue_obj.business_period_start ==null|| vue_obj.business_period_start =="" || vue_obj.business_period_start == undefined)
+                  {
+                    vue_obj.business_period_start = new Date()
+                   console.log(res) 
+                  }  
+
+                  console.log(vue_obj.grant_info.meta_0)
+                  $("input[type=checkbox]").each(function(){
+                      console.log($(this).attr("data-index"))
+                      if( vue_obj.grant_info.meta_0.indexOf($(this).attr("data-index")) != -1){
+                          $(this).click();
+                      }
+                  })
               })
              
-            }
-            
-
-        })
+            }     
     }
 }
 </script>
@@ -340,7 +379,7 @@ margin:10px
   font-size: 14px;
   line-height: 1.86;
   letter-spacing: -0.1px;
-  color: rgba(26, 42, 83, 0.5);
+//   color: rgba(26, 42, 83, 0.5);
   padding-left: 20px;
    
 }

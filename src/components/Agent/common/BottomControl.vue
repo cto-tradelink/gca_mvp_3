@@ -12,13 +12,7 @@
 <script>
 export default {
     methods:{
-        apply_save:function(){
-            alert("임시저장되었습니다")
-        },
-        submit:function(){
-            alert("승인요청하시겠습니까?")
-        }
-    }
+         }
 }
 </script>
 

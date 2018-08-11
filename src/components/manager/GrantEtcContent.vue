@@ -49,24 +49,39 @@
 
 
             <div id="grant_info_con">
-                <div id="page_title">기타</div>              
+                <div id="page_title">기타</div>           
+
+                
+                <div class="grant_info_con"  style="height:30px;padding-top:32px;padding-bottom:32px; margin-top:16px;">
+                    <div class="input_con">
+                    <div class="grant_info_title" id="select_info" style="line-height:32px;; display:inline-block; float:left;">선택입력사항</div>
+                        <div id="checkbox_con"  style="display:inline-block">
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_0" type="checkbox">행사일정</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_1" type="checkbox">FAQ</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_2" type="checkbox">추가문의처</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_3" type="checkbox">기타 안내사항</div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox" checked>행사일정 </div>
+                    <div class="grant_info_title">행사일정 </div>
                     <textarea type="text" id="ceremony" v-model="grant_info.ceremony"  class="input_normal" placeholder="행사일정을 입력하세요"></textarea>
                 </div>
    
                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox" checked>FAQ </div>
+                    <div class="grant_info_title">FAQ </div>
                     <textarea type="text" id="faq" class="input_normal"  v-model="grant_info.faq" placeholder="FAQ 를 입력하세요"></textarea>
                 </div>
                    
                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox" checked>추가문의처 </div>
+                    <div class="grant_info_title">추가문의처 </div>
                     <textarea type="text" id="additional_faq" v-model="grant_info.additional_faq"  class="input_normal" placeholder="추가문의처를 입력하세요"></textarea>
                 </div>
                    
                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox" checked>기타 안내사항 </div>
+                    <div class="grant_info_title">기타 안내사항 </div>
                     <textarea type="text" id="etc"  class="input_normal"  v-model="grant_info.etc" placeholder="기타 안내사항을 입력하세요"></textarea>
                 </div>
          
@@ -208,7 +223,18 @@ export default {
   font-size: 16px;
   color: #a0a3bc;
 }
+.grant_info_con{
+    width: 1144px;
+    padding-left: 40px;
+    margin-left:52px;
+    margin-top:8px;
+    background-color:#fff;
+}
 
+  #make_application_page{
+        overflow-x: hidden;
+        background-color: #f4f7fa;
+    }
 
 .fa-calendar{
     font-size: 20px;
@@ -264,8 +290,8 @@ export default {
     margin-top:48px;
 }
 .grant_info_title{
-    width:100%;
-    border-bottom:1px solid #ced4da;
+    width:196px;;
+    float: left;
     font-size: 16px;
     color: #243d68;
     height: 44px;

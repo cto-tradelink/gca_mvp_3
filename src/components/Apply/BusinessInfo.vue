@@ -38,15 +38,11 @@
             
         </table>
             <div style="width:968px; height:1px; border-bottom:1px solid #e7edfc"></div>
-            <div @:click="add_genre"  id="add_genre">추가하기</div>
+            <div v-on:click="add_genre"  id="add_genre">추가하기</div>
 
             </div>
             <div id="wr_con_3">
-                <table>
-                    <tr>
-                        <td style="     vertical-align: initial;   padding-top: 10px; opacity:0.8; font-size:17px; color:#1a2f53">사업(서비스) 카테고리</td>
-                        <td><input type="text" v-model="startup.service_category" class="input_normal" placeholder="입력하세요" style="margin-bottom:16px;"></td>
-                    </tr>
+                <table>                  
                     <tr>
                         <td style=" vertical-align: initial;   padding-top: 10px;opacity:0.8; font-size:17px; color:#1a2f53">사업(서비스) 명</td>
                         <td><input type="text" v-model="startup.service_name"  class="input_normal" style="margin-bottom:16px;"></td>
@@ -94,6 +90,8 @@
                         <li><span class="filter_ttl">기타</span> <span class="filter filter_do" @click="filter_do($event)"  v-for="t in filter_table_item.etc">{{t}}</span></li>
                     </ul>
                 </td>
+
+                <div></div>
             </tr>
         </table>
         </div>
@@ -129,14 +127,21 @@ export default {
         }
     },
     methods:{
+
+
         make_hash_string:function(e){
             this.utils.make_hash_string(e)
         },
+
+
         close:function(){
             $("#filter_popup").addClass("hidden")
             $("#back_layer").addClass("hidden")
         },
+
+
         add_genre:function(){
+            console.log("sdfasd")
             $("#filter_popup").removeClass("hidden")
             $("#back_layer").removeClass("hidden")
             $("#back_layer").css("position","fixed")                
@@ -241,6 +246,7 @@ export default {
         },
     },
     mounted:function(){
+     
         var vue_obj = this
         vue_obj.$http.get(`/vue_get_application/?id=`+localStorage.getItem("id")+`&gr=`+vue_obj.$route.params.id)
         .then((result) => {            

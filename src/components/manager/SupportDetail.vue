@@ -51,7 +51,7 @@
                                 </ul>
                             </td>
                             <td>투자연계</td>
-                            <td><ul>
+                            <td><ulㅁ
                                 <li>엑셀러레이팅 프로그램</li>
                                 <li>데모데이 프로그램(투자연계)</li>
                                 </ul>
@@ -90,7 +90,7 @@
                             <td>
                                 <ul>
                                 <li>스타트업 오피스 지원</li>
-                                <li>가상오피스</li>
+                                <li>가상오피스 지원</li>
                                 </ul>
                             </td>
                         </tr>
@@ -209,7 +209,7 @@ export default {
       this.$router.push("/manager/make/grant/"+this.$route.params.id+"/complete", sesions)
         },
         apply_save:function(){
-            meta_val=[]
+                var meta_val=[]
                 var formData = new FormData();
                 var grant_info ={}
                 grant_info["id"]=this.$route.params.id
@@ -227,7 +227,7 @@ export default {
                 })       
         },
         apply_next:function(){
-             meta_val=[]
+                var meta_val=[]
                 var formData = new FormData();
                 var grant_info ={}
                 grant_info["id"]=this.$route.params.id
@@ -257,7 +257,12 @@ export default {
     },
     mounted:function(){
         var vue_obj = this
-        $(document).ready(function(){
+      
+
+            $(document).on("click","#apply_next",function(){
+                  vue_obj.apply_next();
+            })
+
 
             $(document).off("click","td>ul>li")
             $(document).on("click","td>ul>li",function(){
@@ -286,7 +291,6 @@ export default {
             $("#gca_content").css("background-color","#fdfeff");
                 var meta_val = []
 
-        })
     }
 }
 </script>
@@ -302,7 +306,8 @@ td>ul>li{
     cursor: pointer;
 }
 .hover{
-    font-weight:bold;
+    /* //font-weight:bold; */
+    background-color:#c1d1f7
 }
 #tbl1{
     border-collapse: collapse;

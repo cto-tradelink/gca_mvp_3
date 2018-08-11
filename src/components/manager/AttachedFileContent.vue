@@ -45,18 +45,20 @@
             </ul>
             </div>
             <div id="grant_info_con">
-                <div id="page_title">제출서류</div>              
-                 <div class="grant_info_con">
-                    <div class="grant_info_title">제출서류 </div>
-                     <span class="file" @click="file($event)" meta-data ="file_0">사업계획서</span>
-                     <span class="file" @click="file($event)"  meta-data ="file_1">사업자등록증</span>
-                     <span class="file" @click="file($event)"  meta-data ="file_2">지방세/국세납입증</span>
-                     <span class="file" @click="file($event)"  meta-data ="file_3">투자 유치 증빙서류</span>
-                     <span class="file" @click="file($event)"  meta-data ="file_4">발표심사 PPT</span>
+                 
+                 <div class="grant_info_con" style="height:130px;padding-top:20px;">
+            
+                     <span class="file"  meta-data ="file_0"><input type="checkbox">사업계획서</span>
+                     <span class="file"  meta-data ="file_1"><input type="checkbox">사업자등록증</span>
+                     <span class="file"  meta-data ="file_2"><input type="checkbox">지방세/국세납입증</span>
+                     <span class="file"  meta-data ="file_3"><input type="checkbox">투자 유치 증빙서류</span>
+                     <span class="file"  meta-data ="file_4"><input type="checkbox">발표 PPT</span>
+                     <span class="file"  meta-data ="file_4"><input type="checkbox">지적재산권</span>
+                     
                      <span id="etc" meta-data ="file_5" style="margin-right:0px;">
                          <input id="etc_file" @click="etc_file($event)" type="checkbox" >
-                         <span id="etc_text">기타</span>
-                         <input type="file" id="file" class="hidden" style="width:164px;">
+                         <span id="etc_text" style="color:#1a2a53">기타</span>
+           
                          </span>
                 </div>
             </div>
@@ -203,7 +205,13 @@ export default {
 </script>
 
 <style scoped>
+
+  #make_application_page{
+        overflow-x: hidden;
+        background-color: #f4f7fa;
+    }
 .file{
+    color:#1a2a53!important;
     cursor: pointer;
 }
 
@@ -216,10 +224,11 @@ export default {
     margin-top: 24px;
     margin-right: 115px;
     display: inline-block;
+  
 }
 #etc{
   font-size: 16px;
-  color: #a0a3bc;
+  color: #1a2a53!important;
 }
 
 
@@ -272,9 +281,12 @@ export default {
    
 }
 .grant_info_con{
-    width: 1224px;  
+    width: 1144px;  
     margin-left:52px;
     margin-top:48px;
+    background-color:#fff ;
+    padding-left:40px;
+    padding-right:40px;
 }
 .grant_info_title{
     width:100%;
@@ -301,7 +313,7 @@ export default {
     margin-left: 52px;
     margin-top: 44px;
     font-size: 20px;
-    font-weight: 900;
+  
     color: #1a2f53;
 }
 

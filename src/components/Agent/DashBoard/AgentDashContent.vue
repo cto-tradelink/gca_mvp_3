@@ -1,4 +1,5 @@
 <template>
+
     <div id="dash_content">
         <div id="page_ttl">알림</div>
         <div id="dashboard_navi">
@@ -32,7 +33,7 @@
                     </tr>
                     <tr v-for="sp in dashboard_list.due_set ">
                         <td>{{sp.confirm_date}}</td>
-                        <td><router-link :to="'/agent/'+sp.id"><img class="img">{{sp.title}}</router-link></td>
+                        <td><router-link :to="'/agent/'+sp.id"><img ref="img" class="img">{{sp.title}}</router-link></td>
                         <td>{{sp.start.split("T")[0]}}</td>
                         <td>{{sp.end.split("T")[0]}}</td>                                
                     </tr>
@@ -88,6 +89,17 @@
 export default {
     props:["dashboard_list"],
     updated:function(){
+        console.log("updated")
+        console.log(this.$refs.img)
+ 
+        //function xxx(){                 
+        //       console.log("hi ")
+        //}
+        //for(var k=0; k < this.$refs.img.length;k++){
+        //    console.log(" k "+k)
+        //    window.setTimeout(xxx,k*1000)
+        //}
+
          $(".img").each(function(){
                 if($(this).attr("src") == undefined){
                     $(this).remove()
@@ -100,12 +112,18 @@ export default {
     },
     mounted:function(){
         $(document).ready(function(){
+
+
             $("td>img").each(function(){
                 console.log($(this).attr("src"))
                 if($(this).attr("src") == undefined){
                     $(this).remove()
                 }
             })
+
+
+
+
             $(document).on("click","ul>li", function(){
                 $("ul>li").removeClass("on")
                 $(this).addClass("on")

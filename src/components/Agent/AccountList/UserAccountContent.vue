@@ -296,6 +296,7 @@ export default {
                 $(document).on("click", "#list_excel", function(){                    
                     var id;
                     var target 
+                    console.log("excel export")
                     $(".tbl").each(function(){
                         if( !$(this).parent().hasClass("hidden") ){
                             id = $(this).attr("id")
@@ -303,8 +304,8 @@ export default {
                             target = this
                         }
                     })                                                 
-                    var ee = excelExport(id).parseToCSV().parseToXLS("excelexport sheet");
-                    location.href = ee.getXLSDataURI();
+                    var ee = excelExport(id).parseToCSV().parseToXLS("excelexport REPORT").downloadXLS(vue_obj.baseURI+"/downloadit/","gstat.xls");
+                    //location.href = ee.getXLSDataURI();
                     $(target).find("tr").each(
                         function(){
                             $(this).find("td:eq(0)").append('<input type="checkbox">')

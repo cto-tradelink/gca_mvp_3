@@ -204,7 +204,11 @@ export default {
             $(document).on("click","#under", function(){
                 $(".cate").removeClass("acc_on")
                 $(this).addClass("acc_on")
+                
                 $(".tbl_con").addClass("hidden")
+
+
+
                 $(".tbl_con:eq(0)").removeClass("hidden")
                 
             })

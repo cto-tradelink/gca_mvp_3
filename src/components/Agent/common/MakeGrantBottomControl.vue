@@ -11,15 +11,7 @@
 </template>
 
 <script>
-fptjexport default {
-    methods:{
-        apply_save:function(){
-            alert("임시저장되었습니다")
-        },
-        submit:function(){
-            alert("다음단계로 넘어가시겠습니까?")
-        }
-    }
+export default {
 }
 </script>
 

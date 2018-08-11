@@ -43,49 +43,139 @@
             </ul>
             </div>
 
-
-
+            
 
             <div id="grant_info_con">
                 <div id="page_title">선정개요</div>
               
-                <div class="grant_info_con">
-                    <div class="grant_info_title">선정방법<span>선정 방식, 선정 규모 기재</span></div>
-                    <tinymce id="d1" v-model="data" style="margin-top:">
+                <div class="grant_info_con"  style="clear:both;  height:432px; padding-top:32px; background-color:#fff;">
+                    <div class="grant_info_title" style="float:left; margin-left:40px">선정방법</div>
+                    <tinymce id="d1" v-model="grant_info.prefer" :other_options="options"  style="width: 968px;float:left">
                        선정 방식, 선정 규모 기재
                     </tinymce>
-                </div>
+                   </div>
               
-                 <div class="grant_info_con">
-                    <div class="grant_info_title" style="margin-bottom:24px;"> 심사일정</div>
-                     <input type="radio" name="filt"> <i class="fas fa-calendar"></i> <datetime v-model="grant_info.pro_0_start"></datetime>  에서  <i class="fas fa-calendar"></i><datetime v-model="grant_info.pro_0_end"></datetime>  까지
-                    <br><input type="radio" name="filt"> 미정  </div>
+                 <div class="grant_info_con" style="height:104px;line-height:104px;">
+                    <div class="grant_info_title" style="margin-bottom:24px; float:left;line-height:104px;"> 심사일정</div>
+                    <div style="float:left">
+                    <datetime style="line-height:initial" v-model="grant_info.pro_0_start"></datetime>  에서 
+                    <datetime style="line-height:initial" v-model="grant_info.pro_0_end"></datetime>  까지
+                    </div>
+              
+                    <br> 
+                    </div>
              
                 
-                 <div class="grant_info_con">
-                    <div class="grant_info_title" style="margin-bottom:24px;"> 발표일정</div>
-                    <input type="radio" name="open"><i class="fas fa-calendar"></i> <datetime v-model="grant_info.pro_0_open"></datetime>  <br> 
-                     <input type="radio" name="open"> 미정
-                </div>
-                 <div class="grant_info_con">
-                    <div class="grant_info_title" style=""> 발표방법</div>
-                    <input class="input_normal" v-model="grant_info.open_method" placeholder="발표방법을 입력하세요." type="text">
-                </div>
-               <div class="grant_info_con">
-                    <div class="grant_info_title">심사기준<span>심사 채점 지표</span></div>
-                    <tinymce id="d2" v-model="grant_info.pro_0_criterion" style="margin-top:">
+                                    <div class="grant_info_con" style="height:104px;line-height:104px;">
+                    <div class="grant_info_title" style="margin-bottom:24px; float:left;line-height:104px;"> 발표일정</div>
+                   <div style="float:left" >
+                    <datetime style="line-height:initial" v-model="grant_info.pro_1_open"></datetime>  <br> 
+                   </div>
+                </div>              
+
+               <div class="grant_info_con" style="clear:both;  height:432px; padding-top:32px; background-color:#fff;">
+                    <div class="grant_info_title"  style="float:left; margin-left:40px;" >심사기준</div>
+                    <tinymce id="d2"  :other_options="options"   v-model="grant_info.pro_0_criterion" style="width: 968px;float:left;">
                        ex. 역량(20), 기획력(30), 시장전망(20)
                     </tinymce>
+
+                </div>
+                
+                <div class="grant_info_con"  style="height:30px;padding-top:32px;padding-bottom:32px; margin-top:16px;">
+                    <div class="input_con">
+                    <div class="grant_info_title" id="select_info" style="line-height:32px;; display:inline-block; float:left;">선택입력사항</div>
+                        <div id="checkbox_con"  style="display:inline-block">
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_0" type="checkbox">2차 심사</div>
+                            <div class="ch" style="float:left; padding-top:4px;"><input data-index="opt_1" type="checkbox">3차 심사</div>
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="opt_0 hidden">
+                    
+                <div id="page_title">2차 심사</div>
+                <div class="grant_info_con"  style="clear:both;  height:432px; padding-top:32px; background-color:#fff;">
+                    <div class="grant_info_title" style="float:left; margin-left:40px">선정방법</div>
+                    <tinymce id="second_decision" v-model="grant_info.pro_1_choose" :other_options="options"  style="width: 968px;float:left">
+                       선정 방식, 선정 규모 기재
+                    </tinymce>
+                   </div>
+               <div class="grant_info_con" style="height:104px;line-height:104px;">
+                    <div class="grant_info_title" style="margin-bottom:24px; float:left;line-height:104px;"> 심사일정</div>
+                    <div style="float:left">
+                    <datetime style="line-height:initial" v-model="grant_info.pro_1_start"></datetime>  에서 
+                    <datetime style="line-height:initial" v-model="grant_info.pro_1_end"></datetime>  까지
+                    </div>
+              
+                    <br> 
+                    </div>
+                
+                                    <div class="grant_info_con" style="height:104px;line-height:104px;">
+                    <div class="grant_info_title" style="margin-bottom:24px; float:left;line-height:104px;"> 발표일정</div>
+                   <div style="float:left" >
+                    <datetime style="line-height:initial" v-model="grant_info.pro_1_open"></datetime>  <br> 
+                   </div>
                 </div>
               
-                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox"  checked> 2차 심사 </div>
-                    <textarea type="text" id="pro_1" v-model="grant_info.pro_1_choose" class="input_normal" placeholder="2차 심사 내용을 입력하세요."></textarea>
+
+               <div class="grant_info_con" style="clear:both;  height:432px; padding-top:32px; background-color:#fff;">
+                    <div class="grant_info_title"  style="float:left; margin-left:40px;" >심사기준</div>
+                    <tinymce id="second_test"  :other_options="options"   v-model="grant_info.pro_0_criterion" style="width: 968px;float:left;">
+                       ex. 역량(20), 기획력(30), 시장전망(20)
+                    </tinymce>
+
                 </div>
-                 <div class="grant_info_con">
-                    <div class="grant_info_title"><input type="checkbox"  checked> 3차 심사 </div>
-                    <textarea type="text" id="pro_2" class="input_normal" v-model="grant_info.pro_2_choose" placeholder="3차 심사 내용을 입력하세요."></textarea>
                 </div>
+
+
+ <div class="opt_1 hidden">
+                    
+                <div id="page_title">3차 심사</div>
+                <div class="grant_info_con"  style="clear:both;  height:432px; padding-top:32px; background-color:#fff;">
+                    <div class="grant_info_title" style="float:left; margin-left:40px">선정방법</div>
+                    <tinymce id="third_decision" v-model="grant_info.pro_2_choose" :other_options="options"  style="width: 968px;float:left">
+                       선정 방식, 선정 규모 기재
+                    </tinymce>
+                   </div>
+              
+                <div class="grant_info_con" style="height:104px;line-height:104px;">
+                    <div class="grant_info_title" style="margin-bottom:24px; float:left;line-height:104px;"> 심사일정</div>
+                    <div style="float:left">
+                    <datetime style="line-height:initial" v-model="grant_info.pro_2_start"></datetime>  에서 
+                    <datetime style="line-height:initial" v-model="grant_info.pro_2_end"></datetime>  까지
+                    </div>              
+                    <br> 
+                    </div>
+             
+                
+                  <div class="grant_info_con" style="height:104px;line-height:104px;">
+                    <div class="grant_info_title" style="margin-bottom:24px; float:left;line-height:104px;"> 발표일정</div>
+                   <div style="float:left" >
+                    <datetime style="line-height:initial" v-model="grant_info.pro_2_open"></datetime>  <br> 
+                   </div>
+                </div>
+              
+
+               <div class="grant_info_con" style="clear:both;  height:432px; padding-top:32px; background-color:#fff;">
+                    <div class="grant_info_title"  style="float:left; margin-left:40px;" >심사기준</div>
+                    <tinymce id="third_test"  :other_options="options"   v-model="grant_info.pro_2_criterion" style="width: 968px;float:left;">
+                       ex. 역량(20), 기획력(30), 시장전망(20)
+                    </tinymce>
+
+                </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
          
             </div>
     </div>
@@ -115,7 +205,9 @@
 export default {
    
    methods:{
-         
+        toggle_input_third_con:function(){
+
+        },
         go_link_0:function(){
             var result = confirm("현재 작성 내용을 저장후 이동하시겠습니까?")
             if (result == true){
@@ -217,6 +309,9 @@ export default {
                 apply_start:"",
                 apply_end : "",
             },
+    options:{
+                height:308,
+            },
         }
     },
          beforeRouteLeave (to, from, next) {
@@ -234,11 +329,13 @@ export default {
            })                                   
             $(document).off("click","input[type='checkbox']")
             $(document).on("click","input[type='checkbox']",function(){
-                if( $(this).is(":checked") ){
-                    $(this).parent().parent().children("*").not(".grant_info_title").removeClass("hidden")
-                }else{
-                    $(this).parent().parent().children("*").not(".grant_info_title").addClass("hidden")
+                if( $(this).is(":checked")){
+                    $("."+$(this).attr("data-index")).removeClass("hidden")
                 }
+                else{
+                    $("."+$(this).attr("data-index")).addClass("hidden")
+                }
+              
             })
 
             $("#gca_content").css("background-color","#fdfeff")
@@ -251,6 +348,7 @@ export default {
 .vdatetime{
     display: inline-block;
 }
+  
 .vdatetime-input{
         width: 258px;
     height: 38px;
@@ -315,10 +413,12 @@ export default {
     width: 1224px;  
     margin-left:52px;
     margin-top:48px;
+    background-color:#fff;
 }
 .grant_info_title{
-    width:100%;
-    border-bottom:1px solid #ced4da;
+    margin-left:40px;
+    width:162px;
+
     font-size: 16px;
     color: #243d68;
     height: 44px;
@@ -337,11 +437,11 @@ export default {
 
 
 }
-#page_title{
+#page_title,.page_title{
     margin-left: 52px;
     margin-top: 44px;
-    font-size: 20px;
-    font-weight: 900;
+    font-size: 24px;
+    
     color: #1a2f53;
 }
 
@@ -383,4 +483,10 @@ export default {
     margin-right: 24px;
     line-height: 48px;
 }
+
+  #make_application_page{
+        overflow-x: hidden;
+        background-color : #f4f7fa;;
+    }
+    
 </style>

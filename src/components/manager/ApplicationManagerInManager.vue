@@ -10,8 +10,8 @@
                 <div  v-if="pro=='open'" class="sub_comp"><i class="fas fa-fire"></i>{{s.comp}}</div>
                 <div  v-if="pro=='open'" class="sub_d_day"><i class="far fa-clock"></i>{{ s.start.replace("T"," "),  s.end.replace("T"," ")| d_day_calc_short }}</div>
             
-                <div v-if="pro=='open'" class="sub_agency">게시일 : <span v-if="s.open_date">{{s.open_date.split("T")[0]}}</span> </div>                
-                <div v-if="pro=='wait'" class="sub_agency">최종수정일 : <span v-if="s.updated">{{s.updated.split("T")[0]}}</span> </div>                
+                <!-- <div v-if="pro=='open'" class="sub_agency">게시일 : <span v-if="s.open_date">{{s.open_date.split("T")[0]}}</span> </div>                
+                <div v-if="pro=='wait'" class="sub_agency">최종수정일 : <span v-if="s.updated">{{s.updated.split("T")[0]}}</span> </div>                 -->
                 <div v-if="pro=='submitted'" class="sub_agency">승인 요청일 : <span v-if="s.updated">{{s.updated.split("T")[0]}}</span> </div>                
             
             </div>
@@ -39,7 +39,9 @@ export default {
                     if(vue_obj.$route.fullPath.indexOf("agent")!=-1)
                     vue_obj.$router.go("/agent/grant/"+vue_obj.$props.s.id)
                     else{
-                          location.href = ("/manager/grant/"+vue_obj.$props.s.id)
+                    vue_obj.$router.go("/agent/grant/"+vue_obj.$props.s.id)
+                       
+                         // location.href = ("/manager/grant/"+vue_obj.$props.s.id)
                     }
                 }else{
                      if(vue_obj.$route.fullPath.indexOf("agent")==-1){

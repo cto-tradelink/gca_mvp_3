@@ -8,7 +8,7 @@
                 <div  v-if="s.status !='승인대기'"  class="sub_int"><i class="fas fa-heart"></i>50</div>
                 <div class="sub_comp"><i class="fas fa-fire"></i>{{s.comp}}</div>
                 <div class="sub_d_day"><i class="far fa-clock"></i> {{s.start.split("T")[0] , s.end.split("T")[0] | d_day_calc_short}}  </div>
-                <div class="sub_agency">{{s.author}} </div>   
+                <div class="sub_agency author" style="position:absolute; top:-20px;right:2px;"><img src="/static/img/manager.png" style="margin-right:2px;;">{{s.author}} </div>   
                 <div v-if="pro=='open'" class="sub_agency">게시일 : {{s.open_date.split("T")[0]}} </div>                
                 <div v-if="pro=='wait'" class="sub_agency">승인 요청일 : {{s.updated.split("T")[0]}} </div>                
             
@@ -47,6 +47,9 @@ export default {
 </script>
 
 <style scoped>
+.author{
+    position: relative;
+}
 .app_btn{
     width: 124px;
     height: 38px;

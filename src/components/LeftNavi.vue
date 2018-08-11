@@ -33,9 +33,11 @@ export default {
 			canvas.width = pageWidth      
             var ele = document.querySelector('#grant_pdf_con')
 			let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
-			let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
+            let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
+            ;
 			let imgHeight = pageWidth * height/width // 이미지 높이값 px to mm 변환
             //let imgHeight =  pageHeight * width/height
+            imgHeight= 1294
             
             if(!ele){
 				console.warn(selector + ' is not exist.')
@@ -55,6 +57,7 @@ export default {
                     pdf.addImage(imgData, 'png', 0, position, pageWidth, imgHeight)
                     heightLeft -= pageHeight
                 }
+                pdf.addPage();
                 pdf.save($("#grant_title").text() +'.pdf')
                 $("#static_pdf_down").removeClass("hidden")
                 $("#grant_detail_card").css("width","1016px")

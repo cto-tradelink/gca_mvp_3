@@ -12,6 +12,12 @@
 export default {
     methods:{
       
+    },
+    mounted:function(){
+        $(document).off("click","#apply_next")
+        $(document).off("click","#apply_prev")
+        $(document).off("click","#apply_cancel")
+        
     }
 }
 </script>

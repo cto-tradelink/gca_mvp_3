@@ -69,6 +69,8 @@ export class HeartAdd{
     }
     action_heart(event,target,id,obj){
         console.log("test!!!")
+        console.log("dom")
+        console.log(event)
         if(this.check_user()){
             //유저가 참이라면
             this.toggle_heart(event,target,id,obj);
