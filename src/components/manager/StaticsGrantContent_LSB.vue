@@ -126,123 +126,6 @@
     </div>
 </template>
 
-<script>
-// d3.legend_left.js 
-// (C) 2012 ziggy.jonsson.nyc@gmail.com
-// MIT licence
-
-(function() {
-d3.legend_left = function(g) {
-  g.each(function() {
-    var g= d3.select(this),
-        items = {},
-        svg = d3.select(g.property("nearestViewportElement")),
-        legendPadding = g.attr("data-style-padding") || 5,
-        lb = g.selectAll(".legend-box").data([true]),
-        li = g.selectAll(".legend-items").data([true])
-
-    lb.enter().append("rect").classed("legend-box",true)
-    li.enter().append("g").classed("legend-items",true)
-
-    svg.selectAll("[data-legend-left]").each(function() {
-        var self = d3.select(this)
-        items[self.attr("data-legend-left")] = {
-          pos : self.attr("data-legend-pos") || this.getBBox().y,
-          color : self.attr("data-legend-color") != undefined ? self.attr("data-legend-color") : self.style("fill") != 'none' ? self.style("fill") : self.style("stroke") 
-        }
-      })
-
-    items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
-
-    
-    li.selectAll("text")
-        .data(items,function(d) { return d.key})
-        .call(function(d) { d.enter().append("text")})
-        .call(function(d) { d.exit().remove()})
-        .attr("y",function(d,i) { return i+"em"})
-        .attr("x","1em")
-        .text(function(d) { ;return d.key})
-    
-    li.selectAll("circle")
-        .data(items,function(d) { return d.key})
-        .call(function(d) { d.enter().append("circle")})
-        .call(function(d) { d.exit().remove()})
-        .attr("cy",function(d,i) { return i-0.25+"em"})
-        .attr("cx",0)
-        .attr("r","0.4em")
-        .style("fill",function(d) { console.log(d.value.color);return d.value.color})  
-    
-    // Reposition and resize the box
-    var lbbox = li[0][0].getBBox()  
-    lb.attr("x",(lbbox.x-legendPadding))
-        .attr("y",(lbbox.y-legendPadding))
-        .attr("height",(lbbox.height+2*legendPadding))
-        .attr("width",(lbbox.width+2*legendPadding))
-  })
-  return g
-}
-})()
-
-</script>
-
-<script>
-// d3.legend_right.js 
-// (C) 2012 ziggy.jonsson.nyc@gmail.com
-// MIT licence
-
-(function() {
-d3.legend_right = function(g) {
-  g.each(function() {
-    var g= d3.select(this),
-        items = {},
-        svg = d3.select(g.property("nearestViewportElement")),
-        legendPadding = g.attr("data-style-padding") || 5,
-        lb = g.selectAll(".legend-box").data([true]),
-        li = g.selectAll(".legend-items").data([true])
-
-    lb.enter().append("rect").classed("legend-box",true)
-    li.enter().append("g").classed("legend-items",true)
-
-    svg.selectAll("[data-legend-right]").each(function() {
-        var self = d3.select(this)
-        items[self.attr("data-legend-right")] = {
-          pos : self.attr("data-legend-pos") || this.getBBox().y,
-          color : self.attr("data-legend-color") != undefined ? self.attr("data-legend-color") : self.style("fill") != 'none' ? self.style("fill") : self.style("stroke") 
-        }
-      })
-
-    items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
-
-    
-    li.selectAll("text")
-        .data(items,function(d) { return d.key})
-        .call(function(d) { d.enter().append("text")})
-        .call(function(d) { d.exit().remove()})
-        .attr("y",function(d,i) { return i+"em"})
-        .attr("x","1em")
-        .text(function(d) { ;return d.key})
-    
-    li.selectAll("circle")
-        .data(items,function(d) { return d.key})
-        .call(function(d) { d.enter().append("circle")})
-        .call(function(d) { d.exit().remove()})
-        .attr("cy",function(d,i) { return i-0.25+"em"})
-        .attr("cx",0)
-        .attr("r","0.4em")
-        .style("fill",function(d) { console.log(d.value.color);return d.value.color})  
-    
-    // Reposition and resize the box
-    var lbbox = li[0][0].getBBox()  
-    lb.attr("x",(lbbox.x-legendPadding))
-        .attr("y",(lbbox.y-legendPadding))
-        .attr("height",(lbbox.height+2*legendPadding))
-        .attr("width",(lbbox.width+2*legendPadding))
-  })
-  return g
-}
-})()
-
-</script>
 
 <script>
 import StaticNavigation from "./StaticNavigation.vue"
@@ -473,7 +356,7 @@ export default {
     
     var svg = d3.select("#sgv_11_all"),
     margin = {top: 20, right: 20, bottom: 110, left: 40},
-    margin2 = {top: 530, right: 20, bottom: 30, left: 40},
+    margin2 = {top: 530, right: 20, bottom: 40, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
     height2 = +svg.attr("height") - margin2.top - margin2.bottom;
@@ -501,15 +384,24 @@ export default {
     var line8;
     var line9;
 
-    var xAxis = d3.axisBottom(x_data),
-        xAxis2 = d3.axisBottom(x2),
+    var xAxis = d3.axisBottom(x_data)
+          .tickFormat(d3.timeFormat("%m-%d"))
+          .tickPadding(2) ,
+        xAxis2 = d3.axisBottom(x2)
+          .tickFormat(d3.timeFormat("%m-%d"))
+          .tickPadding(2) ,
         yAxisLeft = d3.axisLeft(y_left),
         yAxisRight = d3.axisRight(y_right);
 
     var list_lower_data_n=[];
     var list_upper_data_n=[];
-    var list_data=[];
-    var data_legend_LR=[];
+    var list_data=[null];
+    var data_legend_LR=[null];
+    var total_max_y;
+    var lower_max_y;
+
+	var old_x_data_domain;
+	var new_x_data_domain;
 
     var data_legend_names=[
       "",
@@ -537,90 +429,197 @@ export default {
     ];
 
     function mousemove() {
-      var x0 = x_data.invert(d3.mouse(this)[0]),
+      var x0 = x_data.invert(d3.mouse(this)[0]).toISOString(),
           yl = y_left.invert(d3.mouse(this)[1]),
           yr = y_right.invert(d3.mouse(this)[1]);
-      var i = bisectDate(data, x0, 1);
+	//console.log("x0 "+x0);
+	//console.log("yr "+yr);
+	//console.log("yl "+yl);
+      var i;
+      var data= list_data[1];
+      for(i=0; i< data.length; i++) {
+         if(data[i].date > x0) break;
+      };
       var d0 = data[i - 1];
       var d1 = data[i];
-      var d;
-      if( x0 - d0.date > d1.date - x0 ) {
-         d= d1; 
-      } else {
+      var d= d1;
+      if(d1!==undefined && d0!==undefined) {
+        if(x0 - d0.date < d1.date - x0 ) { // round() operation
          d= d0;   i= i - 1;
+        };
       };
-
-      var which_data;
-      var which_data_n;
+	//console.log("i "+i);
+      var which_data_l;
+      var which_data_r;
+      var which_data_l_n;
+      var which_data_r_n;
       var which_yr_data_n= -1;
+      var max_diff_right=1000;
+      var xscale= width / data.length;
+      //console.log("ul "+list_upper_data_n.length);
+      //console.log("ll "+list_lower_data_n.length);
+      for(var k= i - 5; k<i+5; k++) {  if(k<0) continue; if(k>=data.length) continue;
       for(var j=0; j<list_lower_data_n.length; j++) {
-         if( Math.abs( list_data[ list_lower_data_n[j] ][i].value - yr ) < 1) {
-	     which_data= list_data[ list_lower_data_n[j] ][i]; 
-	     which_data_n= list_lower_data_n[j];
-	     which_yr_data_n= list_lower_data_n[j]; break;
+         var diff= Math.sqrt( (y_right(list_data[ list_lower_data_n[j] ][k].number) - y_right(yr))**2 + (xscale*(i - k))**2 );
+         //console.log(list_lower_data_n[j]);
+         //console.log(list_data[ list_lower_data_n[j] ]);
+         //console.log(list_data[ list_lower_data_n[j] ][k].number); console.log(diff);
+         if( diff < max_diff_right) {
+	     which_data_r= list_data[ list_lower_data_n[j] ][k]; 
+	     which_data_r_n= list_lower_data_n[j];
+	     which_yr_data_n= list_lower_data_n[j]; 
+	     max_diff_right= diff;
          };
+      };
       };
       var which_yl_data_n= -1;
+      var max_diff_left=1000;
+      for(var k= i - 5; k<i+5; k++) {  if(k<0) continue; if(k>=data.length) continue;
       for(var j=0; j<list_upper_data_n.length; j++) {
-         if( Math.abs( list_data[ list_upper_data_n[j] ][i].value - yr ) < 1) {
-	     which_data= list_data[ list_upper_data_n[j] ][i]; 
-	     which_data_n= list_upper_data_n[j];
-	     which_yl_data_n= list_upper_data_n[j]; break;
+         var diff= Math.sqrt( (y_left(list_data[ list_upper_data_n[j] ][k].number) - y_left(yl))**2 + (xscale*(i - k))**2 );
+         //console.log(list_upper_data_n[j]);
+         //console.log(list_data[ list_upper_data_n[j] ]);
+         //console.log(list_data[ list_upper_data_n[j] ][k].number); console.log(diff);
+         if( diff < max_diff_left) {
+	     which_data_l= list_data[ list_upper_data_n[j] ][k]; 
+	     which_data_l_n= list_upper_data_n[j];
+	     which_yl_data_n= list_upper_data_n[j];
+	     max_diff_left= diff;
          };
       };
-      if(which_yl_data_n > -1) { 
-        var my_y= y_left(which_data.value);
-        var my_x= x_data(which_data.date);
-        mousefocus.attr("transform", "translate(" + my_x + "," + my_y + ")");
-	//vertical line
-        mousefocus.select(".x-hover-line").attr("y1", height);
-        mousefocus.select(".x-hover-line").attr("y2", height - my_y);
-        mousefocus.select(".x-hover-line").attr("x1", my_x);
-        mousefocus.select(".x-hover-line").attr("x2", my_x);
-
-	//horizontal line
-        mousefocus.select(".y-hover-line").attr("y1", my_y);
-        mousefocus.select(".y-hover-line").attr("y2", my_y);
-        mousefocus.select(".y-hover-line").attr("x1", 0);
-        mousefocus.select(".y-hover-line").attr("x2", my_x);
-
-        var txt= data_names[which_data_n]+" "+which_data.value + " at "+my_x; 
-        mousefocus.select("text").text(txt);
-        tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
       };
-      if(which_yr_data_n > -1) { 
-        var my_y= y_right(which_data.value);
-        var my_x= x_data(which_data.date);
-        mousefocus.attr("transform", "translate(" + my_x + "," + my_y + ")");
+//console.log(which_yl_data_n);
+//console.log(which_yr_data_n);
+//console.log(max_diff_left);
+//console.log(max_diff_right);
+      var old_x0x1= old_x_data_domain[1] - old_x_data_domain[0]; 
+      var new_x0x1= new_x_data_domain[1] - new_x_data_domain[0]; 
+      console.log("old x"); console.log(old_x0x1);
+      console.log("new x"); console.log(new_x0x1);
+      console.log("old x0"); console.log(old_x_data_domain[0]);
+      console.log("new x0"); console.log(new_x_data_domain[0]);
+      if(max_diff_left < max_diff_right)
+      if(which_yl_data_n > -1) { 
+        var my_y= y_left(which_data_l.number);
+        var my_x= x_data(new Date(which_data_l.date));
+        //console.log("1my_x "+my_x); console.log("my_y "+my_y); console.log("y "+which_data_l.number); console.log("h "+height);
+        mousefocus.attr("transform", "translate(" + (margin.left+my_x) + "," + (margin.top+my_y) + ")");
 	//vertical line
-        mousefocus.select(".x-hover-line").attr("y1", height);
-        mousefocus.select(".x-hover-line").attr("y2", height - my_y);
-        mousefocus.select(".x-hover-line").attr("x1", my_x);
-        mousefocus.select(".x-hover-line").attr("x2", my_x);
+        mousefocus.select(".x-hover-line")
+	.attr("stroke", data_line_color[which_data_l_n]) 
+	.attr("y2", 0) 
+        .attr("y1", height - my_y) 
+        .attr("x1", 0) 
+        .attr("x2", 0);
 
 	//horizontal line
-        mousefocus.select(".y-hover-line").attr("y1", my_y);
-        mousefocus.select(".y-hover-line").attr("y2", my_y);
-        mousefocus.select(".y-hover-line").attr("x1", 0);
-        mousefocus.select(".y-hover-line").attr("x2", my_x);
+        mousefocus.select(".y-hover-line")
+	.attr("stroke", data_line_color[which_data_l_n]) 
+        .attr("y1", 0)
+        .attr("y2", 0) 
+        .attr("x1", 0) 
+        .attr("x2", -my_x);
 
-        var txt= data_names[which_data_n]+" "+which_data.value + " at "+my_x; 
-        mousefocus.select("text").text(txt);
-        tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
+        mousefocus.select("circle")
+	.attr("stroke", data_line_color[which_data_l_n]);
+
+        mousefocus.select(".tt_text1").attr("stroke",data_line_color[which_data_l_n]).text( data_legend_names[which_data_l_n] );
+        mousefocus.select(".tt_text2").text( which_data_l.number + "");
+        mousefocus.select(".tt_text3").text( which_data_l.date );
+        if(my_x>width-50) { mousefocus.select(".tt_text_group").attr('dx',-100); } ;
+        if(my_x<width-50) { mousefocus.select(".tt_text_group").attr('dx',0); } ;
+        //tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
+      };
+
+      if(max_diff_left >= max_diff_right )
+      if(which_yr_data_n > -1) { 
+        var my_y= y_right(which_data_r.number);
+        var my_x= x_data(new Date(which_data_r.date));
+        //console.log("2my_x "+my_x); console.log("my_y "+my_y); console.log("y "+which_data_r.number); console.log("h "+height);
+        mousefocus.attr("transform", "translate(" + (margin.left+my_x) + "," + (margin.top+my_y) + ")");
+
+	//vertical line
+        mousefocus.select(".x-hover-line")
+	.attr("stroke", data_line_color[which_data_r_n]) 
+	.attr("y2", 0) 
+        .attr("y1", height - my_y) 
+        .attr("x1", 0) 
+        .attr("x2", 0);
+
+	//horizontal line
+        mousefocus.select(".y-hover-line")
+	.attr("stroke", data_line_color[which_data_r_n]) 
+        .attr("y1", 0)
+        .attr("y2", 0) 
+        .attr("x1", 0) 
+        .attr("x2", -my_x);
+
+        mousefocus.select("circle")
+	.attr("stroke", data_line_color[which_data_r_n]);
+
+        mousefocus.select(".tt_text1").attr("stroke",data_line_color[which_data_r_n]).text( data_legend_names[which_data_r_n] );
+        mousefocus.select(".tt_text2").text( which_data_r.number + "");
+        mousefocus.select(".tt_text3").text( which_data_r.date );
+        if(my_x>width-50) { mousefocus.select(".tt_text_group").attr('dx',-100); } ;
+        if(my_x<width-50) { mousefocus.select(".tt_text_group").attr('dx',0); } ;
+        //tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
       };
     }
 
-    var focus = svg.append("g")
-        .attr("class", "focus")
+	  /* For the drop shadow filter... */
+    var defs = svg.append("defs");
+
+    var filter = defs.append("filter")
+	      .attr("id", "dropshadow");
+
+	  filter.append("feGaussianBlur")
+	      .attr("in", "SourceAlpha")
+	      .attr("stdDeviation", 4)
+	      .attr("result", "blur");
+	  filter.append("feOffset")
+	      .attr("in", "blur")
+	      .attr("dx", 2)
+	      .attr("dy", 2)
+	      .attr("result", "offsetBlur");
+          
+	    filter.append("feFlood")
+	      .attr("in", "offsetBlur")
+	      .attr("flood-color",'#cccccc')
+	      .attr("flood-opacity", "1")
+	      .attr("result", "offsetColor");
+
+	    filter.append("feComposite")
+	      .attr("in", "offsetColor")
+	      .attr("in2", "offsetBlur")
+	      .attr("operator", "in")
+	      .attr("result", "offsetBlur");
+
+	  var feMerge = filter.append("feMerge");
+
+	  feMerge.append("feMergeNode")
+	      .attr("in", "offsetBlur")
+	  feMerge.append("feMergeNode")
+	      .attr("in", "SourceGraphic");
+
+     
+    var mousefocus = svg.append("g")
+        .attr("x", 0)
+        .attr("y", 0);
+        //.attr("class", "mousefocus")
+        //.style("display", "true");
+
+    var focus = svg.append("g");
+    focus.attr("class", "focus")
         .attr("stroke-width","1px")
         .attr("stroke","#000000")
         .attr("fill","none")
-        .attr("pointer-events":"all")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .on("mouseover", function() { mousefocus.style("display", null); tooltip.style("display", null);})
-        .on("mouseout", function() { mousefocus.style("display", "none"); tooltip.style("display", "none");})
-        .on("mousemove", mousemove);
-
+        //.attr(':v-on:mouseover', 'true')
+        //.attr(':v-on:mousemove', 'true')
+        //.attr("pointer-events","all")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        //.on("mouseover", function() { mousefocus.style("display", "true"); tooltip.style("display", "true");})
+        //.on("mouseout", function() { mousefocus.style("display", "none"); tooltip.style("display", "none");});
+ 
     var brush
     var zoom
     var context = svg.append("g")
@@ -631,41 +630,83 @@ export default {
         .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 
-
-    var mousefocus = g.append("g")
-        .attr("class", "mousefocus")
-        .style("display", "none");
-
+if(false){
     mousefocus.append("line")
         .attr("class", "x-hover-line hover-line")
         .attr("x1", 0)
         .attr("x2", 0)
-        .attr("y1", 0)
-        .attr("y2", 0) 
-  	.attr("stroke","#6F257F") 
-  	.attr("stroke-width","2px") 
+        .attr("y1", 20)
+        .attr("y2", 30) 
+  	.attr("stroke","brown") 
+  	.attr("stroke-width","4px") 
   	.attr("stroke-dasharray","3,3");
 
     mousefocus.append("line")
         .attr("class", "y-hover-line hover-line")
         .attr("x1", 0)
         .attr("x2", 0) 
-        .attr("y1", 0)
-        .attr("y2", 0)
-  	.attr("stroke","#6F257F") 
-  	.attr("stroke-width","2px") 
+        .attr("y1", 10)
+        .attr("y2", 20)
+  	.attr("stroke","brown") 
+  	.attr("stroke-width","4px") 
   	.attr("stroke-dasharray","3,3");
+};
 
     mousefocus.append("circle")
-        .attr("r", 7.5) 
-  	.attr("fill","#F1F3F3") 
-  	.attr("stroke","#F1F3F3") 
-  	.attr("stroke-width","5px");
+        .attr("x", 5)
+        .attr("y", 0) 
+  	.attr("fill","white") 
+  	.attr("stroke","brown") 
+  	.attr("stroke-width","2px") 
+  	.attr("r","5px");
 
-    mousefocus.append("text")
-        .attr("x", 15)
-      	.attr("dy", ".31em");
+    if(false) {  // right rectangle box for text
+    mousefocus.append("rect")
+        .attr("x", 0)
+        .attr("y", 0) 
+        .attr("width", 100) 
+        .attr("height", 50) 
+        .attr("fill", "white") 
+	.attr("filter","url(#dropshadow)");
+    };
+    if(true) {  // below rectangle with cap for text
+         //The data for our bubble tooltip line
+         var lineData = [ { "x": 0, "y": 10}, { "x": -5,  "y": 15}, { "x": -75,  "y": 15}, 
+	  { "x": -75,  "y": 70}, { "x": 75,  "y": 70}, { "x": 75,  "y": 15},
+  	  { "x": 5,  "y": 15},  { "x": 0, "y": 10}];
+ 
+	 //This is the accessor function for above path data
+	 var lineFunction = d3.line()
+			  .x(function(d) { return d.x; })
+                          .y(function(d) { return d.y; })
+                          .curve(d3.curveLinear);
+	 var polydata = ["0,0","-5,15","-75,15","-75,70","75,70","75,15","5,15","0,10" ];
 
+         mousefocus.append("polygon")
+		.attr("points", polydata) 
+		.attr("stroke", "#cccccc")
+		.attr("stroke-width", 2)
+		.attr("fill", "white") 
+		.attr("transparent", "none") 
+		.attr("filter","url(#dropshadow)");
+    };
+
+    var textgroup= mousefocus.append("g").attr("class", "tt_text_group");
+
+    textgroup.append("text")
+        .attr("class", "tt_text1")
+        .attr("x", -70)
+      	.attr("dy", 20+15*1);
+    textgroup.append("text")
+        .attr("class", "tt_text2")
+        .attr("x", -70)
+      	.attr("dy", 20+15*2);
+    textgroup.append("text")
+        .attr("class", "tt_text3")
+        .attr("x", -70)
+      	.attr("dy", 20+15*3);
+
+    mousefocus.attr("display","none");
 
 
 
@@ -1001,7 +1042,7 @@ $(document).off("click","#top_banner>div:eq(1)")
     zoom = d3.zoom()
         .scaleExtent([1, Infinity])
         .translateExtent([[0, 0], [width, height]])
-        .extent([[0, 0], [width, height]])
+        .extent([[0, 0], [width, height]]) 
         .on("zoom", zoomed);
 
     var line_sub_1 = d3.line()
@@ -1209,6 +1250,15 @@ $(document).off("click","#top_banner>div:eq(1)")
 
 
 // common begin
+    list_data.push(data);
+    list_data.push(data2);
+    list_data.push(data3);
+    list_data.push(data4);
+    list_data.push(data5);
+    list_data.push(data6);
+    list_data.push(data7);
+    list_data.push(data8);
+    list_data.push(data9);
     var list_data_max=[];
     var data_max=  d3.max(data , function (d) { return +d.number; }); list_data_max.push(data_max);
     var data2_max= d3.max(data2, function (d) { return +d.number; }); list_data_max.push(data2_max);
@@ -1221,11 +1271,9 @@ $(document).off("click","#top_banner>div:eq(1)")
     var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data9_max);
     console.log("list_data_max"); console.log(list_data_max);
 
-    var total_max_y= d3.max(list_data_max, function(n) { return n; } );
+    total_max_y= d3.max(list_data_max, function(n) { return n; } );
     console.log("total_max_y"); console.log(total_max_y);
     var list_lower_data_max=[];
-    var list_lower_data_n=[];
-    var list_upper_data_n=[];
     var threshold=0.5;
     for(var i=1; i<=list_data_max.length; i++) {
        if(list_data_max[i-1] <  threshold * total_max_y ) {
@@ -1237,7 +1285,7 @@ $(document).off("click","#top_banner>div:eq(1)")
 	   data_legend_LR[i]="data-legend-left";
        };
     };
-    var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
+    lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
 
     console.log("upper right y"); console.log(list_upper_data_n);
     console.log("lower right y"); console.log(list_lower_data_n);
@@ -1247,6 +1295,9 @@ $(document).off("click","#top_banner>div:eq(1)")
     //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
     y_left.domain([0, total_max_y]);
     y_right.domain([0, lower_max_y]);
+
+    old_x_data_domain= x_data.domain();
+    new_x_data_domain= x_data.domain();
 
     x2.domain(x_data.domain());
     y2.domain(y_left.domain());
@@ -1283,20 +1334,37 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 
 
 
-    focus.append("g") .attr("class", "axis axis--x") .attr("transform", "translate(0," + height + ")") .call(xAxis);
+    focus.append("g")
+      .attr("class", "axis axis--x") 
+      .attr("transform", "translate(0," + height + ")") 
+      .call(xAxis);
     focus.append("g")
       .attr("class", "axis axis--y")
       .attr("stroke","#000000") 
       .attr("stroke-width","1px") 
       .attr("shape-rendering","crispEdges") 
-      .call(yAxisLeft);
+      .call(yAxisLeft)
+	      .append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text("횟수");
+;
     focus.append("g")
       .attr("class", "axis axis--y")
       .attr("stroke","#ff0000") 
       .attr("stroke-width","1px") 
       .attr("shape-rendering","crispEdges") 
       .call(yAxisRight)
-      .attr("transform", "translate("+width+",0)");
+      .attr("transform", "translate("+width+",0)") 
+	      .append("text")
+      	      .attr("stroke","#ff0000") 
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text("횟수");
 
 
     Line_chart.append("path")
@@ -1428,52 +1496,74 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     context.append("g")
       .attr("class", "axis axis--x")
       .attr("transform", "translate(0," + height2 + ")")
-      .call(xAxis2);
+      .call(xAxis2)
+	  //.selectAll("text")	
+	  //.style("text-anchor", "end")
+	  //.attr("dx", "-.8em")
+	  //.attr("dy", ".15em")
+	  //.attr("transform", "rotate(-65)");
+
+
+
+    var  legend_each_height= 15;
+    var left_legend = focus.append("rect")
+        .attr("x", 50)
+        .attr("y", 0)
+        .attr("width", 150) .attr("height", legend_each_height * list_upper_data_n.length + 20) 
+  	//.attr("stroke","#6F257F") 
+  	.attr("stroke","#cccccc") 
+  	.attr("stroke-width","2px") 
+  	//.attr("stroke-dasharray","3,3")
+	.attr("filter","url(#dropshadow)");
+
+    for(var j=0,dx=60+30; j<list_upper_data_n.length; j++) {
+      focus.append("rect").attr("x",dx-30).attr("y",legend_each_height*(j+1)-5)
+  	.attr("stroke",data_line_color[list_upper_data_n[j]])
+  	.attr("fill",data_line_color[list_upper_data_n[j]])
+	.attr("width",10).attr("height",10);
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)+5)
+  	.attr("stroke",data_line_color[list_upper_data_n[j]])
+	.text(data_legend_names[list_upper_data_n[j]]);
+    };
+
+    var right_legend = focus.append("rect") 
+        .attr("x", width-250)
+        .attr("y", 0)
+        .attr("width", 150) .attr("height", legend_each_height * list_lower_data_n.length + 20) 
+  	//.attr("stroke","#FF257F") 
+  	.attr("stroke","#cccccc") 
+  	.attr("stroke-width","2px") 
+  	//.attr("stroke-dasharray","3,3") 
+	.attr("filter","url(#dropshadow)");
+
+    for(var j=0,dx=width-240+30; j<list_lower_data_n.length; j++) {
+      focus.append("rect").attr("x",dx-30).attr("y",legend_each_height*(j+1)-5)
+  	.attr("stroke",data_line_color[list_lower_data_n[j]])
+  	.attr("fill",data_line_color[list_lower_data_n[j]])
+	.attr("width",10).attr("height",10);
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)-1)
+  	.attr("stroke",data_line_color[list_lower_data_n[j]])
+	.text(data_legend_names[list_lower_data_n[j]]);
+    }; 
+     
 
 
     context.append("g")
       .attr("class", "brush")
-      .attr("fill","none")
+      .attr("fill","none") 
       .call(brush)
       .call(brush.move, x_data.range());
+
     svg.append("rect")
       .attr("class", "zoom")
       .attr("width", width)
       .attr("height", height)
       .attr("fill","transparent")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")") 
+      .on("mouseover", function() { mousefocus.style("display", "block"); tooltip.style("display", "block");})
+      .on("mouseout", function() { mousefocus.style("display", "none"); tooltip.style("display", "none");}) 
+      .on("mousemove", mousemove)
       .call(zoom);
-
-
-     
-
-  var legend1 = focus.append("g")
-    .attr("class","legend")
-    .attr("transform","translate(50,30)")
-    .style("font-size","16px")
-    .call(d3.legend_left)
-
-  setTimeout(function() { 
-    legend1
-      .style("font-size","20px")
-      .attr("data-style-padding",10)
-      .call(d3.legend_left)
-  },1000)
-
-  var legend2 = focus.append("g")
-    .attr("class","legend")
-    .attr("transform","translate(550,30)")
-    .style("font-size","16px")
-    .call(d3.legend_right)
-
-  setTimeout(function() { 
-    legend2
-      .style("font-size","20px")
-      .attr("data-style-padding",10)
-      .call(d3.legend_right)
-  },1000)
-
-
 
 
     }
@@ -1490,7 +1580,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     zoom = d3.zoom()
         .scaleExtent([1, Infinity])
         .translateExtent([[0, 0], [width, height]])
-        .extent([[0, 0], [width, height]])
+        .extent([[0, 0], [width, height]]) 
         .on("zoom", zoomed);
 
     var line_sub_1 = d3.line()
@@ -1527,15 +1617,17 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
         .attr("width", width)
         .attr("height", height)
         .attr("x", 0)
-        .attr("y", 0);
+        .attr("y", 0) ;
 
     Line_chart = svg.append("g")
         .attr("class", "focus")
         .attr("stroke","#000")
         .attr("strok-width","1px")
         .attr("fill","none")
+        //.attr(':v-on:mouseover', 'true')
+        //.attr(':v-on:mousemove', 'true')
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .attr("clip-path", "url(#clip)");
+        .attr("clip-path", "url(#clip)") ;
    
   var parsed_data ;
   var data = vue_obj.base_info.total_int_data
@@ -1710,6 +1802,15 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 
 
 // common begin
+    list_data.push(data);
+    list_data.push(data2);
+    list_data.push(data3);
+    list_data.push(data4);
+    list_data.push(data5);
+    list_data.push(data6);
+    list_data.push(data7);
+    list_data.push(data8);
+    list_data.push(data9);
     var list_data_max=[];
     var data_max=  d3.max(data , function (d) { return +d.number; }); list_data_max.push(data_max);
     var data2_max= d3.max(data2, function (d) { return +d.number; }); list_data_max.push(data2_max);
@@ -1722,12 +1823,10 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     var data9_max= d3.max(data9, function (d) { return +d.number; }); list_data_max.push(data9_max);
     console.log("list_data_max"); console.log(list_data_max);
 
-    var total_max_y= d3.max(list_data_max, function(n) { return n; } );
+    total_max_y= d3.max(list_data_max, function(n) { return n; } );
     console.log("total_max_y"); console.log(total_max_y);
     var list_lower_data_max=[];
-    var list_lower_data_n=[];
-    var list_upper_data_n=[];
-    var threshold=0.5;
+    var threshold=0.15;
     for(var i=1; i<=list_data_max.length; i++) {
        if(list_data_max[i-1] <  threshold * total_max_y ) {
            list_lower_data_n.push(i);
@@ -1738,7 +1837,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 	   data_legend_LR[i]="data-legend-left";
        };
     };
-    var lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
+    lower_max_y= d3.max(list_lower_data_max, function(n) { return n; } );
 
     console.log("upper right y"); console.log(list_upper_data_n);
     console.log("lower right y"); console.log(list_lower_data_n);
@@ -1748,6 +1847,9 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
     y_left.domain([0, total_max_y]);
     y_right.domain([0, lower_max_y]);
+
+    old_x_data_domain= x_data.domain();
+    new_x_data_domain= x_data.domain();
 
     x2.domain(x_data.domain());
     y2.domain(y_left.domain());
@@ -1779,20 +1881,36 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
  
 // common end 
 
-    focus.append("g") .attr("class", "axis axis--x") .attr("transform", "translate(0," + height + ")") .call(xAxis);
+    focus.append("g")
+      .attr("class", "axis axis--x") 
+      .attr("transform", "translate(0," + height + ")") 
+      .call(xAxis);
     focus.append("g")
       .attr("class", "axis axis--y")
       .attr("stroke","#000000") 
       .attr("stroke-width","1px") 
       .attr("shape-rendering","crispEdges") 
-      .call(yAxisLeft);
+      .call(yAxisLeft) 
+	      .append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text("횟수");
     focus.append("g")
       .attr("class", "axis axis--y")
       .attr("stroke","#ff0000") 
       .attr("stroke-width","1px") 
       .attr("shape-rendering","crispEdges") 
       .call(yAxisRight)
-      .attr("transform", "translate("+width+",0)");
+      .attr("transform", "translate("+(width-5)+",0)") 
+	      .append("text")
+      	      .attr("stroke","#ff0000") 
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text("횟수");
 
     Line_chart.append("path")
         .datum(data)
@@ -1808,7 +1926,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
         .datum(data3)
         .attr("stroke", data_line_color[3])
         .attr(data_legend_LR[3], data_legend_names[3])
-        .attr("d", line3);
+        .attr("d", line3) ;
     Line_chart.append("path")
         .datum(data4)
         .attr("stroke", data_line_color[4])
@@ -1903,47 +2021,70 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     context.append("g")
       .attr("class", "axis axis--x")
       .attr("transform", "translate(0," + height2 + ")")
-      .call(xAxis2);
+      .call(xAxis2) 
+	  //.selectAll("text")	
+	  //.style("text-anchor", "end")
+	  //.attr("dx", "-.8em")
+	  //.attr("dy", ".15em")
+	  //.attr("transform", "rotate(-65)");
+
+    var  legend_each_height= 15;
+    var left_legend = focus.append("rect")
+        .attr("x", 50)
+        .attr("y", 0)
+        .attr("width", 150) .attr("height", legend_each_height * list_upper_data_n.length + 20) 
+  	//.attr("stroke","#6F257F") 
+  	.attr("stroke","#cccccc") 
+  	.attr("stroke-width","2px") 
+  	//.attr("stroke-dasharray","3,3") 
+	.attr("filter","url(#dropshadow)");
+
+    for(var j=0,dx=60+30; j<list_upper_data_n.length; j++) {
+      focus.append("rect").attr("x",dx-30).attr("y",legend_each_height*(j+1)-5)
+  	.attr("stroke",data_line_color[list_upper_data_n[j]])
+  	.attr("fill",data_line_color[list_upper_data_n[j]])
+	.attr("width",10).attr("height",10);
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)+5)
+  	.attr("stroke",data_line_color[list_upper_data_n[j]])
+	.text(data_legend_names[list_upper_data_n[j]]);
+    };
+
+    var right_legend = focus.append("rect") 
+        .attr("x", width-250)
+        .attr("y", 0)
+        .attr("width", 150) .attr("height", legend_each_height * list_lower_data_n.length + 20) 
+  	//.attr("stroke","#FF257F") 
+  	.attr("stroke","#cccccc") 
+  	.attr("stroke-width","2px") 
+  	//.attr("stroke-dasharray","3,3") 
+	.attr("filter","url(#dropshadow)");
+
+    for(var j=0,dx=width-240+30; j<list_lower_data_n.length; j++) {
+      focus.append("rect").attr("x",dx-30).attr("y",legend_each_height*(j+1)-5)
+  	.attr("stroke",data_line_color[list_lower_data_n[j]])
+  	.attr("fill",data_line_color[list_lower_data_n[j]])
+	.attr("width",10).attr("height",10);
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)+5)
+  	.attr("stroke",data_line_color[list_lower_data_n[j]])
+	.text(data_legend_names[list_lower_data_n[j]]);
+    }; 
+     
+
+
     context.append("g")
-      .attr("class", "brush")
+      .attr("class", "brush") 
       .call(brush)
       .call(brush.move, x_data.range());
+
     svg.append("rect")
       .attr("class", "zoom")
       .attr("width", width)
       .attr("height", height)
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")") 
+      .on("mouseover", function() { mousefocus.style("display", "block"); tooltip.style("display", "block");})
+      .on("mouseout", function() { mousefocus.style("display", "none"); tooltip.style("display", "none");}) 
+      .on("mousemove", mousemove) 
       .call(zoom);
-
-
-
-  var legend1 = focus.append("g")
-    .attr("class","legend")
-    .attr("transform","translate(50,30)")
-    .style("font-size","12px")
-    .call(d3.legend_left)
-
-  setTimeout(function() { 
-    legend1
-      .style("font-size","20px")
-      .attr("data-style-padding",10)
-      .call(d3.legend_left)
-  },1000)
-
-  var legend2 = focus.append("g")
-    .attr("class","legend")
-    .attr("transform","translate(550,30)")
-    .style("font-size","12px")
-    .call(d3.legend_right)
-
-  setTimeout(function() { 
-    legend2
-      .style("font-size","20px")
-      .attr("data-style-padding",10)
-      .call(d3.legend_right)
-  },1000)
-
-
 
 
 
@@ -1952,8 +2093,10 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 function brushed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
   var s = d3.event.selection || x2.range();
+  new_x_data_domain=s.map(x2.invert, x2);
   x_data.domain(s.map(x2.invert, x2));
 
+console.log("new x brushed");
   Line_chart.select(".line1").attr("d", line1);
   Line_chart.select(".line2").attr("d", line2);
   Line_chart.select(".line3").attr("d", line3);
@@ -1977,20 +2120,25 @@ var flag = true
 function zoomed() {
     
  var t = d3.event.transform;
-  if( dateDiff(t.rescaleX(x2).domain()[0] ,t.rescaleX(x2).domain()[1] ) > 8 ){
+  new_x_data_domain= t.rescaleX(x2).domain();
+  console.log("new x2 domain");
+  console.log(new_x_data_domain);
+  if( dateDiff(new_x_data_domain[0] ,new_x_data_domain[1]) > 8 ){
        if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
-        x_data.domain(t.rescaleX(x2).domain());
-  Line_chart.select(".line1").attr("d", line1);
-  Line_chart.select(".line2").attr("d", line2);
-  Line_chart.select(".line3").attr("d", line3);
-  Line_chart.select(".line4").attr("d", line4);
-  Line_chart.select(".line5").attr("d", line5);
-  Line_chart.select(".line6").attr("d", line6);
-  Line_chart.select(".line7").attr("d", line7);
-  Line_chart.select(".line8").attr("d", line8);
-  Line_chart.select(".line9").attr("d", line9);
-  focus.select(".axis--x").call(xAxis);
-  context.select(".brush").call(brush.move, x_data.range().map(t.invertX, t));
+       x_data.domain( new_x_data_domain );
+
+console.log("new x zoomed");
+	  Line_chart.select(".line1").attr("d", line1);
+	  Line_chart.select(".line2").attr("d", line2);
+	  Line_chart.select(".line3").attr("d", line3);
+	  Line_chart.select(".line4").attr("d", line4);
+	  Line_chart.select(".line5").attr("d", line5);
+	  Line_chart.select(".line6").attr("d", line6);
+	  Line_chart.select(".line7").attr("d", line7);
+	  Line_chart.select(".line8").attr("d", line8);
+	  Line_chart.select(".line9").attr("d", line9);
+	  focus.select(".axis--x").call(xAxis);
+	  context.select(".brush").call(brush.move, x_data.range().map(t.invertX, t));
   }
   else{
       if(flag==true){
