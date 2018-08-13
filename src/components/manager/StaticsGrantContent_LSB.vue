@@ -353,37 +353,45 @@ export default {
     catch(e){
         console.log(e)
     }
-    
+   
+    // SVG 선언, 
     var svg = d3.select("#sgv_11_all"),
+
+    // 차트 크기 설정 (chart size settings)
     margin = {top: 20, right: 20, bottom: 110, left: 40},
     margin2 = {top: 530, right: 20, bottom: 40, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
     height2 = +svg.attr("height") - margin2.top - margin2.bottom;
-    var parseDate = d3.timeParse("%Y-%m-%d");
-    var x_data = d3.scaleTime().range([0, width]),
-    x2 = d3.scaleTime().range([0, width]),
-    y = d3.scaleLinear().range([height, 0]), // not used here
-    y2 = d3.scaleLinear().range([height2, 0]),
-    y3 = d3.scaleLinear().range([height, 0]),
-    y4 = d3.scaleLinear().range([height, 0]);
 
+    // 입력 데이타 날짜 포맷    
+    var parseDate = d3.timeParse("%Y-%m-%d");
+    
+    // 차트 x,y 축의 스크린좌표 설정 
+    var x_data = d3.scaleTime().range([0, width]), // 공통 x 축 
+    y = d3.scaleLinear().range([height, 0]), // not used here
+    x2 = d3.scaleTime().range([0, width]), // 브러시 영역 x 축 
+    y2 = d3.scaleLinear().range([height2, 0]); // 브러시 영역 y 축 
+
+    // 주 차트 영역의 좌측 y 축 스크린 영역 설정
     var y_left  = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (higher values)
+    // 주 차트 영역의 우측 y 축 스크린 영역 설정
     var y_right = d3.scaleLinear().range([height, 0]); //lsb1 : left y axis (lower values)
    
-    var tooltip = d3.select('#tooltip'); 
+    var tooltip = d3.select('#tooltip');  // html div 형태의 툴팁 지원: 미사용
 
-    var Line_chart;
-    var line1;
-    var line2;
-    var line3;
-    var line4;
-    var line5;
-    var line6;
-    var line7;
-    var line8;
-    var line9;
+    var Line_chart; // 주 차트 영역 라인 그래프 컨테이너
+    var line1; // line1 데이타 해석 함수 
+    var line2; // line2 데이타 해석 함수 
+    var line3; // line3 데이타 해석 함수 
+    var line4; // line4 데이타 해석 함수 
+    var line5; // line5 데이타 해석 함수 
+    var line6; // line6 데이타 해석 함수 
+    var line7; // line7 데이타 해석 함수 
+    var line8; // line8 데이타 해석 함수 
+    var line9; // line9 데이타 해석 함수 
 
+    // 차트 x,y축 틱 표시 설정
     var xAxis = d3.axisBottom(x_data)
           .tickFormat(d3.timeFormat("%m-%d"))
           .tickPadding(2) ,
@@ -393,16 +401,21 @@ export default {
         yAxisLeft = d3.axisLeft(y_left),
         yAxisRight = d3.axisRight(y_right);
 
-    var list_lower_data_n=[];
-    var list_upper_data_n=[];
-    var list_data=[null];
-    var data_legend_LR=[null];
-    var total_max_y;
-    var lower_max_y;
+    // y 데이타를  좌측(높은 범위)과 우측(낮은 범위) 범주로 분리 
+    var list_lower_data_n=[]; // 낮은 데이타값: 우측 레젠드에 표시
+    var list_upper_data_n=[]; // 높은 데이타값: 좌측 레젠드에 표시
+    var list_data=[null]; // null과 9 개의 데이타 배열 (base 1) 
+    var data_legend_LR=[null]; // null 과 9개의 데이타 위치 표시 (data-legend-left / data-legend-right)
+    var total_max_y; // 높은 값들의 최대치 
+    var lower_max_y; // 낮은 값들의 최대치 
+    var threshold=0.5; // 높은 값들의 최대치에서 얼마의 비율을 낮은 값들의 최대치 경계선으로 정할지를 지정
+                       // 데이타 최대치가 70 이고, threshold=0.5 이면 35가 낮은 데이타 영역 값들의 최대치임 
+		       // 최대치가 35보다 작은 데이타배열은 우측에, 35보다 큰 데이타 배열들은 좌측 레전드에 배정
 
-	var old_x_data_domain;
-	var new_x_data_domain;
+    var old_x_data_domain;
+    var new_x_data_domain;
 
+    // 레전드 세팅 (legend setting), 데이타의 내용물의 이름을 설정
     var data_legend_names=[
       "",
       "DATA1",
@@ -415,6 +428,7 @@ export default {
       "DATA8",
       "DATA9" 
     ];
+    // 레전드 컬러 설정 (legend color setting), 
     var data_line_color=[
         "",
         "steelblue",
@@ -428,145 +442,22 @@ export default {
         "purple" 
     ];
 
-    function mousemove() {
-      var x0 = x_data.invert(d3.mouse(this)[0]).toISOString(),
-          yl = y_left.invert(d3.mouse(this)[1]),
-          yr = y_right.invert(d3.mouse(this)[1]);
-	//console.log("x0 "+x0);
-	//console.log("yr "+yr);
-	//console.log("yl "+yl);
-      var i;
-      var data= list_data[1];
-      for(i=0; i< data.length; i++) {
-         if(data[i].date > x0) break;
-      };
-      var d0 = data[i - 1];
-      var d1 = data[i];
-      var d= d1;
-      if(d1!==undefined && d0!==undefined) {
-        if(x0 - d0.date < d1.date - x0 ) { // round() operation
-         d= d0;   i= i - 1;
-        };
-      };
-	//console.log("i "+i);
-      var which_data_l;
-      var which_data_r;
-      var which_data_l_n;
-      var which_data_r_n;
-      var which_yr_data_n= -1;
-      var max_diff_right=1000;
-      var xscale= width / data.length;
-      //console.log("ul "+list_upper_data_n.length);
-      //console.log("ll "+list_lower_data_n.length);
-      for(var k= i - 5; k<i+5; k++) {  if(k<0) continue; if(k>=data.length) continue;
-      for(var j=0; j<list_lower_data_n.length; j++) {
-         var diff= Math.sqrt( (y_right(list_data[ list_lower_data_n[j] ][k].number) - y_right(yr))**2 + (xscale*(i - k))**2 );
-         //console.log(list_lower_data_n[j]);
-         //console.log(list_data[ list_lower_data_n[j] ]);
-         //console.log(list_data[ list_lower_data_n[j] ][k].number); console.log(diff);
-         if( diff < max_diff_right) {
-	     which_data_r= list_data[ list_lower_data_n[j] ][k]; 
-	     which_data_r_n= list_lower_data_n[j];
-	     which_yr_data_n= list_lower_data_n[j]; 
-	     max_diff_right= diff;
-         };
-      };
-      };
-      var which_yl_data_n= -1;
-      var max_diff_left=1000;
-      for(var k= i - 5; k<i+5; k++) {  if(k<0) continue; if(k>=data.length) continue;
-      for(var j=0; j<list_upper_data_n.length; j++) {
-         var diff= Math.sqrt( (y_left(list_data[ list_upper_data_n[j] ][k].number) - y_left(yl))**2 + (xscale*(i - k))**2 );
-         //console.log(list_upper_data_n[j]);
-         //console.log(list_data[ list_upper_data_n[j] ]);
-         //console.log(list_data[ list_upper_data_n[j] ][k].number); console.log(diff);
-         if( diff < max_diff_left) {
-	     which_data_l= list_data[ list_upper_data_n[j] ][k]; 
-	     which_data_l_n= list_upper_data_n[j];
-	     which_yl_data_n= list_upper_data_n[j];
-	     max_diff_left= diff;
-         };
-      };
-      };
-//console.log(which_yl_data_n);
-//console.log(which_yr_data_n);
-//console.log(max_diff_left);
-//console.log(max_diff_right);
-      var old_x0x1= old_x_data_domain[1] - old_x_data_domain[0]; 
-      var new_x0x1= new_x_data_domain[1] - new_x_data_domain[0]; 
-      console.log("old x"); console.log(old_x0x1);
-      console.log("new x"); console.log(new_x0x1);
-      console.log("old x0"); console.log(old_x_data_domain[0]);
-      console.log("new x0"); console.log(new_x_data_domain[0]);
-      if(max_diff_left < max_diff_right)
-      if(which_yl_data_n > -1) { 
-        var my_y= y_left(which_data_l.number);
-        var my_x= x_data(new Date(which_data_l.date));
-        //console.log("1my_x "+my_x); console.log("my_y "+my_y); console.log("y "+which_data_l.number); console.log("h "+height);
-        mousefocus.attr("transform", "translate(" + (margin.left+my_x) + "," + (margin.top+my_y) + ")");
-	//vertical line
-        mousefocus.select(".x-hover-line")
-	.attr("stroke", data_line_color[which_data_l_n]) 
-	.attr("y2", 0) 
-        .attr("y1", height - my_y) 
-        .attr("x1", 0) 
-        .attr("x2", 0);
+    //좌측 레전드 박스 위치/크기 설정
+    var left_legend_pos_x= 50;
+    var left_legend_pos_y= 0;
+    var left_legend_width= 150;
 
-	//horizontal line
-        mousefocus.select(".y-hover-line")
-	.attr("stroke", data_line_color[which_data_l_n]) 
-        .attr("y1", 0)
-        .attr("y2", 0) 
-        .attr("x1", 0) 
-        .attr("x2", -my_x);
+    //우측 레전드 박스 위치/크기 설정
+    var right_legend_pos_x= width-250;
+    var right_legend_pos_y= 0;
+    var right_legend_width= 150;
 
-        mousefocus.select("circle")
-	.attr("stroke", data_line_color[which_data_l_n]);
+    //레전드 row 의 높이 설정, 글씨 크기는 16자 정도가 기본인데 이를 늘리려면, 아래 높이도 높여야
+    var legend_each_height= 19;
+    var legend_font_size= "16px";
 
-        mousefocus.select(".tt_text1").attr("stroke",data_line_color[which_data_l_n]).text( data_legend_names[which_data_l_n] );
-        mousefocus.select(".tt_text2").text( which_data_l.number + "");
-        mousefocus.select(".tt_text3").text( which_data_l.date );
-        if(my_x>width-50) { mousefocus.select(".tt_text_group").attr('dx',-100); } ;
-        if(my_x<width-50) { mousefocus.select(".tt_text_group").attr('dx',0); } ;
-        //tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
-      };
 
-      if(max_diff_left >= max_diff_right )
-      if(which_yr_data_n > -1) { 
-        var my_y= y_right(which_data_r.number);
-        var my_x= x_data(new Date(which_data_r.date));
-        //console.log("2my_x "+my_x); console.log("my_y "+my_y); console.log("y "+which_data_r.number); console.log("h "+height);
-        mousefocus.attr("transform", "translate(" + (margin.left+my_x) + "," + (margin.top+my_y) + ")");
-
-	//vertical line
-        mousefocus.select(".x-hover-line")
-	.attr("stroke", data_line_color[which_data_r_n]) 
-	.attr("y2", 0) 
-        .attr("y1", height - my_y) 
-        .attr("x1", 0) 
-        .attr("x2", 0);
-
-	//horizontal line
-        mousefocus.select(".y-hover-line")
-	.attr("stroke", data_line_color[which_data_r_n]) 
-        .attr("y1", 0)
-        .attr("y2", 0) 
-        .attr("x1", 0) 
-        .attr("x2", -my_x);
-
-        mousefocus.select("circle")
-	.attr("stroke", data_line_color[which_data_r_n]);
-
-        mousefocus.select(".tt_text1").attr("stroke",data_line_color[which_data_r_n]).text( data_legend_names[which_data_r_n] );
-        mousefocus.select(".tt_text2").text( which_data_r.number + "");
-        mousefocus.select(".tt_text3").text( which_data_r.date );
-        if(my_x>width-50) { mousefocus.select(".tt_text_group").attr('dx',-100); } ;
-        if(my_x<width-50) { mousefocus.select(".tt_text_group").attr('dx',0); } ;
-        //tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
-      };
-    }
-
-	  /* For the drop shadow filter... */
+    // 새도우 필터 설정 (shadow filter settings)
     var defs = svg.append("defs");
 
     var filter = defs.append("filter")
@@ -601,27 +492,34 @@ export default {
 	  feMerge.append("feMergeNode")
 	      .attr("in", "SourceGraphic");
 
-     
+ 
+    // 축 라벨 이름 설정 (axis label name settings)
+    var axis_x_label="날짜";
+    var axis_y_left_label="횟수";
+    var axis_y_right_label="횟수";
+    
+    // mousefocus: 마우스로 라인 그래프의 데이타 점 위를 호버할 때,  원과 툴팁이 나타나는 원점을 정의  
     var mousefocus = svg.append("g")
         .attr("x", 0)
         .attr("y", 0);
-        //.attr("class", "mousefocus")
-        //.style("display", "true");
 
+
+    // 차트의 최상위 컨테이너
     var focus = svg.append("g");
     focus.attr("class", "focus")
         .attr("stroke-width","1px")
         .attr("stroke","#000000")
         .attr("fill","none")
-        //.attr(':v-on:mouseover', 'true')
-        //.attr(':v-on:mousemove', 'true')
-        //.attr("pointer-events","all")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        //.on("mouseover", function() { mousefocus.style("display", "true"); tooltip.style("display", "true");})
-        //.on("mouseout", function() { mousefocus.style("display", "none"); tooltip.style("display", "none");});
- 
-    var brush
-    var zoom
+
+    // 하단 차트의 줌제어용 브러시 영역 
+    var brush;
+
+    // 상단 차트의 줌제어용 큰 투명 사각형 : 줌 인아웃과 패닝 지원 
+    var zoom;
+
+
+    // 하단 브러시 영역의 차트의 컨테이너 
     var context = svg.append("g")
         .attr("class", "context")
         .attr("stroke","#000")
@@ -630,7 +528,7 @@ export default {
         .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 
-if(false){
+if(false){ //  툴팁과 함께  가로 세로선을 표시했었으나 지금은 미사용 
     mousefocus.append("line")
         .attr("class", "x-hover-line hover-line")
         .attr("x1", 0)
@@ -652,35 +550,18 @@ if(false){
   	.attr("stroke-dasharray","3,3");
 };
 
+    // 마우스 툴팁의 원 모양 설정
     mousefocus.append("circle")
-        .attr("x", 5)
+        .attr("x", 0)
         .attr("y", 0) 
+        .attr("transform", "translate(-2.5,0)") 
   	.attr("fill","white") 
   	.attr("stroke","brown") 
   	.attr("stroke-width","2px") 
   	.attr("r","5px");
 
-    if(false) {  // right rectangle box for text
-    mousefocus.append("rect")
-        .attr("x", 0)
-        .attr("y", 0) 
-        .attr("width", 100) 
-        .attr("height", 50) 
-        .attr("fill", "white") 
-	.attr("filter","url(#dropshadow)");
-    };
-    if(true) {  // below rectangle with cap for text
-         //The data for our bubble tooltip line
-         var lineData = [ { "x": 0, "y": 10}, { "x": -5,  "y": 15}, { "x": -75,  "y": 15}, 
-	  { "x": -75,  "y": 70}, { "x": 75,  "y": 70}, { "x": 75,  "y": 15},
-  	  { "x": 5,  "y": 15},  { "x": 0, "y": 10}];
- 
-	 //This is the accessor function for above path data
-	 var lineFunction = d3.line()
-			  .x(function(d) { return d.x; })
-                          .y(function(d) { return d.y; })
-                          .curve(d3.curveLinear);
-	 var polydata = ["0,0","-5,15","-75,15","-75,70","75,70","75,15","5,15","0,10" ];
+    {  // 캡(윗방향) 달린 사각형 툴팁 
+	 var polydata = ["0,0","-5,15","-75,15","-75,75","75,75","75,15","5,15","0,10" ];
 
          mousefocus.append("polygon")
 		.attr("points", polydata) 
@@ -691,21 +572,29 @@ if(false){
 		.attr("filter","url(#dropshadow)");
     };
 
+    // 마우스 툴팁의 텍스트 영역 
     var textgroup= mousefocus.append("g").attr("class", "tt_text_group");
 
+    // 데이타 배열 이름용 (DATA1,2,3...)
     textgroup.append("text")
         .attr("class", "tt_text1")
         .attr("x", -70)
-      	.attr("dy", 20+15*1);
+      	.attr("dy", 20+16*1);
+
+    // Y 축 데이타 값 
     textgroup.append("text")
         .attr("class", "tt_text2")
         .attr("x", -70)
-      	.attr("dy", 20+15*2);
+      	.attr("dy", 20+16*2);
+
+    // X 축 데이타 값 (2018-04-04 ...)
     textgroup.append("text")
         .attr("class", "tt_text3")
         .attr("x", -70)
-      	.attr("dy", 20+15*3);
+      	.attr("dy", 20+16*3);
 
+    // 마우스 툴팁 svg 영역은 처음에 표시하지 않고, mouseover 시에 표시를 on 하고, mouseout 시 표시 off 한다.
+    //   아래 mouseover,mouseout 이벤트 핸들어 참조
     mousefocus.attr("display","none");
 
 
@@ -785,9 +674,9 @@ $(document).ready(function(){
     $(document).on("click","#excel_down", function(){     
         var ee = excelExport("list_tbl").parseToCSV().parseToXLS("excelexport sheet");
             location.href = ee.getXLSDataURI();
-    })
+})
        
-    vue_obj.$http.get(`/get_static_info/?id=`+localStorage.getItem("id"))
+vue_obj.$http.get(`/get_static_info/?id=`+localStorage.getItem("id"))
         .then((result) => {
                 $("#loading").addClass("hidden")
                 vue_obj.base_info = result.data
@@ -848,13 +737,14 @@ $(document).ready(function(){
 
                     }
 
-        })
+});
 
   
 
 
-         $(document).off("change","#select_zone_2")
-    $(document).on("change","#select_zone_2>.basic:eq(0)", function(){
+$(document).off("change","#select_zone_2");
+
+$(document).on("change","#select_zone_2>.basic:eq(0)", function(){
         if($(this).val()=="0"){
                 vue_obj.pre_entry = vue_obj.base_info.all_startup_list
                 vue_obj.entry = vue_obj.base_info.all_startup_list.slice(0,10)
@@ -908,9 +798,9 @@ $(document).ready(function(){
         for(var k=1; k <= Math.ceil(vue_obj.pre_entry.length/10); k++){vue_obj.list_nav.push(k)}
         $(".list_btn").removeClass("bold")
         $(".list_btn:eq(0)").addClass("bold")
-    })
+})
 
-    $(document).on("click",".change_num", function(){
+$(document).on("click",".change_num", function(){
             $(".change_num").removeClass("num_on")
             $(this).addClass("num_on")
             if($(this).attr("data-num") == "10"){
@@ -931,16 +821,18 @@ $(document).ready(function(){
                  vue_obj.list_nav=[]
                  vue_obj.list_nav.push(1)
             }
-    })
+})
 
-    $(document).on("click",".list_btn", function(){
+$(document).on("click",".list_btn", function(){
         $(".list_btn").removeClass("bold");
         $(this).addClass("bold")
 
         vue_obj.entry = vue_obj.pre_entry.slice( (parseInt($(this).attr("data-num"))-1)*10, (parseInt($(this).attr("data-num")))*10)
-    })
-    $(document).off("change","#grant_sel")
-    $(document).on("change","#grant_sel",function(){
+})
+
+$(document).off("change","#grant_sel");
+
+$(document).on("change","#grant_sel",function(){
         
     vue_obj.$http.get(`/get_grant_static_detail/?id=`+$("#manager_sel").val()+"&sb_id="+$(this).find(":selected").attr("data-id"))
         .then((result) => {
@@ -971,9 +863,11 @@ $(document).ready(function(){
 
 
         })
-    })
-$(document).off("click","#top_banner>div:eq(1)")
-    $(document).on("click","#top_banner>div:eq(1)",function(){
+})
+
+$(document).off("click","#top_banner>div:eq(1)");
+
+$(document).on("click","#top_banner>div:eq(1)",function(){
         
     vue_obj.$http.get(`/get_all_static_info/?id=`+localStorage.getItem("id"))
         .then((result) => {
@@ -1001,9 +895,11 @@ $(document).off("click","#top_banner>div:eq(1)")
                 $(".list_btn:eq(0)").addClass("bold")
                 $("#select_zone>.basic option[value='all']").prop("selected", true)
         })
-    })
-     $(document).off("click","#top_banner>div:eq(0)")
-     $(document).on("click","#top_banner>div:eq(0)",function(){
+})
+
+$(document).off("click","#top_banner>div:eq(0)")
+
+$(document).on("click","#top_banner>div:eq(0)",function(){
         
     vue_obj.$http.get(`/get_static_info/?id=`+localStorage.getItem("id"))
         .then((result) => {
@@ -1029,11 +925,11 @@ $(document).off("click","#top_banner>div:eq(1)")
                 $(".list_btn:eq(0)").addClass("bold")
                 $("#select_zone>.basic option[value='all']").prop("selected", true)
         })
-    })
+})
 
 
 
-    function update_zoomable_line(){
+function update_zoomable_line(){
         
     brush = d3.brushX()
         .extent([[0, 0], [width, height2]])
@@ -1076,7 +972,6 @@ $(document).off("click","#top_banner>div:eq(1)")
  
   
    
-  var parsed_data ;
   var data = vue_obj.base_info.total_int_data
   var data2 = vue_obj.base_info.total_app_data
   var data3 = vue_obj.base_info.total_hit_data
@@ -1091,6 +986,8 @@ $(document).off("click","#top_banner>div:eq(1)")
 
   var min_date = new Date(vue_obj.base_info.min_date)
   min_date.setDate(min_date.getDate() - 1);
+
+  // DATA 1 ~ 9 각 배열에 대하여, 데이타가 비어있는 날짜를 찾아 , 데이타값을 0 으로 하여 추가함 
 
   var extent = d3.extent(data, function(d) {  return parseDate(d.date); });
   var dateHash = data.reduce(function(agg, d) {
@@ -1274,7 +1171,7 @@ $(document).off("click","#top_banner>div:eq(1)")
     total_max_y= d3.max(list_data_max, function(n) { return n; } );
     console.log("total_max_y"); console.log(total_max_y);
     var list_lower_data_max=[];
-    var threshold=0.5;
+    // DATA 1 ~ 9 배열을 좌측 y축 (높은 값 축), 우측 y 축 (낮은 값 축) 구분으로 이분함
     for(var i=1; i<=list_data_max.length; i++) {
        if(list_data_max[i-1] <  threshold * total_max_y ) {
            list_lower_data_n.push(i);
@@ -1291,20 +1188,28 @@ $(document).off("click","#top_banner>div:eq(1)")
     console.log("lower right y"); console.log(list_lower_data_n);
     console.log("lower_max_y"); console.log(lower_max_y);
 
+    // x 축의 최우측은 현재 시간 
     x_data.domain([new Date(vue_obj.base_info.min_date), Date.now()  ]);  
+    // x 축의 최우측은 데이타 상의 최근 날짜 (미사용)
     //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
-    y_left.domain([0, total_max_y]);
-    y_right.domain([0, lower_max_y]);
+
+    // 좌측 우축 y 축의 기점을 0 으로 할 수도 있고, 서로 다르게 설정할 수도 있다.
+    y_left.domain([-1, total_max_y]);
+    y_right.domain([-0.1, lower_max_y]);
+    //y_left.domain([0, total_max_y]);
+    //y_right.domain([0, lower_max_y]);
 
     old_x_data_domain= x_data.domain();
     new_x_data_domain= x_data.domain();
 
+    // 하단 브러시 차트는 x 축을 공유하고, y축의 도메인은 좌측 y 축(최대치)을 기준 
     x2.domain(x_data.domain());
     y2.domain(y_left.domain());
   
 
+    // 데이타 해석 함수 작성: 좌측 y축인지 우측 y축인지 구분하여 작성 
     for(var i=1; i<=list_data_max.length; i++) {
-       if(list_data_max[i-1] <  threshold * total_max_y ) {
+       if(list_data_max[i-1] <  threshold * total_max_y ) { // 우측 y 축 
 if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
@@ -1314,7 +1219,7 @@ if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
-       } else {
+       } else { // 좌측 y 축 
 if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
@@ -1334,10 +1239,13 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 
 
 
+    // 상단 차트 x 축 티커  
     focus.append("g")
       .attr("class", "axis axis--x") 
       .attr("transform", "translate(0," + height + ")") 
       .call(xAxis);
+
+    // 상단 차트 좌측 y 축 티커  
     focus.append("g")
       .attr("class", "axis axis--y")
       .attr("stroke","#000000") 
@@ -1349,8 +1257,9 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 	      .attr("y", 6)
 	      .attr("dy", ".71em")
 	      .style("text-anchor", "end")
-	      .text("횟수");
-;
+	      .text(axis_y_left_label);
+
+    // 상단 차트 우측 y 축 티커  
     focus.append("g")
       .attr("class", "axis axis--y")
       .attr("stroke","#ff0000") 
@@ -1364,9 +1273,10 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 	      .attr("y", 6)
 	      .attr("dy", ".71em")
 	      .style("text-anchor", "end")
-	      .text("횟수");
+	      .text(axis_y_left_label);
 
 
+    // DATA1 .. 9 를 상단 차트에 그림 
     Line_chart.append("path")
         .datum(data)
         .attr("class", "line1")
@@ -1431,34 +1341,36 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
         .attr("d", line9);
         
     $(".context").empty()
+
+    // DATA1 .. 9 를 하단 브러시 차트에 그림 
     context.append("path")
         .datum(data)
-        .attr("class", "line1")
+        .attr("class", "sub_line1")
         .attr("stroke", data_line_color[1])
         .attr("fill", "none")        
         .attr("d", line_sub_1);
     context.append("path")
         .datum(data2)
-        .attr("class", "line2")
+        .attr("class", "sub_line2")
         .attr("stroke", data_line_color[2])
         .attr("fill", "none")  
         .attr("d", line_sub_2);
     context.append("path")
         .datum(data3)
-        .attr("class", "line3")
+        .attr("class", "sub_line3")
         .attr("stroke", data_line_color[3])
         .attr("fill", "none")  
         .attr("d", line_sub_3);
     context.append("path")
         .datum(data4)
-        .attr("class", "line4")
+        .attr("class", "sub_line4")
         .attr("stroke", data_line_color[4])
         .attr("fill", "none")  
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line_sub_4);
     context.append("path")
         .datum(data5)
-        .attr("class", "line5")
+        .attr("class", "sub_line5")
         .attr("stroke", data_line_color[5])
         .attr("fill", "none")  
         .style("stroke-dasharray", ("3, 3"))
@@ -1467,32 +1379,33 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
         .datum(data6)
         .style("stroke-dasharray", ("3, 3"))
         .attr("fill", "none")  
-        .attr("class", "line6")
+        .attr("class", "sub_line6")
         .attr("stroke", data_line_color[6])
         .attr("d", line_sub_6);
     context.append("path")
         .datum(data7)
         .style("stroke-dasharray", ("3, 1"))
         .attr("fill", "none")  
-        .attr("class", "line7")
+        .attr("class", "sub_line7")
         .attr("stroke", data_line_color[7])
         .attr("d", line_sub_7);
     context.append("path")
         .datum(data8)
         .style("stroke-dasharray", ("3, 1"))
         .attr("fill", "none")  
-        .attr("class", "line8")
+        .attr("class", "sub_line8")
         .attr("stroke", data_line_color[8])
         .attr("d", line_sub_8);
     context.append("path")
         .datum(data9)
         .style("stroke-dasharray", ("3, 1"))
         .attr("fill", "none")  
-        .attr("class", "line9")
+        .attr("class", "sub_line9")
         .attr("stroke", data_line_color[9])
         .attr("d", line_sub_9);
         
 
+    // 하단 브러시 차트 x 축 티커 
     context.append("g")
       .attr("class", "axis axis--x")
       .attr("transform", "translate(0," + height2 + ")")
@@ -1504,19 +1417,18 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 	  //.attr("transform", "rotate(-65)");
 
 
+    // 좌 우 레전드 표시 
 
-    var  legend_each_height= 15;
     var left_legend = focus.append("rect")
-        .attr("x", 50)
-        .attr("y", 0)
-        .attr("width", 150) .attr("height", legend_each_height * list_upper_data_n.length + 20) 
-  	//.attr("stroke","#6F257F") 
+        .attr("x", left_legend_pos_x)
+        .attr("y", left_legend_pos_y)
+        .attr("width", left_legend_width) .attr("height", legend_each_height * list_upper_data_n.length + 25) 
   	.attr("stroke","#cccccc") 
   	.attr("stroke-width","2px") 
   	//.attr("stroke-dasharray","3,3")
 	.attr("filter","url(#dropshadow)");
 
-    for(var j=0,dx=60+30; j<list_upper_data_n.length; j++) {
+    for(var j=0,dx=left_legend_pos_x+40; j<list_upper_data_n.length; j++) {
       focus.append("rect").attr("x",dx-30).attr("y",legend_each_height*(j+1)-5)
   	.attr("stroke",data_line_color[list_upper_data_n[j]])
   	.attr("fill",data_line_color[list_upper_data_n[j]])
@@ -1527,33 +1439,35 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     };
 
     var right_legend = focus.append("rect") 
-        .attr("x", width-250)
-        .attr("y", 0)
-        .attr("width", 150) .attr("height", legend_each_height * list_lower_data_n.length + 20) 
-  	//.attr("stroke","#FF257F") 
+        .attr("x", right_legend_pos_x)
+        .attr("y", right_legend_pos_y)
+        .attr("width", right_legend_width) .attr("height", legend_each_height * list_lower_data_n.length + 25) 
   	.attr("stroke","#cccccc") 
   	.attr("stroke-width","2px") 
   	//.attr("stroke-dasharray","3,3") 
 	.attr("filter","url(#dropshadow)");
 
-    for(var j=0,dx=width-240+30; j<list_lower_data_n.length; j++) {
+    for(var j=0,dx=right_legend_pos_x+40; j<list_lower_data_n.length; j++) {
       focus.append("rect").attr("x",dx-30).attr("y",legend_each_height*(j+1)-5)
   	.attr("stroke",data_line_color[list_lower_data_n[j]])
   	.attr("fill",data_line_color[list_lower_data_n[j]])
 	.attr("width",10).attr("height",10);
-      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)-1)
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)+5)
   	.attr("stroke",data_line_color[list_lower_data_n[j]])
 	.text(data_legend_names[list_lower_data_n[j]]);
     }; 
      
 
 
+    // 브러시 영역 설정
     context.append("g")
       .attr("class", "brush")
       .attr("fill","none") 
       .call(brush)
       .call(brush.move, x_data.range());
 
+    
+    // 줌 영역 설정, 이벤트 핸들러 설정 
     svg.append("rect")
       .attr("class", "zoom")
       .attr("width", width)
@@ -1565,13 +1479,12 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
       .on("mousemove", mousemove)
       .call(zoom);
 
-
-    }
+}
    
 
 
  
-    function init_zoomable_line(){
+function init_zoomable_line(){
 
     brush = d3.brushX()
         .extent([[0, 0], [width, height2]])
@@ -1629,7 +1542,6 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .attr("clip-path", "url(#clip)") ;
    
-  var parsed_data ;
   var data = vue_obj.base_info.total_int_data
   var data2 = vue_obj.base_info.total_app_data
   var data3 = vue_obj.base_info.total_hit_data
@@ -1826,7 +1738,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     total_max_y= d3.max(list_data_max, function(n) { return n; } );
     console.log("total_max_y"); console.log(total_max_y);
     var list_lower_data_max=[];
-    var threshold=0.15;
+    // DATA 1 ~ 9 배열을 좌측 y축 (높은 값 축), 우측 y 축 (낮은 값 축) 구분으로 이분함
     for(var i=1; i<=list_data_max.length; i++) {
        if(list_data_max[i-1] <  threshold * total_max_y ) {
            list_lower_data_n.push(i);
@@ -1843,20 +1755,28 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     console.log("lower right y"); console.log(list_lower_data_n);
     console.log("lower_max_y"); console.log(lower_max_y);
 
+    // x 축의 최우측은 현재 시간 
     x_data.domain([new Date(vue_obj.base_info.min_date), Date.now()  ]);  
+    // x 축의 최우측은 데이타 상의 최근 날짜 (미사용)
     //x_data.domain(d3.extent(data, function(d) { return parseDate(d.date) }));  
-    y_left.domain([0, total_max_y]);
-    y_right.domain([0, lower_max_y]);
+
+    // 좌측 우축 y 축의 기점을 0 으로 할 수도 있고, 서로 다르게 설정할 수도 있다.
+    y_left.domain([-1, total_max_y]);
+    y_right.domain([-0.1, lower_max_y]);
+    //y_left.domain([0, total_max_y]);
+    //y_right.domain([0, lower_max_y]);
 
     old_x_data_domain= x_data.domain();
     new_x_data_domain= x_data.domain();
 
+    // 하단 브러시 차트는 x 축을 공유하고, y축의 도메인은 좌측 y 축(최대치)을 기준 
     x2.domain(x_data.domain());
     y2.domain(y_left.domain());
   
 
+    // 데이타 해석 함수 작성: 좌측 y축인지 우측 y축인지 구분하여 작성 
     for(var i=1; i<=list_data_max.length; i++) {
-       if(list_data_max[i-1] <  threshold * total_max_y ) {
+       if(list_data_max[i-1] <  threshold * total_max_y ) { // 우측 y 축 
 if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
@@ -1866,7 +1786,7 @@ if(i==6) line6 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 if(i==7) line7 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==8) line8 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
 if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_right(d.number); });
-       } else {
+       } else { // 좌측 y 축 
 if(i==1) line1 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==2) line2 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
 if(i==3) line3 = d3.line().x(function (d) { return x_data(parseDate(d.date)); }).y(function (d) { return y_left(d.number); });
@@ -1881,10 +1801,12 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
  
 // common end 
 
+    // 상단 차트 x 축 티커  
     focus.append("g")
       .attr("class", "axis axis--x") 
       .attr("transform", "translate(0," + height + ")") 
       .call(xAxis);
+    // 상단 차트 좌측 y 축 티커  
     focus.append("g")
       .attr("class", "axis axis--y")
       .attr("stroke","#000000") 
@@ -1896,7 +1818,8 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 	      .attr("y", 6)
 	      .attr("dy", ".71em")
 	      .style("text-anchor", "end")
-	      .text("횟수");
+	      .text(axis_y_left_label);
+    // 상단 차트 우측 y 축 티커  
     focus.append("g")
       .attr("class", "axis axis--y")
       .attr("stroke","#ff0000") 
@@ -1910,114 +1833,126 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 	      .attr("y", 6)
 	      .attr("dy", ".71em")
 	      .style("text-anchor", "end")
-	      .text("횟수");
+	      .text(axis_y_right_label);
 
+    // DATA1 .. 9 를 상단 차트에 그림 
     Line_chart.append("path")
         .datum(data)
+        .attr("class", "line1")
         .attr("stroke", data_line_color[1])
         .attr(data_legend_LR[1], data_legend_names[1])
         .attr("d", line1);
     Line_chart.append("path")
         .datum(data2)
+        .attr("class", "line2")
         .attr("stroke", data_line_color[2])
         .attr(data_legend_LR[2], data_legend_names[2])
         .attr("d", line2);
     Line_chart.append("path")
         .datum(data3)
+        .attr("class", "line3")
         .attr("stroke", data_line_color[3])
         .attr(data_legend_LR[3], data_legend_names[3])
         .attr("d", line3) ;
     Line_chart.append("path")
         .datum(data4)
+        .attr("class", "line4")
         .attr("stroke", data_line_color[4])
         .style("stroke-dasharray", ("3, 3"))
         .attr(data_legend_LR[4], data_legend_names[4])
         .attr("d", line4);
     Line_chart.append("path")
         .datum(data5)
+        .attr("class", "line5")
         .attr("stroke", data_line_color[5])
         .style("stroke-dasharray", ("3, 3"))
         .attr(data_legend_LR[5], data_legend_names[5])
         .attr("d", line5);
     Line_chart.append("path")
         .datum(data6)
+        .attr("class", "line6")
         .attr("stroke", data_line_color[6])
         .style("stroke-dasharray", ("3, 3"))
         .attr(data_legend_LR[6], data_legend_names[6])
         .attr("d", line6);
     Line_chart.append("path")
         .datum(data7)
+        .attr("class", "line7")
         .attr("stroke", data_line_color[7])
         .style("stroke-dasharray", ("3,1,1,1,3"))
         .attr(data_legend_LR[7], data_legend_names[7])
         .attr("d", line7);
     Line_chart.append("path")
         .datum(data8)
+        .attr("class", "line8")
         .attr("stroke", data_line_color[8])
         .style("stroke-dasharray", ("3,1,1,1,3"))
         .attr(data_legend_LR[8], data_legend_names[8])
         .attr("d", line8);
     Line_chart.append("path")
         .datum(data9)
+        .attr("class", "line9")
         .attr("stroke", data_line_color[9])
         .style("stroke-dasharray", ("3,1,1,1,3"))
         .attr(data_legend_LR[9], data_legend_names[9])
         .attr("d", line9);
 
 
+    // DATA1 .. 9 를 하단 브러시 차트에 그림 
     context.append("path")
         .datum(data)
-        .attr("class", "line1")
+        .attr("class", "sub_line1")
         .attr("stroke", data_line_color[1])
         .attr("d", line_sub_1);
     context.append("path")
         .datum(data2)
-        .attr("class", "line2")
+        .attr("class", "sub_line2")
         .attr("stroke", data_line_color[2])
         .attr("d", line_sub_2);
     context.append("path")
         .datum(data3)
-        .attr("class", "line3")
+        .attr("class", "sub_line3")
         .attr("stroke", data_line_color[3])
         .attr("d", line_sub_3);
     context.append("path")
         .datum(data4)
-        .attr("class", "line4")
+        .attr("class", "sub_line4")
         .attr("stroke", data_line_color[4])
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line_sub_4);
     context.append("path")
         .datum(data5)
-        .attr("class", "line5")
+        .attr("class", "sub_line5")
         .attr("stroke", data_line_color[5])
         .style("stroke-dasharray", ("3, 3"))
         .attr("d", line_sub_5);
     context.append("path")
         .datum(data6)
         .style("stroke-dasharray", ("3, 3"))
-        .attr("class", "line6")
+        .attr("class", "sub_line6")
         .attr("stroke", data_line_color[6])
         .attr("d", line_sub_6);
     context.append("path")
         .datum(data7)
         .style("stroke-dasharray", ("3, 1"))
-        .attr("class", "line7")
+        .attr("class", "sub_line7")
         .attr("stroke", data_line_color[7])
         .attr("d", line_sub_7);
     context.append("path")
         .datum(data8)
         .style("stroke-dasharray", ("3, 1"))
-        .attr("class", "line8")
+        .attr("class", "sub_line8")
         .attr("stroke", data_line_color[8])
         .attr("d", line_sub_8);
     context.append("path")
         .datum(data9)
         .style("stroke-dasharray", ("3, 1"))
-        .attr("class", "line9")
+        .attr("class", "sub_line9")
         .attr("stroke", data_line_color[9])
         .attr("d", line_sub_9);
         
 
+    // 하단 브러시 차트 x 축 티커 
     context.append("g")
       .attr("class", "axis axis--x")
       .attr("transform", "translate(0," + height2 + ")")
@@ -2028,18 +1963,19 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 	  //.attr("dy", ".15em")
 	  //.attr("transform", "rotate(-65)");
 
-    var  legend_each_height= 15;
+    
+    // 레전드 표시 
+
     var left_legend = focus.append("rect")
-        .attr("x", 50)
-        .attr("y", 0)
-        .attr("width", 150) .attr("height", legend_each_height * list_upper_data_n.length + 20) 
-  	//.attr("stroke","#6F257F") 
+        .attr("x", left_legend_pos_x)
+        .attr("y", left_legend_pos_y)
+        .attr("width", left_legend_width) .attr("height", legend_each_height * list_upper_data_n.length + 25) 
   	.attr("stroke","#cccccc") 
   	.attr("stroke-width","2px") 
-  	//.attr("stroke-dasharray","3,3") 
+  	//.attr("stroke-dasharray","3,3")
 	.attr("filter","url(#dropshadow)");
 
-    for(var j=0,dx=60+30; j<list_upper_data_n.length; j++) {
+    for(var j=0,dx=left_legend_pos_x+40; j<list_upper_data_n.length; j++) {
       focus.append("rect").attr("x",dx-30).attr("y",legend_each_height*(j+1)-5)
   	.attr("stroke",data_line_color[list_upper_data_n[j]])
   	.attr("fill",data_line_color[list_upper_data_n[j]])
@@ -2050,16 +1986,15 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
     };
 
     var right_legend = focus.append("rect") 
-        .attr("x", width-250)
-        .attr("y", 0)
-        .attr("width", 150) .attr("height", legend_each_height * list_lower_data_n.length + 20) 
-  	//.attr("stroke","#FF257F") 
+        .attr("x", right_legend_pos_x)
+        .attr("y", right_legend_pos_y)
+        .attr("width", right_legend_width) .attr("height", legend_each_height * list_lower_data_n.length + 25) 
   	.attr("stroke","#cccccc") 
   	.attr("stroke-width","2px") 
   	//.attr("stroke-dasharray","3,3") 
 	.attr("filter","url(#dropshadow)");
 
-    for(var j=0,dx=width-240+30; j<list_lower_data_n.length; j++) {
+    for(var j=0,dx=right_legend_pos_x+40; j<list_lower_data_n.length; j++) {
       focus.append("rect").attr("x",dx-30).attr("y",legend_each_height*(j+1)-5)
   	.attr("stroke",data_line_color[list_lower_data_n[j]])
   	.attr("fill",data_line_color[list_lower_data_n[j]])
@@ -2071,11 +2006,13 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
      
 
 
+    // 브러시 영역 설정
     context.append("g")
       .attr("class", "brush") 
       .call(brush)
       .call(brush.move, x_data.range());
 
+    // 줌 영역 설정, 이벤트 핸들러 설정 
     svg.append("rect")
       .attr("class", "zoom")
       .attr("width", width)
@@ -2088,15 +2025,153 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
 
 
 
-    }
+}
     
+function mousemove() {
+      var x0 = x_data.invert(d3.mouse(this)[0]).toISOString(),
+          yl = y_left.invert(d3.mouse(this)[1]),
+          yr = y_right.invert(d3.mouse(this)[1]);
+	//console.log("x0 "+x0);
+	//console.log("yr "+yr);
+	//console.log("yl "+yl);
+      var i;
+      var data= list_data[1];
+      for(i=0; i< data.length; i++) {
+         if(data[i].date > x0) break;
+      };
+      var d0 = data[i - 1];
+      var d1 = data[i];
+      var d= d1;
+      if(d1!==undefined && d0!==undefined) {
+        if(x0 - d0.date < d1.date - x0 ) { // round() operation
+         d= d0;   i= i - 1;
+        };
+      };
+	//console.log("i "+i);
+      var which_data_l;
+      var which_data_r;
+      var which_data_l_n;
+      var which_data_r_n;
+      var which_yr_data_n= -1;
+      var max_diff_right=1000;
+      var xscale= width / data.length;
+      //console.log("ul "+list_upper_data_n.length);
+      //console.log("ll "+list_lower_data_n.length);
+      for(var k= i - 5; k<i+5; k++) {  if(k<0) continue; if(k>=data.length) continue;
+      for(var j=0; j<list_lower_data_n.length; j++) {
+         var diff= Math.sqrt( (y_right(list_data[ list_lower_data_n[j] ][k].number) - y_right(yr))**2 + (xscale*(i - k))**2 );
+         //console.log(list_lower_data_n[j]);
+         //console.log(list_data[ list_lower_data_n[j] ]);
+         //console.log(list_data[ list_lower_data_n[j] ][k].number); console.log(diff);
+         if( diff < max_diff_right) {
+	     which_data_r= list_data[ list_lower_data_n[j] ][k]; 
+	     which_data_r_n= list_lower_data_n[j];
+	     which_yr_data_n= list_lower_data_n[j]; 
+	     max_diff_right= diff;
+         };
+      };
+      };
+      var which_yl_data_n= -1;
+      var max_diff_left=1000;
+      for(var k= i - 5; k<i+5; k++) {  if(k<0) continue; if(k>=data.length) continue;
+      for(var j=0; j<list_upper_data_n.length; j++) {
+         var diff= Math.sqrt( (y_left(list_data[ list_upper_data_n[j] ][k].number) - y_left(yl))**2 + (xscale*(i - k))**2 );
+         //console.log(list_upper_data_n[j]);
+         //console.log(list_data[ list_upper_data_n[j] ]);
+         //console.log(list_data[ list_upper_data_n[j] ][k].number); console.log(diff);
+         if( diff < max_diff_left) {
+	     which_data_l= list_data[ list_upper_data_n[j] ][k]; 
+	     which_data_l_n= list_upper_data_n[j];
+	     which_yl_data_n= list_upper_data_n[j];
+	     max_diff_left= diff;
+         };
+      };
+      };
+//console.log(which_yl_data_n);
+//console.log(which_yr_data_n);
+//console.log(max_diff_left);
+//console.log(max_diff_right);
+      //var old_x0x1= old_x_data_domain[1] - old_x_data_domain[0]; 
+      //var new_x0x1= new_x_data_domain[1] - new_x_data_domain[0]; 
+      //console.log("old x"); console.log(old_x0x1);
+      //console.log("new x"); console.log(new_x0x1);
+      //console.log("old x0"); console.log(old_x_data_domain[0]);
+      //console.log("new x0"); console.log(new_x_data_domain[0]);
+      if(max_diff_left < max_diff_right)
+      if(which_yl_data_n > -1) { 
+        var my_y= y_left(which_data_l.number);
+        var my_x= x_data(new Date(which_data_l.date));
+        //console.log("1my_x "+my_x); console.log("my_y "+my_y); console.log("y "+which_data_l.number); console.log("h "+height);
+        mousefocus.attr("transform", "translate(" + (margin.left+my_x) + "," + (margin.top+my_y) + ")");
+	//vertical line
+        mousefocus.select(".x-hover-line")
+	.attr("stroke", data_line_color[which_data_l_n]) 
+	.attr("y2", 0) 
+        .attr("y1", height - my_y) 
+        .attr("x1", 0) 
+        .attr("x2", 0);
+
+	//horizontal line
+        mousefocus.select(".y-hover-line")
+	.attr("stroke", data_line_color[which_data_l_n]) 
+        .attr("y1", 0)
+        .attr("y2", 0) 
+        .attr("x1", 0) 
+        .attr("x2", -my_x);
+
+        mousefocus.select("circle")
+	.attr("stroke", data_line_color[which_data_l_n]);
+
+        mousefocus.select(".tt_text1").attr("stroke",data_line_color[which_data_l_n]).text( data_legend_names[which_data_l_n] );
+        mousefocus.select(".tt_text2").text( which_data_l.number + "");
+        mousefocus.select(".tt_text3").text( which_data_l.date );
+        if(my_x>width-50) { mousefocus.select(".tt_text_group").attr('dx',-100); } ;
+        if(my_x<width-50) { mousefocus.select(".tt_text_group").attr('dx',0); } ;
+        //tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
+      };
+
+      if(max_diff_left >= max_diff_right )
+      if(which_yr_data_n > -1) { 
+        var my_y= y_right(which_data_r.number);
+        var my_x= x_data(new Date(which_data_r.date));
+        //console.log("2my_x "+my_x); console.log("my_y "+my_y); console.log("y "+which_data_r.number); console.log("h "+height);
+        mousefocus.attr("transform", "translate(" + (margin.left+my_x) + "," + (margin.top+my_y) + ")");
+
+	//vertical line
+        mousefocus.select(".x-hover-line")
+	.attr("stroke", data_line_color[which_data_r_n]) 
+	.attr("y2", 0) 
+        .attr("y1", height - my_y) 
+        .attr("x1", 0) 
+        .attr("x2", 0);
+
+	//horizontal line
+        mousefocus.select(".y-hover-line")
+	.attr("stroke", data_line_color[which_data_r_n]) 
+        .attr("y1", 0)
+        .attr("y2", 0) 
+        .attr("x1", 0) 
+        .attr("x2", -my_x);
+
+        mousefocus.select("circle")
+	.attr("stroke", data_line_color[which_data_r_n]);
+
+        mousefocus.select(".tt_text1").attr("stroke",data_line_color[which_data_r_n]).text( data_legend_names[which_data_r_n] );
+        mousefocus.select(".tt_text2").text( which_data_r.number + "");
+        mousefocus.select(".tt_text3").text( which_data_r.date );
+        if(my_x>width-50) { mousefocus.select(".tt_text_group").attr('dx',-100); } ;
+        if(my_x<width-50) { mousefocus.select(".tt_text_group").attr('dx',0); } ;
+        //tooltip.html(txt) .style('display', 'block') .style('left', d3.event.pageX + 20) .style('top', d3.event.pageY - 20);
+      };
+}
+
 function brushed() {
   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
   var s = d3.event.selection || x2.range();
   new_x_data_domain=s.map(x2.invert, x2);
   x_data.domain(s.map(x2.invert, x2));
 
-console.log("new x brushed");
+  //console.log("new x brushed");
   Line_chart.select(".line1").attr("d", line1);
   Line_chart.select(".line2").attr("d", line2);
   Line_chart.select(".line3").attr("d", line3);
@@ -2121,13 +2196,12 @@ function zoomed() {
     
  var t = d3.event.transform;
   new_x_data_domain= t.rescaleX(x2).domain();
-  console.log("new x2 domain");
-  console.log(new_x_data_domain);
+  //console.log("new x2 domain zoom");
+  //console.log(new_x_data_domain);
   if( dateDiff(new_x_data_domain[0] ,new_x_data_domain[1]) > 8 ){
        if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
        x_data.domain( new_x_data_domain );
 
-console.log("new x zoomed");
 	  Line_chart.select(".line1").attr("d", line1);
 	  Line_chart.select(".line2").attr("d", line2);
 	  Line_chart.select(".line3").attr("d", line3);
@@ -2137,6 +2211,7 @@ console.log("new x zoomed");
 	  Line_chart.select(".line7").attr("d", line7);
 	  Line_chart.select(".line8").attr("d", line8);
 	  Line_chart.select(".line9").attr("d", line9);
+
 	  focus.select(".axis--x").call(xAxis);
 	  context.select(".brush").call(brush.move, x_data.range().map(t.invertX, t));
   }
@@ -2148,6 +2223,7 @@ console.log("new x zoomed");
           zoom.scaleExtent([1,min_zoom])
   }
 }
+
 function type(d) {
   d.date = parseDate(d.date);
   d.number = +d.number;
@@ -2162,7 +2238,11 @@ function dateDiff(_date1, _date2) {
     var diff = Math.abs(diffDate_2.getTime() - diffDate_1.getTime());
     diff = Math.ceil(diff / (1000 * 3600 * 24));
     return diff;
-} 
+}
+
+
+
+ 
 })
     }
 }
