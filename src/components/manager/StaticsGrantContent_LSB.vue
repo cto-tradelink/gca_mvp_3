@@ -1271,6 +1271,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
       	      .attr("stroke","#ff0000") 
 	      .attr("transform", "rotate(-90)")
 	      .attr("y", 6)
+	      .attr("x", -10)
 	      .attr("dy", ".71em")
 	      .style("text-anchor", "end")
 	      .text(axis_y_left_label);
@@ -1433,7 +1434,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
   	.attr("stroke",data_line_color[list_upper_data_n[j]])
   	.attr("fill",data_line_color[list_upper_data_n[j]])
 	.attr("width",10).attr("height",10);
-      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)+5)
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)-10)
   	.attr("stroke",data_line_color[list_upper_data_n[j]])
   	.attr("dy",legend_font_size)
 	.text(data_legend_names[list_upper_data_n[j]]);
@@ -1453,7 +1454,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
   	.attr("stroke",data_line_color[list_lower_data_n[j]])
   	.attr("fill",data_line_color[list_lower_data_n[j]])
 	.attr("width",10).attr("height",10);
-      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)+5)
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)-10)
   	.attr("stroke",data_line_color[list_lower_data_n[j]])
   	.attr("dy",legend_font_size)
 	.text(data_legend_names[list_lower_data_n[j]]);
@@ -1982,7 +1983,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
   	.attr("stroke",data_line_color[list_upper_data_n[j]])
   	.attr("fill",data_line_color[list_upper_data_n[j]])
 	.attr("width",10).attr("height",10);
-      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)+5)
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)-10)
   	.attr("stroke",data_line_color[list_upper_data_n[j]])
   	.attr("dy",legend_font_size)
 	.text(data_legend_names[list_upper_data_n[j]]);
@@ -2002,7 +2003,7 @@ if(i==9) line9 = d3.line().x(function (d) { return x_data(parseDate(d.date)); })
   	.attr("stroke",data_line_color[list_lower_data_n[j]])
   	.attr("fill",data_line_color[list_lower_data_n[j]])
 	.attr("width",10).attr("height",10);
-      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)+5)
+      focus.append("text").attr("x",dx).attr("y",legend_each_height*(j+1)-10)
   	.attr("stroke",data_line_color[list_lower_data_n[j]])
   	.attr("dy",legend_font_size)
 	.text(data_legend_names[list_lower_data_n[j]]);
